@@ -1,0 +1,35 @@
+body{
+    font-family:"Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", "Lucida Sans", Verdana, sans-serif;
+    padding-left:10em;
+}
+
+div.navigation
+{
+    position:absolute;
+    top:4em;
+    left:1em;
+    width:8em;
+}
+div.navigation h4
+{
+    margin:0.5em 0 1em 0;
+}
+div.navigation ul
+{
+    font-size:0.9em;
+    padding:0;
+    list-style:none;
+}
+div.navigation ul ul
+{
+    padding-left:2em;
+}
+.exception
+{
+    width:80%;
+    color:red;
+    border:2px solid orange;
+    white-space:pre;
+    background:white;
+    padding:0 0.5em 0.5em 0.5em;
+}

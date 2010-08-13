@@ -1,0 +1,98 @@
+table
+{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table thead
+{
+    background:#F0EBE2;
+    text-align:left;
+}
+
+tr.impaire
+{
+    background:#FAF5EB;
+}
+
+td.id_vue, td.id_vue a
+{
+    font-weight:bold;
+    color:#F1592A;
+}
+
+td.id_vue a:visited
+{
+	color:brown;
+}
+
+td.integer_vue
+{
+    color:#058CF0;
+    font-weight:bold;
+}
+
+td.string_vue
+{
+    font-style:italic;
+}
+
+td.text_vue
+{
+	font-style:italic;
+	color:grey;
+}
+
+td.datetime_vue
+{
+    font-family:monospace;
+}
+label
+{
+	font-weight:bold;
+}
+
+input
+{
+	width:100%;
+}
+
+.fiche div
+{
+margin-bottom:1em;
+margin-left:3em;
+background:#FAF5EB;
+}
+
+.fiche div h3
+{
+margin:0;
+margin-left:-3em;
+background:#FAF5EB;
+}
+.fiche div h3:after
+{
+content:" :";
+}
+form div
+{
+margin-bottom:1em;
+}
+form .erreur
+{
+color:red;
+}
+form .erreur input
+{
+color:black;
+border:2px solid red;
+}
+form .erreur p
+{
+text-indent:2em;
+}
+form textarea
+{
+width:100%;
+height:20em;
+}
