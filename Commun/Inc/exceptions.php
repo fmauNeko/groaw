@@ -1,8 +1,19 @@
 <?php
+$lapin = true;
 // Transformation des messages d'erreurs en exceptions
 function exception_error_handler($errno, $errstr, $errfile, $errline)
 {
-	throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+	global $lapin;
+	var_dump($errno);
+	var_dump($errstr);
+	var_dump($errfile);
+	var_dump($errline);
+	var_dump($lapin);
+	if ($lapin)
+	{
+		$lapin = false;
+		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+	}
 }
 set_error_handler("exception_error_handler");
 
