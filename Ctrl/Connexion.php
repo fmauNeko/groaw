@@ -14,19 +14,14 @@ require ('../Inc/haut.php');
 
 function connexion()
 {
-	global $JETON_IMAP;
-
 	if (CFormulaire::soumis())
 	{
 		try
 		{
-
-			$JETON_IMAP = imap_open(SERVEUR_IMAP.'INBOX',
-							$_POST['mail_groaw']
-							,$_POST['mdp_groaw']);
+			CImap::authentification($_POST['mail_groaw'], $_POST['mdp_groaw']);
 			
 			$_SESSION['email'] = $_POST['mail_groaw'];
-			$_SESSION['secret_password'] = $_POST['mdp_groaw'];
+			$_SESSION['mdp_secret'] = $_POST['mdp_groaw'];
 		}
 		catch (ErrorException $e)
 		{
@@ -40,8 +35,7 @@ function connexion()
 
 function listeur()
 {
-	global $JETON_IMAP;
-	var_dump(imap_num_msg($JETON_IMAP));
+	var_dump(CImap::mailboxmsginfo());
 }
 
 function deconnexion()

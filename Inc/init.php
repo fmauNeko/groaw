@@ -8,10 +8,10 @@ date_default_timezone_set(FUSEAU_HORAIRE);
 session_start();
 
 // Si les informations sont présentes pour se connecter
-if (isset($_SESSION['email']) && isset($_SESSION['secret_password']))
+if (isset($_SESSION['email']) && isset($_SESSION['mdp_secret']))
 {
 	// Connexion
-	$JETON_IMAP = imap_open(SERVEUR_IMAP.'INBOX',$_SESSION['email'],$_SESSION['secret_password']);
+	CImap::authentification($_SESSION['email'], $_SESSION['mdp_secret']);
 }
 else
 {
