@@ -9,4 +9,5 @@ $LISTE_CTRLS = array(
 define('FORMAT_DATE', '%d/%m/%Y à %Hh%M');
 define('FUSEAU_HORAIRE', 'Europe/Paris');
 
+define('SERVEUR_IMAP','{localhost:4567/imap/ssl/novalidate-cert}');
 ?>
