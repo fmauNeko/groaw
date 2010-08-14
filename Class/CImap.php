@@ -22,7 +22,6 @@ class CImap
 		
 		if (function_exists($fonction))
 		{
-			//$fonction(self::$jeton_imap,$arguments);
 			return call_user_func_array($fonction,
 					array_merge(
 						(array) self::$jeton_imap,
