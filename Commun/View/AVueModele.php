@@ -13,12 +13,22 @@ abstract class AVueModele
 	{
 		$output = "";
 
-		$elements = imap_mime_header_decode($text);
+		$elements = imap_mime_header_decode($input);
 
-		for ($i=0; $i<count($elements); $i++)
+		$nb_elements = count($elements);
+		for ($i=0; $i<$nb_elements; ++$i)
 		{
-				$output .= iconv($elements[$i]->charset, "UTF-8",
-								 $elements[$i]->text);
+			$charset = $elements[$i]->charset;
+			$text = $elements[$i]->text;
+			
+			if ($charset !== 'default')
+			{
+				$output .= iconv($charset, "UTF-8", $text);
+			}
+			else
+			{
+				$output .= $text;
+			}
 		}
 
 		return $output;

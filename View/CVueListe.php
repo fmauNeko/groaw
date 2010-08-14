@@ -11,7 +11,7 @@ class CVueListe extends AVueModele
 			echo "\t<tr><td>",
 				 $message->msgno,
 				 "</td><td>",
-				 htmlspecialchars(($message->subject)),
+				 htmlspecialchars($this->mime_to_utf8($message->subject)),
 				"</td></tr>\n";
 		}
 
