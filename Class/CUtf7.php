@@ -14,8 +14,12 @@
  *  GNU General Public License for more details.
  *
  *  Translated from C to PHP by Thomas Bruederli <roundcube@gmail.com>
+ *
+ *	Converted to a static class by Antoine Pultier (Groaw Webmail).
  */ 
 
+class CUtf7
+{
 
 /**
  * Convert the data ($str) from RFC 2060's UTF-7 to UTF-8.
@@ -25,7 +29,8 @@
  * form, such as &ACY- (instead of &-) or &AMA-&AMA- (instead
  * of &AMAAwA-).
  */
-function utf7_to_utf8($str)
+
+public static function toUtf8($str)
 {
   $Index_64 = array(
       -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
@@ -126,7 +131,7 @@ function utf7_to_utf8($str)
  * Unicode characters above U+FFFF are replaced by U+FFFE.
  * If input data is invalid, return an empty string.
  */
-function utf8_to_utf7($str)
+public static function toUtf7($str)
 {
   $B64Chars = array(
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
@@ -244,6 +249,7 @@ function utf8_to_utf7($str)
   }
 
   return $p;
+}
 }
 
 ?>

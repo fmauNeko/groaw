@@ -24,12 +24,10 @@ class CVueListe extends AVueModele
 
 	public function afficherBoites()
 	{
-		require_once '../Inc/utf7.php';
 		echo "<ul>\n";
 		foreach($this->modele->boites as $boite)
 		{
-			//var_dump($boite->delimiter);
-			$l = explode($boite->delimiter,utf7_to_utf8($boite->name));
+			$l = explode($boite->delimiter,CUtf7::toUtf8($boite->name));
 
 			$op = implode(':',array_slice($l,1));
 
