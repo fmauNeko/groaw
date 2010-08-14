@@ -15,6 +15,11 @@ function connexion()
 	echo session_id();
 	print_r($_SESSION);
 
+	if (CFormulaire::soumis())
+	{
+		print_r($_POST);	
+	}
+
 	$vue = new CVueConnexion(true);
 	$vue->afficherFormulaire();
 }
