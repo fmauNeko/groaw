@@ -3,24 +3,24 @@ body{
     padding-left:10em;
 }
 
-div.navigation
+nav
 {
     position:absolute;
     top:4em;
     left:1em;
     width:8em;
 }
-div.navigation h4
+nav h4
 {
     margin:0.5em 0 1em 0;
 }
-div.navigation ul
+nav ul
 {
     font-size:0.9em;
     padding:0;
     list-style:none;
 }
-div.navigation ul ul
+nav ul ul
 {
     padding-left:2em;
 }

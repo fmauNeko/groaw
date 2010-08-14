@@ -5,15 +5,17 @@
 	<link href="../Commun/Css/modeles.css" media="screen" rel="Stylesheet" type="text/css" />
 </head>
 <body>
+<header>
 <h1><?php echo CNavigation::titre();?></h1>
+</header>
 <?php
 echo $CONTENU_PAGE;
 ?>
-<div class="navigation">
+<nav>
 <h3>Navigation</h3>
 <?php
 CNavigation::afficher();
 ?>
-</div>
+</nav>
 </body>
 </html>
