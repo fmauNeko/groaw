@@ -9,7 +9,6 @@ $LISTE_CTRLS = array(
 	'Hotels' => 'Hôtels'
 );
 
-define('SCHEMA_PDO', 'sqlite:../bd.sql');
 define('FORMAT_DATE', '%d/%m/%Y à %Hh%M');
 define('FUSEAU_HORAIRE', 'Europe/Paris');
 
