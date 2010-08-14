@@ -8,6 +8,7 @@ $ACTIONS = array(
 );
 
 $DEFAULT_ACTION = 'connexion';
+
 require ('../Inc/haut.php');
 // Début de la liste des fonctions
 
@@ -17,18 +18,19 @@ function connexion()
 
 	if (CFormulaire::soumis())
 	{
-		$JETON_IMAP = imap_open(SERVEUR_IMAP.'INBOX',$_POST['mail_groaw'],$_POST['mdp_groaw'],OP_READONLY|OP_DEBUG,0);
-
-		//print_r(imap_errors());
-		if ($JETON_IMAP)
+		try
 		{
+
+			$JETON_IMAP = imap_open(SERVEUR_IMAP.'INBOX',
+							$_POST['mail_groaw']
+							,$_POST['mdp_groaw']);
+			
 			$_SESSION['email'] = $_POST['mail_groaw'];
 			$_SESSION['secret_password'] = $_POST['mdp_groaw'];
-			echo "ok";
 		}
-		else
+		catch (ErrorException $e)
 		{
-			echo "loupé";
+			echo "Impossible de se connecter";
 		}
 	}
 
