@@ -28,9 +28,8 @@ function connexion()
 			echo "Impossible de se connecter";
 		}
 	}
-
-	$vue = new CVueConnexion(true);
-	$vue->afficherFormulaire();
+	
+	new CVueHTML("connexion");
 }
 
 function deconnexion()

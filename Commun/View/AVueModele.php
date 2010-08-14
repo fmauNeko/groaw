@@ -9,5 +9,4 @@ abstract class AVueModele
 		$this->modele = $modele;
 	}
 }
-
 ?>
