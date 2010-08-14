@@ -33,5 +33,10 @@ abstract class AVueModele
 
 		return $output;
 	}
+
+	public function utf7_to_utf8($texte)
+	{
+		return utf8_encode(imap_utf7_decode($texte));
+	}
 }
 ?>
