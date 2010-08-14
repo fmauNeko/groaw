@@ -2,6 +2,7 @@
 class CModListe extends AModele
 {
 	public $messages;
+	public $boites;
 
 	public function recupererMessages()
 	{
@@ -19,6 +20,13 @@ class CModListe extends AModele
 		}
 
 		$this->messages = $liste_finale;
+	}
+
+	public function recupererBoites()
+	{
+		$boites = CImap::getmailboxes(SERVEUR_IMAP, '*');
+
+		$this->boites = $boites;
 	}
 }
 

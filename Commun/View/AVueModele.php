@@ -11,7 +11,7 @@ abstract class AVueModele
 
 	public function mime_to_utf8($input)
 	{
-		$output = "";
+		$output = '';
 
 		$elements = imap_mime_header_decode($input);
 
@@ -23,7 +23,7 @@ abstract class AVueModele
 			
 			if ($charset !== 'default')
 			{
-				$output .= iconv($charset, "UTF-8", $text);
+				$output .= iconv($charset, 'UTF-8', $text);
 			}
 			else
 			{

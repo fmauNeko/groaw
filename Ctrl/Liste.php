@@ -30,7 +30,11 @@ function informations()
 
 function boites()
 {
-	var_dump(CImap::getmailboxes(SERVEUR_IMAP, '*'));
+	$mod = new CModListe();
+	$mod->recupererBoites();
+
+	$vue = new CVueListe($mod);
+	$vue->afficherBoites();
 }
 
 // Fin de la liste des fonctions
