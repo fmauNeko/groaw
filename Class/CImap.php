@@ -8,6 +8,14 @@ class CImap
 		self::$jeton_imap = imap_open(SERVEUR_IMAP.'INBOX', $mail, $mdp);
 	}
 
+	public static function deconnexion()
+	{
+		if (isset(self::$jeton_imap) && self::$jeton_imap)
+		{
+			imap_close(self::$jeton_imap);
+		}
+	}
+
 	public static function __callStatic ($nom, $arguments)
 	{
 		$fonction = 'imap_'.$nom;

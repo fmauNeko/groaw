@@ -11,10 +11,7 @@ catch (CException $e)
 }
 
 // Fermeture de la session imap
-if (isset($JETON_IMAP))
-{
-	imap_close($JETON_IMAP);	
-}
+CImap::deconnexion();
 
 // Le mode Ajax, c'est très bien'
 if (isset($_REQUEST['AJAX_MODE']))
