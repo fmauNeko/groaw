@@ -2,14 +2,20 @@
 class CVueListe extends AVueModele
 {
 	
-	public function afficherFormulaire()
+	public function afficherMessages()
 	{
-		
-		$modele = $this->modele;
+		echo "<table>\n";	
 
-echo <<< EOD
-EOD;
+		foreach ($this->modele->messages as $message)
+		{
+			echo "\t<tr><td>",
+				 $message->msgno,
+				 "</td><td>",
+				 htmlspecialchars(($message->subject)),
+				"</td></tr>\n";
+		}
 
-	}	
+		echo "</table>";
+	}
 }
 ?>

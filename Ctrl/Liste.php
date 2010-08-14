@@ -14,15 +14,17 @@ require ('../Inc/haut.php');
 
 function messages()
 {
-	$liste_triee = CImap::sort(SORTDATE, 0);
-	$liste_entetes = CImap::fetch_overview("1:12");
+	$mod = new CModListe();
+	$mod->recupererMessages();
 
-	var_dump($liste_entetes);
+	$vue = new CVueListe($mod);
+	$vue->afficherMessages();
 }
 
 function informations()
 {
 	var_dump(CImap::mailboxmsginfo());
+	var_dump(CImap::num_recent());
 }
 
 // Fin de la liste des fonctions
