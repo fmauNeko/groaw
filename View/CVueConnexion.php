@@ -15,7 +15,7 @@ echo <<< EOD
 	</p>
 	<p>
 		<label for="input_mdp">Mot de passe</label>
-		<input name="mdp" id="input_mdo" type="password" required/>
+		<input name="mdp" id="input_mdp" type="password" required/>
 	</p>
 	<p>
 		<input type="submit" value="Connexion" />
