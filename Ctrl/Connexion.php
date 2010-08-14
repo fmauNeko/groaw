@@ -1,16 +1,28 @@
 <?php
-$NOM_CTRL = 'Hotels';
+$NOM_CTRL = 'Connexion';
 
 $ACTIONS = array(
-	'supprimer'=> array('Supprimer','Suppression d\'un élément'),
-	'fiche'=> array('Fiche','Fiche'),
-	'lister'=> array('Lister','Liste des hôtels'),
-	'formulaire'=> array('Formulaire','Mise à jour des hôtels')
+	'connexion'=> array('Connexion','Connexion de l\'utilisateur'),
+	'deconnexion'=> array('Déconnexion','Déconnexion de l\'utilisateur'),
 );
-$DEFAULT_ACTION = 'lister';
+$DEFAULT_ACTION = 'connexion';
 
 require ('../Inc/haut.php');
 // Début de la liste des fonctions
+
+function connexion()
+{
+	echo session_id();
+	print_r($_SESSION);
+
+	$vue = new CVueConnexion(true);
+	$vue->afficherFormulaire();
+}
+
+function deconnexion()
+{
+	session_destroy();
+}
 
 function supprimer()
 {

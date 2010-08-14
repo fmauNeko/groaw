@@ -1,12 +1,9 @@
 <?php
 
-define('NOM_APPLICATION', 'Gestion simplifiée d\'une chaîne hôtelière');
+define('NOM_APPLICATION', 'Groaw');
 
 $LISTE_CTRLS = array(
-	'Sejours' => 'Séjours',
-	'Clients' => 'Clients',
-	'Chambres' => 'Chambres',
-	'Hotels' => 'Hôtels'
+	'Connexion' => 'Connexion',
 );
 
 define('FORMAT_DATE', '%d/%m/%Y à %Hh%M');

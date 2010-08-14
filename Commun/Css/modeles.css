@@ -96,3 +96,11 @@ form textarea
 width:100%;
 height:20em;
 }
+input[required]
+{
+background-color:lightgreen;
+}
+input:invalid 
+{
+background-color: white;
+}
