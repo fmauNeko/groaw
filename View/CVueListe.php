@@ -31,6 +31,8 @@ class CVueListe extends AVueModele
 
 			$op = implode(':',array_slice($l,1));
 
+			$op .= ' ('.$boite->pasvus.')';
+
 			echo "\t<li>",
 				 htmlspecialchars($op),
 				"</li>\n";

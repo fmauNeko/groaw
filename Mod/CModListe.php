@@ -26,6 +26,11 @@ class CModListe extends AModele
 	{
 		$boites = CImap::getmailboxes(SERVEUR_IMAP, '*');
 
+		foreach ($boites as $boite)
+		{
+			$boite->pasvus = CImap::status($boite->name, SA_UNSEEN)->unseen;
+		}
+
 		$this->boites = $boites;
 	}
 }
