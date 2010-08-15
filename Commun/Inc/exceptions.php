@@ -7,10 +7,17 @@ function exception_error_handler($errno, $errstr, $errfile, $errline)
 	// Quand une fonction créé deux erreurs,
 	// la deuxième exception est attaquée avant que la première soit relachée
 	global $exception_error_handler_semaphore;
-	if ($exception_error_handler_semaphore)
+	if ($exception_error_handler_semaphore && $errfile !== 'Unknown' && $errline !== 0)
 	{
 		$exception_error_handler_semaphore = false;
 		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+	}
+	else
+	{
+		var_dump($errno);
+		var_dump($errstr);
+		var_dump($errfile);
+		var_dump($errline);
 	}
 }
 set_error_handler("exception_error_handler");

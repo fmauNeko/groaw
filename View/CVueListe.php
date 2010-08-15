@@ -36,9 +36,9 @@ class CVueListe extends AVueModele
 				$description = "Groaw";
 			}
 
-			$lien = rawurlencode(implode($boite->delimiter, array_slice($l,1)));
+			$lien = rawurlencode(preg_replace('/^\{.+?\}/','',$boite->name));
 
-			echo "\t<li><a href=\"$lien\">", $description, '</a>';
+			echo "\t<li><a href=\"Boites.php?EX=ouvrir&amp;boite=$lien\">", $description, '</a>';
 
 			if ($boite->pasvus > 0)
 			{
