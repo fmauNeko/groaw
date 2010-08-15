@@ -15,8 +15,13 @@ require ('../Inc/haut.php');
 
 function informations()
 {
+	echo "<h3>mailboxmsginfo</h3><pre>";
 	var_dump(CImap::mailboxmsginfo());
+	echo "</pre><h3>num_recent</h3><pre>";
 	var_dump(CImap::num_recent());
+	echo "</pre><h3>get_quotaroot</h3><pre>";
+	var_dump(CImap::get_quotaroot($_SESSION['boite']));
+	echo "</pre>";
 }
 
 function boites()
