@@ -4,22 +4,29 @@ class CVueListe extends AVueModele
 	
 	public function afficherMessages()
 	{
-		echo "<table>\n";	
-
-		foreach ($this->modele->messages as $message)
+		if (count($this->modele->messages) > 0)
 		{
-			echo "\t<tr><td>",
-				$message->msgno,
-				"</td><td>",
-				htmlspecialchars($this->mime_to_utf8($message->subject)),
-				"</td><td>",
-				htmlspecialchars($this->mime_to_utf8($message->from)),
-				"</td><td>",
-				htmlspecialchars($message->date),
-				"</td></tr>\n";
-		}
+			echo "<table>\n";	
 
-		echo "</table>";
+			foreach ($this->modele->messages as $message)
+			{
+				echo "\t<tr><td>",
+					$message->msgno,
+					"</td><td>",
+					htmlspecialchars($this->mime_to_utf8($message->subject)),
+					"</td><td>",
+					htmlspecialchars($this->mime_to_utf8($message->from)),
+					"</td><td>",
+					htmlspecialchars($message->date),
+					"</td></tr>\n";
+			}
+
+			echo "</table>";
+		}
+		else
+		{
+			echo "<h3>Il n'y a pas de messages</h3>";
+		}
 	}
 
 	public function afficherBoites()
