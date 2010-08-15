@@ -6,7 +6,7 @@ class CVueListe extends AVueModele
 	{
 		if (count($this->modele->messages) > 0)
 		{
-			echo "<table>\n";	
+			echo "<table class=\"messages\">\n";	
 
 			foreach ($this->modele->messages as $message)
 			{
@@ -17,7 +17,7 @@ class CVueListe extends AVueModele
 					"</td><td>",
 					htmlspecialchars($this->mime_to_utf8($message->from)),
 					"</td><td>",
-					htmlspecialchars($message->date),
+					strftime(FORMAT_DATE, strtotime($message->date)),
 					"</td></tr>\n";
 			}
 

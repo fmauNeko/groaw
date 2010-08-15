@@ -42,3 +42,8 @@ td
 {
 border:1px solid grey;
 }
+
+table.messages
+{
+	font-size:0.8em;
+}
