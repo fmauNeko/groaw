@@ -8,7 +8,10 @@ $LISTE_CTRLS = array(
 	'Boites'	=> 'Boites aux lettres'
 );
 
-define('FORMAT_DATE', '%d/%m/%Y à %Hh%M');
+define('FORMAT_DATE_JOUR',		'Aujourd\'hui à %Hh%M');
+define('FORMAT_DATE_SEMAINE',	'%A à %Hh%M');
+define('FORMAT_DATE_NORMAL',	'%d/%m/%Y à %Hh%M');
+
 define('FUSEAU_HORAIRE', 'Europe/Paris');
 
 define('SERVEUR_IMAP','{localhost:4567/imap/ssl/novalidate-cert}');

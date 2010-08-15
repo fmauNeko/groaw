@@ -17,7 +17,7 @@ class CVueListe extends AVueModele
 					"</td><td>",
 					htmlspecialchars($this->mime_to_utf8($message->from)),
 					"</td><td>",
-					strftime(FORMAT_DATE, strtotime($message->date)),
+					$this->formater_date_liste($message->date),
 					"</td></tr>\n";
 			}
 
