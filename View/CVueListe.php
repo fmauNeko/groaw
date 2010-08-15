@@ -29,13 +29,23 @@ class CVueListe extends AVueModele
 		{
 			$l = explode($boite->delimiter,$this->utf7_to_utf8($boite->name));
 
-			$op = implode(':',array_slice($l,1));
+			$description = htmlspecialchars(implode(':',array_slice($l,1)));
+			
+			if ($description === '')
+			{
+				$description = "Groaw";
+			}
 
-			$op .= ' ('.$boite->pasvus.')';
+			$lien = rawurlencode(implode($boite->delimiter, array_slice($l,1)));
 
-			echo "\t<li>",
-				 htmlspecialchars($op),
-				"</li>\n";
+			echo "\t<li><a href=\"$lien\">", $description, '</a>';
+
+			if ($boite->pasvus > 0)
+			{
+				echo ' <strong>(', $boite->pasvus, ')</strong>';
+			}
+
+			echo "</li>\n";
 		}
 		echo "</ul>";
 	}
