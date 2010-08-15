@@ -47,3 +47,17 @@ table.messages
 {
 	font-size:0.8em;
 }
+
+table.messages tr:nth-child(odd)
+{
+background-color:#eee;
+}
+table.messages tr:nth-child(even)
+{
+background-color:#fff;
+}
+
+table.messages tr:hover
+{
+background:grey;
+}
