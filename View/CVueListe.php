@@ -11,9 +11,10 @@ class CVueListe extends AVueModele
 			foreach ($this->modele->messages as $message)
 			{
 				echo "\t<li class=\"",
-					 $message->seen ? "lu" : "nonlu",
-					 "\">",
-					"<div class=\"num\">",
+					$message->seen ? "lu" : "nonlu",
+				 	"\"><a href=\"Courriels.php?EX=afficher&amp;numero=",
+					$message->msgno,
+					"\"><div class=\"num\">",
 					$message->msgno,
 					"</div><div class=\"expediteur\">",
 					htmlspecialchars($this->mime_to_utf8($message->from)),
@@ -21,7 +22,7 @@ class CVueListe extends AVueModele
 					$this->formater_date_liste($message->date),
 					"</div><div class=\"sujet\">",
 					htmlspecialchars($this->mime_to_utf8($message->subject)),
-					"</div></li>\n";
+					"</div></a></li>\n";
 			}
 
 			echo "</ul>";

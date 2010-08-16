@@ -5,7 +5,8 @@ define('NOM_APPLICATION', 'Groaw');
 $LISTE_CTRLS = array(
 	'Connexion' => 'Connexion',
 	'Liste'		=> 'Liste',
-	'Boites'	=> 'Boites aux lettres'
+	'Boites'	=> 'Boites aux lettres',
+	'Courriels'		=> 'Gestion des courriels'
 );
 
 define('FORMAT_DATE_JOUR',		'Aujourd\'hui à %Hh%M');
