@@ -10,7 +10,10 @@ class CVueListe extends AVueModele
 
 			foreach ($this->modele->messages as $message)
 			{
-				echo "\t<li><div class=\"num\">",
+				echo "\t<li class=\"",
+					 $message->seen ? "lu" : "nonlu",
+					 "\">",
+					"<div class=\"num\">",
 					$message->msgno,
 					"</div><div class=\"expediteur\">",
 					htmlspecialchars($this->mime_to_utf8($message->from)),

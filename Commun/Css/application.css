@@ -56,6 +56,11 @@ position:relative;
 padding:0.8em;
 }
 
+ul.messages li.nonlu
+{
+color:blue;
+}
+
 ul.messages li:nth-child(odd)
 {
 background-color:#eee;
@@ -85,6 +90,7 @@ display:none;
 ul.messages div.sujet
 {
 font-weight:bold;
+font-size:1.1em;
 }
 
 ul.messages div.expediteur
