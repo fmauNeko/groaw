@@ -43,21 +43,51 @@ td
 border:1px solid grey;
 }
 
-table.messages
+ul.messages
 {
-	font-size:0.8em;
+font-size:0.8em;
+list-style:none;
+padding:0;
 }
 
-table.messages tr:nth-child(odd)
+ul.messages li
+{
+position:relative;
+padding:0.8em;
+}
+
+ul.messages li:nth-child(odd)
 {
 background-color:#eee;
 }
-table.messages tr:nth-child(even)
+ul.messages li:nth-child(even)
 {
 background-color:#fff;
 }
 
-table.messages tr:hover
+ul.messages li:hover
 {
 background:grey;
+}
+
+ul.messages div.date
+{
+position:absolute;
+right:0.8em;
+top:0.8em;
+}
+
+ul.messages div.num
+{
+display:none;
+}
+
+ul.messages div.sujet
+{
+font-weight:bold;
+}
+
+ul.messages div.expediteur
+{
+margin-bottom:0.5em;
 }

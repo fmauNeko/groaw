@@ -6,22 +6,22 @@ class CVueListe extends AVueModele
 	{
 		if (count($this->modele->messages) > 0)
 		{
-			echo "<table class=\"messages\">\n";	
+			echo "<ul class=\"messages\">\n";	
 
 			foreach ($this->modele->messages as $message)
 			{
-				echo "\t<tr><td>",
+				echo "\t<li><div class=\"num\">",
 					$message->msgno,
-					"</td><td>",
-					htmlspecialchars($this->mime_to_utf8($message->subject)),
-					"</td><td>",
+					"</div><div class=\"expediteur\">",
 					htmlspecialchars($this->mime_to_utf8($message->from)),
-					"</td><td>",
+					"</div><div class=\"date\">",
 					$this->formater_date_liste($message->date),
-					"</td></tr>\n";
+					"</div><div class=\"sujet\">",
+					htmlspecialchars($this->mime_to_utf8($message->subject)),
+					"</div></li>\n";
 			}
 
-			echo "</table>";
+			echo "</ul>";
 		}
 		else
 		{
@@ -31,7 +31,7 @@ class CVueListe extends AVueModele
 
 	public function afficherBoites()
 	{
-		echo "<ul>\n";
+		echo "<ul class=\"boites\">\n";
 		foreach($this->modele->boites as $boite)
 		{
 			$l = explode($boite->delimiter,$this->utf7_to_utf8($boite->name));
