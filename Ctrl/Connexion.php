@@ -24,6 +24,8 @@ function connexion()
 			
 			$_SESSION['email'] = $_POST['mail_groaw'];
 			$_SESSION['mdp_secret'] = $_POST['mdp_groaw'];
+
+			new CRedirection('Liste.php');
 		}
 		catch (ErrorException $e)
 		{
