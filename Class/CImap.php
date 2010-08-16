@@ -5,9 +5,7 @@ class CImap
 
 	public static function authentification($mail,$mdp)
 	{
-		$boite = isset($_SESSION['boite']) ? $_SESSION['boite'] : 'INBOX';
-
-		self::$jeton_imap = imap_open(SERVEUR_IMAP.$boite, $mail, $mdp);
+		self::$jeton_imap = imap_open(SERVEUR_IMAP.$_SESSION['boite'], $mail, $mdp);
 	}
 
 	public static function deconnexion()

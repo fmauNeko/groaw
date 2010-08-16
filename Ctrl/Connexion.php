@@ -18,6 +18,8 @@ function connexion()
 	{
 		try
 		{
+			$_SESSION['boite'] = 'INBOX';
+			
 			CImap::authentification($_POST['mail_groaw'], $_POST['mdp_groaw']);
 			
 			$_SESSION['email'] = $_POST['mail_groaw'];
