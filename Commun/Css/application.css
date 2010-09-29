@@ -1,7 +1,9 @@
 body{
     font-family:"Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", "Lucida Sans", Verdana, sans-serif;
     padding-left:10em;
-	/*white-space:pre;*/
+	white-space:pre;
+background:#32353A;
+color:white;
 }
 
 nav

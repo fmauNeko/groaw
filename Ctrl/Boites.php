@@ -4,10 +4,11 @@ $NOM_CTRL = 'Boites';
 $ACTIONS = array(
 	'boites'		=> array('Boites aux lettres','Liste des boites aux lettres'),
 	'informations'	=> array('Informations','Informations sur le compte'),
-	'ouvrir'		=> array('Ouvrir une boite','Ouvrir une boite aux lettres')
+	'ouvrir'		=> array('Ouvrir une boite','Ouvrir une boite aux lettres'),
+	'accueil'		=> array('Accueil','Page d\'accueil du logiciel')
 );
 
-$DEFAULT_ACTION = 'boites';
+$DEFAULT_ACTION = 'accueil';
 
 require ('../Inc/haut.php');
 
@@ -53,6 +54,16 @@ function ouvrir()
 		echo '<h3>Veuillez sélectionner une boite aux lettres</h3>';
 		boites();
 	}
+}
+
+function accueil()
+{
+	// Livraison
+	$mod = new CModBoite();
+	
+	$infos = $mod->recupererInfosAcceuil();
+
+	var_dump($infos);
 }
 
 // Fin de la liste des fonctions
