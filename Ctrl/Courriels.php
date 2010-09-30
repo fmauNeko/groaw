@@ -16,7 +16,8 @@ function afficher()
 {
 	$numero =  isset($_REQUEST['numero']) ? intval($_REQUEST['numero']) : 1;
 
-	echo nl2br(htmlspecialchars(CImap::body($numero)));
+	$mod = new CModCourriel();
+	$mod->analyserCourriel($numero);
 }
 
 function raw()

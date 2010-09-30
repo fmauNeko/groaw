@@ -2,6 +2,7 @@
 require_once('../Inc/define.php');
 require_once('../Commun/Inc/autoload.php');
 require_once('../Commun/Inc/exceptions.php');
+require_once('../Commun/Inc/outils.php');
 
 $EX = isset($_REQUEST['EX']) ? $_REQUEST['EX'] : '@DEFAULT_ACTION@';
 

@@ -4,6 +4,7 @@ ob_start();
 try
 {
 	$FONCTION_CTRL();
+	groaw(imap_errors());
 }
 catch (CException $e)
 {
