@@ -1,10 +1,10 @@
 <?php
-class CModListe extends AModele
+class CModCourriel extends AModele
 {
-	public $messages;
-	public $boites;
+	public $courriel;
+	public $courriels;
 
-	public function recupererMessages()
+	public function recupererCourriels()
 	{
 		$liste_triee = CImap::sort(SORTDATE, 1);
 		$nb_entetes = count($liste_triee);
@@ -25,7 +25,7 @@ class CModListe extends AModele
 				$liste_finale[$clef] = $entete;
 			}
 
-			$this->messages = $liste_finale;
+			$this->courriels = $liste_finale;
 		}
 	}
 }

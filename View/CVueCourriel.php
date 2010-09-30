@@ -1,14 +1,14 @@
 <?php
-class CVueListe extends AVueModele
+class CVueCourriel extends AVueModele
 {
 	
-	public function afficherMessages()
+	public function afficherCourriels()
 	{
-		if (count($this->modele->messages) > 0)
+		if (count($this->modele->courriels) > 0)
 		{
 			echo "<ul class=\"messages\">\n";	
 
-			foreach ($this->modele->messages as $message)
+			foreach ($this->modele->courriels as $message)
 			{
 				echo "\t<li class=\"",
 					$message->seen ? "lu" : "nonlu",

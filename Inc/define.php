@@ -4,7 +4,6 @@ define('NOM_APPLICATION', 'Groaw');
 
 $LISTE_CTRLS = array(
 	'Connexion' => 'Connexion',
-	'Liste'		=> 'Liste',
 	'Boites'	=> 'Boites aux lettres',
 	'Courriels'		=> 'Gestion des courriels'
 );

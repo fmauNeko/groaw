@@ -47,7 +47,7 @@ function ouvrir()
 	
 		$_SESSION['boite'] = $boite;	
 
-		new CRedirection('Liste.php');
+		new CRedirection('Courriels.php?EX=liste');
 	}
 	else
 	{
