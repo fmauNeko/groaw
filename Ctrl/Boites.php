@@ -27,10 +27,10 @@ function informations()
 
 function boites()
 {
-	$mod = new CModListe();
+	$mod = new CModBoite();
 	$mod->recupererBoites();
 
-	$vue = new CVueListe($mod);
+	$vue = new CVueBoite($mod);
 	$vue->afficherBoites();
 }
 
@@ -62,7 +62,7 @@ function accueil()
 	$mod->recupererInfosAcceuil();
 
 	$vue = new CVueBoite($mod);
-	$vue->afficherBoites();
+	$vue->afficherBoitesAcceuil();
 }
 
 // Fin de la liste des fonctions

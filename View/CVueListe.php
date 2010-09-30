@@ -32,33 +32,5 @@ class CVueListe extends AVueModele
 			echo "<h3>Il n'y a pas de messages</h3>";
 		}
 	}
-
-	public function afficherBoites()
-	{
-		echo "<ul class=\"boites\">\n";
-		foreach($this->modele->boites as $boite)
-		{
-			$l = explode($boite->delimiter,$this->utf7_to_utf8($boite->name));
-
-			$description = htmlspecialchars(implode(':',array_slice($l,1)));
-			
-			if ($description === '')
-			{
-				$description = "Groaw";
-			}
-
-			$lien = rawurlencode(preg_replace('/^\{.+?\}/','',$boite->name));
-
-			echo "\t<li><a href=\"Boites.php?EX=ouvrir&amp;boite=$lien\">", $description, '</a>';
-
-			if ($boite->pasvus > 0)
-			{
-				echo ' <strong>(', $boite->pasvus, ')</strong>';
-			}
-
-			echo "</li>\n";
-		}
-		echo "</ul>";
-	}
 }
 ?>

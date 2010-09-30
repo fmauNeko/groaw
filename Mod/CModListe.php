@@ -28,18 +28,6 @@ class CModListe extends AModele
 			$this->messages = $liste_finale;
 		}
 	}
-
-	public function recupererBoites()
-	{
-		$boites = CImap::getmailboxes(SERVEUR_IMAP, '*');
-
-		foreach ($boites as $boite)
-		{
-			$boite->pasvus = CImap::status($boite->name, SA_UNSEEN)->unseen;
-		}
-
-		$this->boites = $boites;
-	}
 }
 
 ?>
