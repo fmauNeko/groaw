@@ -6,32 +6,77 @@ ul.boites li
 {
 padding:0;
 display:inline-block;
-margin:1em;
+padding:0.5em;
+margin:0.5em;
 }
 
 ul.boites li h3
 {
-margin:0;
+margin:0 0 0.3em 0;
 text-align:center;
+font-size:1.4em;
 }
 
-ul.boites li div
+ul.boites li a
 {
-background:orange;
-border-radius:1em;
-height:9em;
-width:16em;
 position:relative;
+display:block;
+background:orange;
+background-size:100% auto;
+border-radius:1em;
+-moz-border-radius:1em;
+height:11.25em;
+width:20em;
+text-decoration:none;
+}
+ul.boites li:hover
+{
+background:white;
+border-radius:1em;
+-moz-border-radius:1em;
+color:#32353A;
 }
 
-ul.boites li div p
+ul.boites li a p
 {
 position:absolute;
-bottom:0.3em;
+bottom:0;
 left:0;
 right:0;
-padding:0.5em;
-background:rgba(255,255,255,0.5);
+padding:0.3em;
+background:rgba(255,255,255,0.7);
 text-align:center;
-font-size:0.8em;
+color:black;
+font-family: Georgia, "DejaVu Serif", Norasi, serif;
+}
+
+ul.boites strong
+{
+font-weight:bold;
+color:red;
+}
+
+ul.boites li.livraison a
+{
+background-image:url(../Img/livraison.jpeg);
+}
+ul.boites li.interessant a
+{
+background-image:url(../Img/interessant.jpeg);
+}
+ul.boites li.normal a
+{
+background-image:url(../Img/normal.jpeg);
+}
+ul.boites li.ininteressant a
+{
+background-image:url(../Img/ininteressant.jpeg);
+}
+ul.boites li.poubelle a
+{
+background-image:url(../Img/poubelle.jpeg);
+}
+ul.boites li.archives a
+{
+background-image:url(../Img/archives.jpeg);
 }

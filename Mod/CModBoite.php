@@ -25,6 +25,12 @@ class CModBoite extends AModele
 			'ininteressant'	=> $this->recupererInfoBoite('INBOX.Unexciting', SA_MESSAGES),
 			'poubelle' 		=> $this->recupererInfoBoite('INBOX.Trash', SA_MESSAGES)
 		);
+
+		$this->boites['livraison']->titre		= "Livraison";
+		$this->boites['interessant']->titre		= "Intéressant";
+		$this->boites['normal']->titre			= "Normal";
+		$this->boites['ininteressant']->titre	= "Inintéressant";
+		$this->boites['poubelle']->titre		= "Poubelle";
 	}
 
 	public function recupererInfoBoite($nom,$type)
@@ -37,6 +43,7 @@ class CModBoite extends AModele
 			$info = CImap::status(SERVEUR_IMAP.$nom, $type);
 		}
 
+		$info->nom = $nom;
 		return $info;
 	}
 
