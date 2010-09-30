@@ -53,12 +53,11 @@ class CModCourriel extends AModele
 
 				switch ($structure->encoding)
 				{
-					// 7 bits
+					/*// 7 bits (donc de l'ASCII de pas rigolo)
 					case 0:
-						$texte = "ohoh";
 						break;
 
-					/*// 8 bits
+					// 8 bits
 					case 1:
 						break;*/
 
