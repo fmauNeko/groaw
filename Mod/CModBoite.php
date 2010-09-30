@@ -18,7 +18,7 @@ class CModBoite extends AModele
 
 	public function recupererInfosAcceuil()
 	{
-		return Array(
+		$this->boites = Array(
 			'livraison'		=> $this->recupererInfoBoite('INBOX', SA_MESSAGES),
 			'interessant'	=> $this->recupererInfoBoite('INBOX.Interesting', SA_MESSAGES),
 			'normal'		=> $this->recupererInfoBoite('INBOX.Normal', SA_MESSAGES),

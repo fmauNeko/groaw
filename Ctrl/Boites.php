@@ -58,12 +58,11 @@ function ouvrir()
 
 function accueil()
 {
-	// Livraison
 	$mod = new CModBoite();
-	
-	$infos = $mod->recupererInfosAcceuil();
+	$mod->recupererInfosAcceuil();
 
-	var_dump($infos);
+	$vue = new CVueBoite($mod);
+	$vue->afficherBoites();
 }
 
 // Fin de la liste des fonctions
