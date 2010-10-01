@@ -11,11 +11,11 @@ class CVueBoite extends AVueModele
 		echo "<ul class=\"boites\">\n";
 		foreach($this->modele->boites as $boite => $infos)
 		{
-			echo "<li class=\"$boite\">\n\t<h3>$infos->titre</h3>\n\t<a href=\"?EX=ouvrir&boite=",rawurlencode($infos->nom),"\"><p>",
+			echo "\t<li class=\"$boite\">\n\t\t<h3>$infos->titre</h3>\n\t\t<a href=\"?EX=ouvrir&boite=",rawurlencode($infos->nom),"\"><p>",
 				'Vous avez <strong>', $infos->messages,'</strong> messages à trier :D',
-				"</p></a>\n</li>\n";
+				"</p></a>\n\t</li>\n";
 		}
-		echo "<li class=\"archives\">\n\t<h3>Archives</h3>\n\t<a><p>Accédez aux courriels classifiés</p></a>\n</li>\n</ul>";
+		echo "\t<li class=\"archives\">\n\t\t<h3>Archives</h3>\n\t\t<a><p>Accédez aux courriels classifiés</p></a>\n\t</li>\n</ul>";
 	}
 
 	public function afficherBoites()

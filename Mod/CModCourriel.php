@@ -9,7 +9,7 @@ class CModCourriel extends AModele
 		$structure = CImap::fetchstructure($numero);
 
 		// Si c'est un beau mail de plusieurs parties
-		if ($structure->type === TYPEMULTIPART && count($structure->parts) > 1)
+		if ($structure->type === TYPEMULTIPART && count($structure->parts) > 1)
 		{
 			$this->recPart($numero, $structure);
 		}
@@ -73,7 +73,7 @@ class CModCourriel extends AModele
 
 					// quoted-printable moche
 					case 4:
-						$texte = "ohoh";
+						$texte = imap_qprint($texte);
 						break;
 
 					// autre (pas de chance mec)

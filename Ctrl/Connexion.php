@@ -29,6 +29,7 @@ function connexion()
 		}
 		catch (ErrorException $e)
 		{
+			unset($_SESSION['boite']);
 			echo "Impossible de se connecter";
 		}
 	}
@@ -39,6 +40,8 @@ function connexion()
 function deconnexion()
 {
 	session_destroy();
+
+	new CRedirection('Connexion.php');
 }
 
 // Fin de la liste des fonctions

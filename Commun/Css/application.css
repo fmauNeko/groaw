@@ -27,6 +27,22 @@ nav ul ul
 {
     padding-left:2em;
 }
+#bouton_deconnexion
+{
+position:absolute;
+right:1em;
+top:1em;
+font-weight:bold;
+}
+nav a, #bouton_deconnexion
+{
+color:white;
+text-decoration:none;
+}
+nav a:hover, #bouton_deconnexion:hover
+{
+	text-decoration:underline;
+}
 .exception
 {
     width:80%;

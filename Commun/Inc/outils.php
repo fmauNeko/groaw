@@ -1,7 +1,7 @@
 <?php
 function groaw($info)
 {
-	echo "<pre>";
+	echo "\n<pre>";
 	if ($info)
 	{
 		print_r($info);
@@ -10,6 +10,6 @@ function groaw($info)
 	{
 		var_dump($info);	
 	}
-	echo "</pre>";
+	echo "</pre>\n";
 }
 ?>
