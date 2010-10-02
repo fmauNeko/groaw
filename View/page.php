@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Page d'exemple</title>
+	<title><?php echo CNavigation::titre();?> - GROAW !</title>
 	<link href="../Commun/Css/application.css" media="screen" rel="Stylesheet" type="text/css" />
 	<link href="../Commun/Css/modeles.css" media="screen" rel="Stylesheet" type="text/css" />
 	<link href="../Css/boites.css" media="screen" rel="Stylesheet" type="text/css" />
