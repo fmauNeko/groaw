@@ -69,14 +69,25 @@ class CVueCourriel extends AVueModele
                     global $PREFERENCES_MIME;
                     foreach ($PREFERENCES_MIME as $mime)
                     {
+                        $c = 1;
                         foreach ($structure->parts as $partie)
                         {
                             if (strtoupper($partie->subtype) === $mime)
                             {
-                                groaw("MAIS C'EST SUPER");
+                                // Gestion du numéro de section
+                                if ($num_section === null)
+                                {
+                                    $section = $c;
+                                }
+                                else
+                                {
+                                    $section = $num_section.'.'.$c;
+                                }
                                 groaw($partie->subtype);
-                                //return;
+                                $this->affichageRecursif($numero, $partie, $section);
+                                return;
                             }
+                            ++$c;
                         }
                     }
 

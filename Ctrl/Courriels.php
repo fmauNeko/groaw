@@ -47,7 +47,35 @@ function partie()
 
 	$mod = new CModCourriel();
 	$mod->analyserCourriel($numero);
-	$texte = $mod->recupererPartieTexte($section);
+
+    $structure = $mod->structure;
+
+    $nouvelle_section = null;
+
+    $section = explode('.',$section);
+
+    foreach ($section as $i)
+    {
+        $n = intval($i);
+
+        if ($nouvelle_section === null)
+        {
+            $nouvelle_section = "$n";
+        }
+        else
+        {
+            $nouvelle_section .= ".$n";
+        }
+
+        $n = $n-1;
+
+        if (isset($structure->parts[$n]))
+        {
+            $structure = $structure->parts[$n-1];
+        }
+    }
+
+	$texte = $mod->recupererPartieTexte($nouvelle_section, $structure);
     
     global $BODY_ONLY;
     $BODY_ONLY = true;
