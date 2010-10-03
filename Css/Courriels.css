@@ -57,3 +57,12 @@ ul.messages div.expediteur
 {
 margin-bottom:0.5em;
 }
+
+div.courriel
+{
+background:white;
+border-radius:2em;
+-moz-border-radius:2em;
+padding:1.3em;
+color:#32353A;
+}

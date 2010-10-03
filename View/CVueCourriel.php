@@ -37,7 +37,9 @@ class CVueCourriel extends AVueModele
     {
         $structure = $this->modele->structure;
         $numero = $this->modele->num_courriel;
-		
+	
+        echo "<div class=\"courriel\">\n";
+        
         // Si c'est un beau mail de plusieurs parties
 		if ($structure->type === TYPEMULTIPART && count($structure->parts) > 1)
 		{
@@ -48,15 +50,13 @@ class CVueCourriel extends AVueModele
 			$this->affichageRecursif($numero,$structure,'1');
 		}
 
-        echo "<div style=\"font-size:0.5em;\">";
-		groaw($structure);
-        echo "</div>";
+        echo "\n</div>\n<!-- Structure du courriel\n";
+        print_r($structure);
+        echo "-->\n";
     }
 
     private function affichageRecursif($numero, $structure, $num_section=null)
     {
-		echo "<hr/>";
-
 		groaw($num_section);
 		switch($structure->type)
 		{
