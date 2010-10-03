@@ -15,7 +15,7 @@ class CVueBoite extends AVueModele
 				'Vous avez <strong>', $infos->messages,'</strong> messages à trier :D',
 				"</p></a>\n\t</li>\n";
 		}
-		echo "\t<li class=\"archives\">\n\t\t<h3>Archives</h3>\n\t\t<a><p>Accédez aux courriels classifiés</p></a>\n\t</li>\n</ul>";
+		echo "\t<li class=\"archives\">\n\t\t<h3>Archives</h3>\n\t\t<a href=\"?EX=boites\"><p>Accédez aux courriels classifiés</p></a>\n\t</li>\n</ul>";
 	}
 
 	public function afficherBoites()
