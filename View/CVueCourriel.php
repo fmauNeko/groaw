@@ -12,17 +12,17 @@ class CVueCourriel extends AVueModele
 			{
 				echo "\t<li class=\"",
 					$message->seen ? "lu" : "nonlu",
-				 	"\"><a href=\"Courriels.php?EX=afficher&amp;numero=",
+				 	"\">\n\t\t<a href=\"Courriels.php?EX=afficher&amp;numero=",
 					$message->msgno,
-					"\"><div class=\"num\">",
+					"\">\n\t\t\t<div class=\"num\">",
 					$message->msgno,
-					"</div><div class=\"expediteur\">",
+					"</div>\n\t\t\t<div class=\"expediteur\">",
 					htmlspecialchars($this->mime_to_utf8($message->from)),
-					"</div><div class=\"date\">",
+					"</div>\n\t\t\t<div class=\"date\">",
 					$this->formater_date_liste($message->date),
-					"</div><div class=\"sujet\">",
+					"</div>\n\t\t\t<div class=\"sujet\">",
 					htmlspecialchars($this->mime_to_utf8($message->subject)),
-					"</div></a></li>\n";
+					"</div>\n\t\t</a>\n\t</li>\n";
 			}
 
 			echo "</ul>";
@@ -30,6 +30,75 @@ class CVueCourriel extends AVueModele
 		else
 		{
 			echo "<h3>Il n'y a pas de messages</h3>";
+		}
+	}
+
+    public function afficherCourriel()
+    {
+        $structure = $this->modele->structure;
+        $numero = $this->modele->num_courriel;
+		
+        // Si c'est un beau mail de plusieurs parties
+		if ($structure->type === TYPEMULTIPART && count($structure->parts) > 1)
+		{
+			$this->affichageRecursif($numero, $structure);
+		}
+		else
+		{
+			$this->affichageRecursif($numero,$structure,'1');
+		}
+
+        echo "<div style=\"font-size:0.5em;\">";
+		groaw($structure);
+        echo "</div>";
+    }
+
+    private function affichageRecursif($numero, $structure, $num_section=null)
+    {
+		echo "<hr/>";
+
+		groaw($num_section);
+		switch($structure->type)
+		{
+			case TYPEMULTIPART:
+                if (strtolower($structure->subtype) === 'alternative')
+                {
+                    groaw("alternative");
+
+                    // Recherche des alternatives possibles
+                    foreach ($structure->parts as $partie)
+                    {
+                        groaw($partie->subtype);
+                    }
+                }
+                else
+                {
+                    $c = 1;
+                    groaw("multipart");
+                    foreach ($structure->parts as $partie)
+                    {
+                        // Oh mon DIEU de la récursivité !
+                        if ($num_section == null)
+                        {
+                            $section = $c++;
+                        }
+                        else
+                        {
+                            $section = $num_section.'.'.$c++;
+                        }
+                        $this->affichageRecursif($numero, $partie, $section);
+                    }
+                }
+				break;
+			case TYPETEXT:
+				groaw("ok c'est du texte");
+			    
+                $texte = $this->modele->recupererPartieTexte($numero, $num_section);
+				groaw(htmlspecialchars($texte));
+				break;
+			default:
+                new Exception("Une partie du mail est non gérée");
+				break;
 		}
 	}
 }

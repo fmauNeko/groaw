@@ -18,6 +18,9 @@ function afficher()
 
 	$mod = new CModCourriel();
 	$mod->analyserCourriel($numero);
+
+    $vue = new CVueCourriel($mod);
+    $vue->afficherCourriel();
 }
 
 function raw()
