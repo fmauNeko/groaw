@@ -65,4 +65,12 @@ border-radius:2em;
 -moz-border-radius:2em;
 padding:1.3em;
 color:#32353A;
+position:relative;
+}
+
+div.courriel iframe
+{
+border:none;
+width:100%;
+height:60%;
 }

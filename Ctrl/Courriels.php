@@ -4,7 +4,8 @@ $NOM_CTRL = 'Courriels';
 $ACTIONS = array(
 	'afficher'	=> array('Afficher','Afficher un courriel'),
 	'raw'		=> array('Afficher en raw','Afficher un courriel sans transformations'),
-	'liste'		=> array('Messages','Liste des mails')
+	'liste'		=> array('Messages','Liste des mails'),
+    'partie'    => array('Partie', 'Télécharger une partie d\'un courriel')
 );
 
 $DEFAULT_ACTION = 'liste';
@@ -37,6 +38,23 @@ function liste()
 
 	$vue = new CVueCourriel($mod);
 	$vue->afficherCourriels();
+}
+
+function partie()
+{
+    $numero =  isset($_REQUEST['numero']) ? intval($_REQUEST['numero']) : 1;
+	$section =  isset($_REQUEST['section']) ? $_REQUEST['section'] : '1';
+
+	$mod = new CModCourriel();
+	$mod->analyserCourriel($numero);
+	$texte = $mod->recupererPartieTexte($section);
+    
+    global $BODY_ONLY;
+    $BODY_ONLY = true;
+    header('Content-type:   text/html');
+
+    echo $texte;
+	
 }
 
 // Fin de la liste des fonctions

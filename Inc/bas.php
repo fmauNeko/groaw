@@ -15,8 +15,7 @@ catch (CException $e)
 // Fermeture de la session imap
 CImap::deconnexion();
 
-// Le mode Ajax, c'est très bien'
-if (isset($_REQUEST['AJAX_MODE']))
+if ($BODY_ONLY)
 {
 	ob_end_flush();
 }

@@ -17,4 +17,13 @@ else
 
 require_once('../Inc/init.php');
 
+// Le mode Ajax, c'est très bien'
+if (isset($_REQUEST['AJAX_MODE']))
+{
+    $BODY_ONLY = true;
+}
+else
+{
+    $BODY_ONLY = false;
+}
 ?>

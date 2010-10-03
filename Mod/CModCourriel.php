@@ -12,9 +12,11 @@ class CModCourriel extends AModele
 		$this->structure = CImap::fetchstructure($numero);
 	}
 
-    public function recupererPartieTexte($structure, $numero, $num_section)
+    public function recupererPartieTexte($num_section)
     {
-        $texte = CImap::fetchbody($numero,$num_section);
+        $texte = CImap::fetchbody($this->num_courriel,$num_section);
+
+        $structure = $this->structure;
 
         switch ($structure->encoding)
         {

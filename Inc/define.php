@@ -26,5 +26,5 @@ $PREFERENCES_MIME = array(
     'PNG'       // Puis le png
 );
 
-define('DEBUG',false);
+define('DEBUG',true);
 ?>

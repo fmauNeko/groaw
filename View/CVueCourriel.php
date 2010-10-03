@@ -85,7 +85,7 @@ class CVueCourriel extends AVueModele
                     if (count($structure->parts) > 0)
                     {
                         // Gestion du numéro de section
-                        if ($num_section == null)
+                        if ($num_section === null)
                         {
                             $section = '1';
                         }
@@ -121,18 +121,18 @@ class CVueCourriel extends AVueModele
 			case TYPETEXT:
 				groaw("ok c'est du texte");
 			    
-                $texte = $this->modele->recupererPartieTexte($structure, $numero, $num_section);
-
                 if ($structure->ifsubtype && $structure->subtype === 'HTML')
                 {
-			    	groaw(htmlspecialchars($texte));
+			    	//groaw(htmlspecialchars($texte));
+
+                    echo '<iframe src="?EX=partie&amp;numero='.$numero.'&amp;section='.$num_section.'" sandbox=""></iframe>';
                 }
                 else
                 {
+                    $texte = $this->modele->recupererPartieTexte($num_section);
                     $texte = htmlspecialchars($texte);
-                    $texte = " $texte ";
 
-                    $texte = preg_replace('/(\s)(https?|ftp)\:\/\/(.+?)(\s)/', '$1<a href="$2://$3">$2://$3</a>$4',$texte);
+                    $texte = preg_replace('/(\s)(https?|ftp)\:\/\/(.+?)(\s)/', '$1<a href="$2://$3">$2://$3</a>$4',' '.$texte.' ');
 
                     echo nl2br($texte);
                 }
