@@ -129,7 +129,7 @@ class CVueCourriel extends AVueModele
                 }
                 else
                 {
-                    $texte = $this->modele->recupererPartieTexte($num_section);
+                    $texte = $this->modele->recupererPartieTexte($num_section, $structure);
                     $texte = htmlspecialchars($texte);
 
                     $texte = preg_replace('/(\s)(https?|ftp)\:\/\/(.+?)(\s)/', '$1<a href="$2://$3">$2://$3</a>$4',' '.$texte.' ');
