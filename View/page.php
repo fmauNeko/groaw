@@ -7,11 +7,6 @@
 	<link href="../Css/<?php echo $NOM_CTRL; ?>.css" media="screen" rel="Stylesheet" type="text/css" />
 </head>
 <body>
-
-<header>
-<h1><?php echo CNavigation::titre();?></h1>
-</header>
-
 <?php
 echo $CONTENU_PAGE;
 ?>

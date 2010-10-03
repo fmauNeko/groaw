@@ -129,7 +129,12 @@ class CVueCourriel extends AVueModele
                 }
                 else
                 {
-                    echo nl2br(htmlspecialchars($texte));
+                    $texte = htmlspecialchars($texte);
+                    $texte = " $texte ";
+
+                    $texte = preg_replace('/(\s)(https?|ftp)\:\/\/(.+?)(\s)/', '$1<a href="$2://$3">$2://$3</a>$4',$texte);
+
+                    echo nl2br($texte);
                 }
 				break;
 			default:
