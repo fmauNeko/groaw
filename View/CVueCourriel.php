@@ -61,23 +61,50 @@ class CVueCourriel extends AVueModele
 		switch($structure->type)
 		{
 			case TYPEMULTIPART:
-                if (strtolower($structure->subtype) === 'alternative')
+                if ($structure->ifsubtype && strtoupper($structure->subtype) === 'ALTERNATIVE')
                 {
                     groaw("alternative");
-
-                    // Recherche des alternatives possibles
-                    foreach ($structure->parts as $partie)
+                   
+                    // Recherche de chaque type que l'on préfère
+                    global $PREFERENCES_MIME;
+                    foreach ($PREFERENCES_MIME as $mime)
                     {
-                        groaw($partie->subtype);
+                        foreach ($structure->parts as $partie)
+                        {
+                            if (strtoupper($partie->subtype) === $mime)
+                            {
+                                groaw("MAIS C'EST SUPER");
+                                groaw($partie->subtype);
+                                //return;
+                            }
+                        }
+                    }
+
+                    // Si on est là, c'est que l'on ne préfère rien du tout,
+                    // on prends donc le premier de la liste
+                    if (count($structure->parts) > 0)
+                    {
+                        // Gestion du numéro de section
+                        if ($num_section == null)
+                        {
+                            $section = '1';
+                        }
+                        else
+                        {
+                            $section = $num_section.'.1';
+                        }
+                        $this->affichageRecursif($numero, $structure->parts[0], $section);
                     }
                 }
                 else
                 {
+                    // Compteur pour les sections
                     $c = 1;
+
                     groaw("multipart");
                     foreach ($structure->parts as $partie)
                     {
-                        // Oh mon DIEU de la récursivité !
+                        // Gestion du numéro de section
                         if ($num_section == null)
                         {
                             $section = $c++;
@@ -86,6 +113,7 @@ class CVueCourriel extends AVueModele
                         {
                             $section = $num_section.'.'.$c++;
                         }
+                        // Oh mon DIEU de la récursivité !
                         $this->affichageRecursif($numero, $partie, $section);
                     }
                 }
@@ -93,8 +121,16 @@ class CVueCourriel extends AVueModele
 			case TYPETEXT:
 				groaw("ok c'est du texte");
 			    
-                $texte = $this->modele->recupererPartieTexte($numero, $num_section);
-				groaw(htmlspecialchars($texte));
+                $texte = $this->modele->recupererPartieTexte($structure, $numero, $num_section);
+
+                if ($structure->ifsubtype && $structure->subtype === 'HTML')
+                {
+			    	groaw(htmlspecialchars($texte));
+                }
+                else
+                {
+                    echo nl2br(htmlspecialchars($texte));
+                }
 				break;
 			default:
                 new Exception("Une partie du mail est non gérée");

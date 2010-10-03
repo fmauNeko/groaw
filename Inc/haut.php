@@ -16,4 +16,5 @@ else
 }
 
 require_once('../Inc/init.php');
+
 ?>
