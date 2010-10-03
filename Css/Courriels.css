@@ -1,0 +1,59 @@
+ul.messages
+{
+font-size:0.8em;
+list-style:none;
+padding:0;
+}
+
+ul.messages li
+{
+position:relative;
+padding:0.8em;
+}
+
+ul.messages li.nonlu
+{
+color:blue;
+font-weight:bold;
+}
+
+ul.messages li.lu, ul.messages li.lu a
+{
+color:green;
+}
+
+ul.messages li:nth-child(odd)
+{
+background-color:#eee;
+}
+ul.messages li:nth-child(even)
+{
+background-color:#fff;
+}
+
+ul.messages li:hover
+{
+background:grey;
+}
+
+ul.messages div.date
+{
+position:absolute;
+right:0.8em;
+top:0.8em;
+}
+
+ul.messages div.num
+{
+display:none;
+}
+
+ul.messages div.sujet
+{
+font-size:1.1em;
+}
+
+ul.messages div.expediteur
+{
+margin-bottom:0.5em;
+}
