@@ -11,14 +11,16 @@ session_start();
 if ($NOM_CTRL !== 'Connexion')
 {
     // Si les informations sont présentes pour se connecter
-    if (isset($_SESSION['email']) && isset($_SESSION['mdp_secret']))
+    if (isset($_SESSION['connecte']))
     {
+		global $boite;
 
 		// Si aucune boite n'est passée dans l'url, c'est INBOX
 		$boite = isset($_REQUEST['boite']) ? $_REQUEST['boite'] : 'INBOX';
 
         // Connexion
         CImap::authentification($_SESSION['email'], $_SESSION['mdp_secret'], $boite);
+
     }
     else
     {

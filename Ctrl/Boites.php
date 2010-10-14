@@ -4,7 +4,6 @@ $NOM_CTRL = 'Boites';
 $ACTIONS = array(
 	'boites'		=> array('Boites aux lettres','Liste des boites aux lettres'),
 	'informations'	=> array('Informations','Informations sur le compte'),
-	'ouvrir'		=> array('Ouvrir une boite','Ouvrir une boite aux lettres'),
 	'accueil'		=> array('Accueil','Page d\'accueil du logiciel')
 );
 
@@ -21,7 +20,7 @@ function informations()
 	echo "</pre><h3>num_recent</h3><pre>";
 	var_dump(CImap::num_recent());
 	echo "</pre><h3>get_quotaroot</h3><pre>";
-	var_dump(CImap::get_quotaroot($_SESSION['boite']));
+	var_dump(CImap::get_quotaroot($GLOBALS['boite']));
 	echo "</pre>";
 }
 
@@ -32,28 +31,6 @@ function boites()
 
 	$vue = new CVueBoite($mod);
 	$vue->afficherBoites();
-}
-
-function ouvrir()
-{
-	if (isset($_REQUEST['boite']))
-	{
-		$boite = rawurldecode($_REQUEST['boite']);
-		
-		if ($boite === '')
-		{
-			$boite = 'INBOX';
-		}
-	
-		$_SESSION['boite'] = $boite;	
-
-		new CRedirection('Courriels.php?EX=liste');
-	}
-	else
-	{
-		echo '<h3>Veuillez sélectionner une boite aux lettres</h3>';
-		boites();
-	}
 }
 
 function accueil()

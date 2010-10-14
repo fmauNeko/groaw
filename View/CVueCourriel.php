@@ -6,13 +6,15 @@ class CVueCourriel extends AVueModele
 	{
 		if (count($this->modele->courriels) > 0)
 		{
-			echo "<ul class=\"messages\">\n";	
+			$boite = rawurlencode($GLOBALS['boite']);
 
+			echo "<ul class=\"messages\">\n";	
+			
 			foreach ($this->modele->courriels as $message)
 			{
 				echo "\t<li class=\"",
 					$message->seen ? "lu" : "nonlu",
-				 	"\">\n\t\t<a href=\"Courriels.php?EX=afficher&amp;numero=",
+				 	"\">\n\t\t<a href=\"Courriels.php?EX=afficher&amp;boite=$boite&amp;numero=",
 					$message->msgno,
 					"\">\n\t\t\t<div class=\"num\">",
 					$message->msgno,

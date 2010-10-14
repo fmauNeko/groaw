@@ -11,7 +11,7 @@ class CVueBoite extends AVueModele
 		echo "<ul class=\"boites\">\n";
 		foreach($this->modele->boites as $boite => $infos)
 		{
-			echo "\t<li class=\"$boite\">\n\t\t<h3>$infos->titre</h3>\n\t\t<a href=\"?EX=ouvrir&boite=",rawurlencode($infos->nom),"\"><p>",
+			echo "\t<li class=\"$boite\">\n\t\t<h3>$infos->titre</h3>\n\t\t<a href=\"Courriels.php?EX=liste&boite=",rawurlencode($infos->nom),"\"><p>",
 				'Vous avez <strong>', $infos->messages,'</strong> messages à trier :D',
 				"</p></a>\n\t</li>\n";
 		}
@@ -34,7 +34,7 @@ class CVueBoite extends AVueModele
 
 			$lien = rawurlencode(preg_replace('/^\{.+?\}/','',$boite->name));
 
-			echo "\t<li>\n\t<h3>$description</h3>\n\t<a href=\"Boites.php?EX=ouvrir&amp;boite=$lien\"><p>",
+			echo "\t<li>\n\t<h3>$description</h3>\n\t<a href=\"Courriels.php?EX=liste&amp;boite=$lien\"><p>",
 				'Vous avez <strong>', $boite->pasvus,'</strong> messages à lire :D',
 				"</p></a>\n</li>\n";
 		}

@@ -23,6 +23,8 @@ function connexion()
 			$_SESSION['email'] = $_POST['mail_groaw'];
 			$_SESSION['mdp_secret'] = $_POST['mdp_groaw'];
 
+			$_SESSION['connecte'] = true;
+
 			new CRedirection('Boites.php');
 		}
 		catch (ErrorException $e)

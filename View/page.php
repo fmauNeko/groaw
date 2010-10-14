@@ -16,7 +16,7 @@ echo $CONTENU_PAGE;
 <?php
 CNavigation::afficher();
 echo "</nav>\n";
-if (isset($_SESSION['boite']))
+if (isset($_SESSION['connecte']))
 {
 	echo "<a href=\"Connexion.php?EX=deconnexion\" id=\"bouton_deconnexion\">Sortir de là</a>\n";
 }
