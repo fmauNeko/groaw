@@ -35,13 +35,32 @@ class CVueCourriel extends AVueModele
 		}
 	}
 
+	public function afficherPersonne($objet)
+	{
+		echo htmlspecialchars($objet->mailbox),'@',htmlspecialchars($objet->host); 
+	}
+
     public function afficherCourriel()
     {
         $structure = $this->modele->structure;
         $numero = $this->modele->num_courriel;
+
+		$courriel = $this->modele->courriel;
 	
-        echo "<div class=\"courriel\">\n";
-        
+        echo "<div class=\"courriel\">\n\t<div class=\"header\">\n\t\t<h2>",
+					htmlspecialchars($this->mime_to_utf8($courriel->subject)),
+					"</h2>\n\t\t<table>\n\t\t\t<tr>\n\t\t\t\t<th>Destinataires</th>",
+					"\n\t\t\t\t<td>\n\t\t\t\t\t<ul class=\"destinataires\">\n";
+	
+		foreach ($courriel->to as $destinataire)
+		{
+			echo "\t\t\t\t\t\t<li>";
+			$this->afficherPersonne($destinataire);
+			echo "</li>\n";
+		}
+
+		echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</table>\n\t</div>\n";
+
         // Si c'est un beau mail de plusieurs parties
 		if ($structure->type === TYPEMULTIPART && count($structure->parts) > 1)
 		{
@@ -138,7 +157,8 @@ class CVueCourriel extends AVueModele
                 {
 			    	//groaw(htmlspecialchars($texte));
 
-                    echo '<iframe src="?EX=partie&amp;numero='.$numero.'&amp;section='.$num_section.'" sandbox=""></iframe>';
+                    echo '<iframe id="apercu_html" src="?EX=partie&amp;numero='.$numero.'&amp;section='.$num_section.'" sandbox="allow-scripts"></iframe>';
+
                 }
                 else
                 {

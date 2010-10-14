@@ -20,8 +20,8 @@ define('SERVEUR_IMAP','{localhost:4567/imap/ssl/novalidate-cert}');
 // Voici les types que l'on préfère par ordre de préférence
 
 $PREFERENCES_MIME = array(
-    'HTML',     // D'abord le HTML
     'PLAIN',    // Puis on préfère le texte
+    'HTML',     // D'abord le HTML
     'JPEG',     // Puis le jpeg
     'PNG'       // Puis le png
 );

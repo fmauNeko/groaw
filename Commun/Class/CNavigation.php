@@ -24,6 +24,9 @@ class CNavigation
 		global $LISTE_CTRLS, $NOM_CTRL, $ACTIONS, $FONCTION_CTRL;
 		
 		echo "<ul>\n";
+
+		$boite = (isset($GLOBALS['boite'])) ? rawurlencode($GLOBALS['boite']): 'INBOX';
+
 		foreach ($LISTE_CTRLS as $clef => $nom)
 		{
 			if ($clef === $NOM_CTRL)
@@ -40,8 +43,8 @@ class CNavigation
 						$strong = true;
 						echo '<strong>';
 					}
-						
-					echo '<a href="?EX=',$action,'" title="',htmlspecialchars($infos[1]),'">',$infos[0],'</a>';
+
+					echo '<a href="?EX=',$action,'&amp;boite=',$boite,'" title="',htmlspecialchars($infos[1]),'">',$infos[0],'</a>';
 					
 					if ($strong)
 						echo '</strong>';
@@ -53,7 +56,7 @@ class CNavigation
 			}
 			else
 			{
-				echo "\t<li><h4><a href=\"",$clef,'.php">',$nom,"</a></h4></li>\n";
+				echo "\t<li><h4><a href=\"",$clef,'.php?boite=',$boite,'">',$nom,"</a></h4></li>\n";
 			}
 		}
 		echo "</ul>\n";

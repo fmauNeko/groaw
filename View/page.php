@@ -5,6 +5,7 @@
 	<link href="../Css/application.css" media="screen" rel="Stylesheet" type="text/css" />
 	<link href="../Commun/Css/modeles.css" media="screen" rel="Stylesheet" type="text/css" />
 	<link href="../Css/<?php echo $NOM_CTRL; ?>.css" media="screen" rel="Stylesheet" type="text/css" />
+	<script type="text/javascript" src="../Js/application.js"></script>
 </head>
 <body>
 <?php

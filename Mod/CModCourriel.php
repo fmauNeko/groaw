@@ -10,6 +10,14 @@ class CModCourriel extends AModele
 	{
         $this->num_courriel = $numero;
 		$this->structure = CImap::fetchstructure($numero);
+
+		$headers = CImap::fetchheader($numero);
+
+		$c = imap_rfc822_parse_headers($headers);
+
+		//groaw($c);	
+
+		$this->courriel = $c;	
 	}
 
     public function recupererPartieTexte($num_section, $structure)
