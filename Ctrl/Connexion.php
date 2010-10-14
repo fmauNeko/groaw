@@ -18,9 +18,7 @@ function connexion()
 	{
 		try
 		{
-			$_SESSION['boite'] = 'INBOX';
-			
-			CImap::authentification($_POST['mail_groaw'], $_POST['mdp_groaw']);
+			CImap::authentification($_POST['mail_groaw'], $_POST['mdp_groaw'], 'INBOX');
 			
 			$_SESSION['email'] = $_POST['mail_groaw'];
 			$_SESSION['mdp_secret'] = $_POST['mdp_groaw'];
@@ -29,7 +27,6 @@ function connexion()
 		}
 		catch (ErrorException $e)
 		{
-			unset($_SESSION['boite']);
 			echo "Impossible de se connecter";
 		}
 	}

@@ -3,9 +3,9 @@ class CImap
 {
 	protected static $jeton_imap;
 
-	public static function authentification($mail,$mdp)
+	public static function authentification($mail,$mdp, $boite)
 	{
-		self::$jeton_imap = imap_open(SERVEUR_IMAP.$_SESSION['boite'], $mail, $mdp);
+		self::$jeton_imap = imap_open(SERVEUR_IMAP.$boite, $mail, $mdp);
 	}
 
 	public static function deconnexion()
