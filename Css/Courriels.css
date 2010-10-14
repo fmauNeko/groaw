@@ -75,24 +75,41 @@ width:100%;
 height:60%;
 }
 
-div.courriel ul.destinataires
+div.courriel .headers
+{
+margin-bottom:1em;
+text-align:left;
+}
+
+div.courriel .headers ul
 {
 padding:0;
 max-height:10em;
 overflow:auto;
+margin:0;
 }
 
-div.courriel ul.destinataires li
+div.courriel .headers ul li
 {
 display:inline-block;
 background-color:#DDD;
 border-radius:1em;
 -moz-border-radius:1em;
-margin:0 0.4em 0.4em 0;
+margin:0.2em 0.4em 0.2em 0;
 padding:0 0.5em 0 0.5em;
 }
 
-div.courriel ul.destinataires li:hover
+div.courriel .headers ul li:hover
 {
 background-color:#CCC;
+}
+
+div.courriel .headers tr
+{
+padding:1em 1em 0 0;
+}
+
+div.courriel .headers th
+{
+padding-right:1em;
 }

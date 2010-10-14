@@ -47,9 +47,23 @@ class CVueCourriel extends AVueModele
 
 		$courriel = $this->modele->courriel;
 	
-        echo "<div class=\"courriel\">\n\t<div class=\"header\">\n\t\t<h2>",
+        echo "<div class=\"courriel\">\n\t<div class=\"headers\">\n\t\t<h2>",
 					htmlspecialchars($this->mime_to_utf8($courriel->subject)),
-					"</h2>\n\t\t<table>\n\t\t\t<tr>\n\t\t\t\t<th>Destinataires</th>",
+					"</h2>\n\t\t<table>\n\t\t\t";
+		
+		echo "<tr>\n\t\t\t\t<th>Émetteurs</th>",
+					"\n\t\t\t\t<td>\n\t\t\t\t\t<ul class=\"emetteurs\">\n";
+	
+		foreach ($courriel->from as $emetteur)
+		{
+			echo "\t\t\t\t\t\t<li>";
+			$this->afficherPersonne($emetteur);
+			echo "</li>\n";
+		}
+
+		echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>";
+		
+		echo "<tr>\n\t\t\t\t<th>Destinataires</th>",
 					"\n\t\t\t\t<td>\n\t\t\t\t\t<ul class=\"destinataires\">\n";
 	
 		foreach ($courriel->to as $destinataire)
@@ -59,7 +73,9 @@ class CVueCourriel extends AVueModele
 			echo "</li>\n";
 		}
 
-		echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</table>\n\t</div>\n";
+		echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>";
+			
+		echo "\n\t\t</table>\n\t</div>\n";
 
         // Si c'est un beau mail de plusieurs parties
 		if ($structure->type === TYPEMULTIPART && count($structure->parts) > 1)
@@ -78,13 +94,13 @@ class CVueCourriel extends AVueModele
 
     private function affichageRecursif($numero, $structure, $num_section=null)
     {
-		groaw($num_section);
+		//groaw($num_section);
 		switch($structure->type)
 		{
 			case TYPEMULTIPART:
                 if ($structure->ifsubtype && strtoupper($structure->subtype) === 'ALTERNATIVE')
                 {
-                    groaw("alternative");
+                    //groaw("alternative");
                    
                     // Recherche de chaque type que l'on préfère
                     global $PREFERENCES_MIME;
@@ -104,7 +120,7 @@ class CVueCourriel extends AVueModele
                                 {
                                     $section = $num_section.'.'.$c;
                                 }
-                                groaw($partie->subtype);
+                                //groaw($partie->subtype);
                                 $this->affichageRecursif($numero, $partie, $section);
                                 return;
                             }
@@ -133,7 +149,7 @@ class CVueCourriel extends AVueModele
                     // Compteur pour les sections
                     $c = 1;
 
-                    groaw("multipart");
+                    //groaw("multipart");
                     foreach ($structure->parts as $partie)
                     {
                         // Gestion du numéro de section
@@ -151,7 +167,7 @@ class CVueCourriel extends AVueModele
                 }
 				break;
 			case TYPETEXT:
-				groaw("ok c'est du texte");
+				//groaw("ok c'est du texte");
 			    
                 if ($structure->ifsubtype && $structure->subtype === 'HTML')
                 {
