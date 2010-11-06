@@ -15,9 +15,8 @@ require ('../Inc/haut.php');
 
 function afficher()
 {
-	$numero =  isset($_REQUEST['numero']) ? intval($_REQUEST['numero']) : 1;
-
 	$mod = new CModCourriel();
+	$numero = $mod::numeroCourriel();
 	$mod->analyserCourriel($numero);
 
     $vue = new CVueCourriel($mod);
@@ -27,8 +26,7 @@ function afficher()
 
 function raw()
 {
-	$numero =  isset($_REQUEST['numero']) ? intval($_REQUEST['numero']) : 1;
-
+	$numero = $mod::numeroCourriel();
 	echo nl2br(htmlspecialchars(CImap::body($numero)));
 }
 
@@ -43,16 +41,16 @@ function liste()
 
 function partie()
 {
-    $numero =  isset($_REQUEST['numero']) ? intval($_REQUEST['numero']) : 1;
-	$section =  isset($_REQUEST['section']) ? $_REQUEST['section'] : '1';
 
 	$mod = new CModCourriel();
+	$numero = $mod::numeroCourriel();
 	$mod->analyserCourriel($numero);
 
     $structure = $mod->structure;
 
     $nouvelle_section = null;
 
+	$section =  isset($_REQUEST['section']) ? $_REQUEST['section'] : '1';
     $section = explode('.',$section);
 
     foreach ($section as $i)

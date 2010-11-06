@@ -99,6 +99,21 @@ class CModCourriel extends AModele
 			$this->courriels = $liste_finale;
 		}
 	}
+
+	// Utilitaire permettant de récupérer le numéro d'un message
+	public static function numeroCourriel()
+	{
+		if (isset($_REQUEST['numero']))
+		{
+			return intval($_REQUEST['numero']);
+		}
+		else
+		{
+			// Si on ne connait pas le numéro, on prends le dernier numéro
+			return CImap::num_msg();
+
+		}
+	}
 }
 
 ?>
