@@ -35,6 +35,20 @@ class CVueCourriel extends AVueModele
 		}
 	}
 
+	public function afficherOutils($environemment)
+	{
+		echo <<<EOT
+<ul class="outils_courriel">
+	<li><a href="#">Répondre</a></li>
+	<li><a href="#">Transférer</a></li>
+	<li><a href="#">Archiver</a></li>
+	<li><a href="#">Supprimer</a></li>
+	<li><a href="#">Plus tard !</a></li>
+</ul>
+
+EOT;
+	}
+
 	public function afficherPersonne($objet)
 	{
 		echo htmlspecialchars($objet->mailbox),'@',htmlspecialchars($objet->host); 
@@ -75,7 +89,7 @@ class CVueCourriel extends AVueModele
 
 		echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>";
 			
-		echo "\n\t\t</table>\n\t</div>\n";
+		echo "\n\t\t</table>\n\t</div>\n\t<div class=\"corp\">\n";
 
         // Si c'est un beau mail de plusieurs parties
 		if ($structure->type === TYPEMULTIPART && count($structure->parts) > 1)
@@ -87,7 +101,7 @@ class CVueCourriel extends AVueModele
 			$this->affichageRecursif($numero,$structure,'1');
 		}
 
-        echo "\n</div>\n<!-- Structure du courriel\n";
+        echo "\n\t</div>\n</div>\n<!-- Structure du courriel\n";
         print_r($structure);
         echo "-->\n";
     }

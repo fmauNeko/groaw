@@ -66,6 +66,11 @@ border-radius:2em;
 padding:1.3em;
 color:#32353A;
 position:relative;
+margin-left:5em;
+}
+div.courriel h2
+{
+margin-top:0;
 }
 
 div.courriel iframe
@@ -112,4 +117,30 @@ padding:1em 1em 0 0;
 div.courriel .headers th
 {
 padding-right:1em;
+}
+
+div.courriel .corp
+{
+font-family: Georgia, "DejaVu Serif", Norasi, serif;
+}
+
+.outils_courriel
+{
+list-style:none;
+position:absolute;
+left:0;
+top:15em;
+font-size:1.5em;
+}
+
+.outils_courriel a
+{
+font-weight:bold;
+color:white;
+text-decoration:none;
+}
+
+.outils_courriel a:hover
+{
+text-decoration:underline;
 }

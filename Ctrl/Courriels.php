@@ -21,6 +21,7 @@ function afficher()
 	$mod->analyserCourriel($numero);
 
     $vue = new CVueCourriel($mod);
+    $vue->afficherOutils(null);
     $vue->afficherCourriel();
 }
 
