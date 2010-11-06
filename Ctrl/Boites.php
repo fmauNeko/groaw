@@ -4,7 +4,8 @@ $NOM_CTRL = 'Boites';
 $ACTIONS = array(
 	'boites'		=> array('Boites aux lettres','Liste des boites aux lettres'),
 	'informations'	=> array('Informations','Informations sur le compte'),
-	'accueil'		=> array('Accueil','Page d\'accueil du logiciel')
+	'accueil'		=> array('Accueil','Page d\'accueil du logiciel'),
+	'gestion'			=> array('Gestion', 'Gestion des boites aux lettres')
 );
 
 $DEFAULT_ACTION = 'accueil';
@@ -27,7 +28,13 @@ function informations()
 function boites()
 {
 	$mod = new CModBoite();
-	$mod->recupererBoites();
+
+	if (!$mod->chargerCacheBoites('liste_boites_nb_non_lus'))
+	{
+		$mod->recupererBoites();
+		$mod->recupererNbNonVusBoites();
+		$mod->enregistrerCacheBoites('liste_boites_nb_non_lus');
+	}
 
 	$vue = new CVueBoite($mod);
 	$vue->afficherBoites();
@@ -40,6 +47,32 @@ function accueil()
 
 	$vue = new CVueBoite($mod);
 	$vue->afficherBoitesAcceuil();
+}
+
+function gestion()
+{
+	if (CFormulaire::soumis() && isset($_REQUEST['input_nom']))
+	{
+		$boite = new CModBoite($_REQUEST['input_nom']);
+		$boite->creer();
+	}
+	else
+	{
+		new CVueHTML('creer_boite');
+
+		$mod = new CModBoite();
+
+		if (!$mod->chargerCacheBoites('liste_boites_nb_messages'))
+		{
+			$mod->recupererBoites();
+			$mod->recupererNbVusBoites();
+			$mod->trierBoitesNbVus();
+			$mod->enregistrerCacheBoites('liste_boites_nb_messages');
+		}
+
+		$vue = new CVueBoite($mod);
+		$vue->afficherBoitesSuppression();
+	}
 }
 
 // Fin de la liste des fonctions

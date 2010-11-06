@@ -4,26 +4,85 @@ class CModBoite extends AModele
 	public $boites;
 	public $boite;
 
+	public function __construct($boite = null)
+	{
+        $this->boite = $boite;
+	}
+
 	public function recupererBoites()
 	{
 		$boites = CImap::getmailboxes(SERVEUR_IMAP, '*');
 
-		foreach ($boites as $boite)
-		{
-			$boite->pasvus = CImap::status($boite->name, SA_UNSEEN)->unseen;
-		}
-
 		$this->boites = $boites;
+	}
+
+	public function recupererNbNonVusBoites()
+	{
+		foreach ($this->boites as &$boite)
+		{
+			$boite->nb_non_vus = CImap::status($boite->name, SA_UNSEEN)->unseen;
+		}
+	}
+
+	public function recupererNbVusBoites()
+	{
+		foreach ($this->boites as &$boite)
+		{
+			$boite->nb_messages = CImap::status($boite->name, SA_MESSAGES)->messages;
+		}
+	}
+
+	public function trierBoitesNbVus()
+	{
+		usort($this->boites, function($a,$b)
+		{
+			if ($a->nb_messages === $b->nb_messages)
+			{
+				return 0;
+			}
+
+			return ($a->nb_messages > $b->nb_messages) ? -1 : 1;
+		});
+	}
+
+	public function chargerCacheBoites($fichier)
+	{
+		$fichier = '../Cache/'.md5($_SESSION['email']).'_'.$fichier;
+
+		if (file_exists($fichier))
+		{
+			$donnees = file_get_contents($fichier);
+
+			if ($donnees === false)
+			{
+				groaw("Impossible de se servir du fichier de cache.");
+				return false;
+			}
+			$this->boites = unserialize($donnees);
+			return true;
+		}
+		return false;
+	}
+
+	public function enregistrerCacheBoites($fichier)
+	{
+		$donnees = serialize($this->boites);
+		$fichier = '../Cache/'.md5($_SESSION['email']).'_'.$fichier;
+
+		if (!file_put_contents($fichier, $donnees))
+		{
+			groaw("Impossible de mettre en cache les boites. L'application peut être lente.");	
+		}
 	}
 
 	public function recupererInfosAcceuil()
 	{
 		$this->boites = Array(
-			'livraison'		=> $this->recupererInfoBoite('INBOX', SA_MESSAGES),
-			'interessant'	=> $this->recupererInfoBoite('INBOX.Interesting', SA_MESSAGES),
-			'normal'		=> $this->recupererInfoBoite('INBOX.Normal', SA_MESSAGES),
-			'ininteressant'	=> $this->recupererInfoBoite('INBOX.Unexciting', SA_MESSAGES),
-			'poubelle' 		=> $this->recupererInfoBoite('INBOX.Trash', SA_MESSAGES)
+			'livraison'		=> CModBoite::recupererInfoBoite('INBOX', SA_MESSAGES),
+			'interessant'	=> CModBoite::recupererInfoBoite('INBOX.Interesting', SA_MESSAGES),
+			'normal'		=> CModBoite::recupererInfoBoite('INBOX.Normal', SA_MESSAGES),
+			'ininteressant'	=> CModBoite::recupererInfoBoite('INBOX.Unexciting', SA_MESSAGES),
+			'poubelle' 		=> CModBoite::recupererInfoBoite('INBOX.Trash', SA_MESSAGES)
 		);
 
 		$this->boites['livraison']->titre		= "Livraison";
@@ -33,7 +92,7 @@ class CModBoite extends AModele
 		$this->boites['poubelle']->titre		= "Poubelle";
 	}
 
-	public function recupererInfoBoite($nom,$type)
+	public static function recupererInfoBoite($nom,$type)
 	{
 		$info = CImap::status(SERVEUR_IMAP.$nom, $type);
 
@@ -47,11 +106,12 @@ class CModBoite extends AModele
 		return $info;
 	}
 
-	public function creerBoite($nom)
+	public function creer()
 	{
+		$nom = imap_utf7_encode($this->boite);
 		if (CImap::createmailbox(SERVEUR_IMAP.$nom)===false)
 		{
-			throw new Exception('Impossible de créer la boite:«'.$nom.'»');
+			throw new Exception('Impossible de créer la boite:«'.$this->boite.'»');
 		}
 	}
 }

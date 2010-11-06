@@ -6,7 +6,7 @@ class CModCourriel extends AModele
     public $structure;
 	public $courriels;
 
-	public function CModCourriel($numero = 0)
+	public function __construct($numero = 0)
 	{
         $this->num_courriel = $numero;
 	}
