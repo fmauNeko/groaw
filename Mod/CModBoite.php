@@ -49,19 +49,29 @@ class CModBoite extends AModele
 	{
 		$fichier = $this->calculerNomfichier($fichier);
 
-		if (file_exists($fichier))
+		if (!file_exists($fichier))
 		{
-			$donnees = file_get_contents($fichier);
-
-			if ($donnees === false)
-			{
-				groaw("Impossible de se servir du fichier de cache.");
-				return false;
-			}
-			$this->boites = unserialize($donnees);
-			return true;
+			return false;
 		}
-		return false;
+
+		// Si le cache a plus de 5 minutes
+		if (time() - filemtime($fichier) > 300)
+		{
+			groaw("cache");
+			return false;
+		}
+
+		$donnees = file_get_contents($fichier);
+
+		if ($donnees === false)
+		{
+			groaw("Impossible de se servir du fichier de cache.");
+			return false;
+		}
+		
+		$this->boites = unserialize($donnees);
+		
+		return true;
 	}
 
 	public function enregistrerCacheBoites($fichier)
@@ -123,10 +133,19 @@ class CModBoite extends AModele
 
 	public function creer()
 	{
+		groaw($this->boite);
 		$nom = utf8_to_utf7($this->boite);
 		if (CImap::createmailbox(SERVEUR_IMAP.$nom)===false)
 		{
 			throw new Exception('Impossible de créer la boite:«'.$this->boite.'»');
+		}
+	}
+	
+	public function supprimer()
+	{
+		if (CImap::deletemailbox(SERVEUR_IMAP.$this->boite)===false)
+		{
+			throw new Exception('Impossible de supprimer la boite:«'.$this->boite.'»');
 		}
 	}
 }

@@ -16,6 +16,13 @@ require ('../Inc/haut.php');
 
 function afficher()
 {
+	$numero = CModCourriel::numero();
+
+	if ($numero === 0)
+	{
+		new CRedirection("Boites.php");
+	}
+
 	$mod = new CModCourriel(CModCourriel::numero());
 	$mod->analyser();
 
@@ -24,14 +31,18 @@ function afficher()
 
 	$mod_boite = new CModBoite();
 
-	if (!$mod->chargerCacheBoites('liste_boites_nb_messages'))
+	if (!$mod_boite->chargerCacheBoites('liste_boites_nb_messages'))
 	{
-		$mod->recupererBoites();
-		$mod->recupererNbVusBoites();
-		$mod->trierBoitesNbVus();
-		$mod->enregistrerCacheBoites('liste_boites_nb_messages');
+		$mod_boite->recupererBoites();
+		$mod_boite->recupererNbVusBoites();
+		$mod_boite->trierBoitesNbVus();
+		$mod_boite->enregistrerCacheBoites('liste_boites_nb_messages');
 	}
-    $vue->afficherCourriel();
+	
+	$vue_boite = new CVueBoite($mod_boite);
+	$vue_boite->afficherBoitesDeplacement();
+    
+	$vue->afficherCourriel();
 }
 
 function raw()

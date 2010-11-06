@@ -51,10 +51,30 @@ function accueil()
 
 function gestion()
 {
-	if (CFormulaire::soumis() && isset($_REQUEST['nom']))
+	if (CFormulaire::soumis())
 	{
-		$boite = new CModBoite('INBOX.'.$_REQUEST['nom']);
-		$boite->creer();
+		$boite = null;
+
+		// Si c'est une création
+		if (isset($_REQUEST['nom_boite']))
+		{
+			$boite = new CModBoite('INBOX.'.$_REQUEST['nom_boite']);
+			$boite->creer();
+		}
+
+		// Si c'est une suppression
+		if (isset($_REQUEST['supprimer_boites']))
+		{
+			$boite = new CModBoite();
+
+			foreach ($_REQUEST['supprimer_boites'] as $nom_boite)
+			{
+				$boite->boite = $nom_boite;
+				groaw($nom_boite);
+				$boite->supprimer();
+			}
+		}
+			
 		$boite->effacerCaches();
 	}
 
@@ -72,6 +92,8 @@ function gestion()
 
 	$vue = new CVueBoite($mod);
 	$vue->afficherBoitesSuppression();
+
+	new CVueHTML('supprimer_boites');
 }
 
 // Fin de la liste des fonctions

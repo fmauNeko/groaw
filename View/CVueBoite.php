@@ -43,8 +43,8 @@ class CVueBoite extends AVueModele
 	public function afficherBoitesSuppression()
 	{
 
-		echo "<ul>\n";
-		foreach($this->modele->boites as $boite)
+		echo "<select name=\"supprimer_boites[]\" multiple>\n";
+		foreach(array_reverse($this->modele->boites) as $boite)
 		{
 			$l = explode($boite->delimiter,utf7_to_utf8($boite->name));
 
@@ -57,17 +57,24 @@ class CVueBoite extends AVueModele
 
 			$lien = rawurlencode(preg_replace('/^\{.+?\}/','',$boite->name));
 
-			echo "\t<li>$description (",$boite->nb_messages," messages)</li>\n";
+			echo "\t<option value=\"$lien\">$description (",$boite->nb_messages," messages)</option>\n";
 		}
-		echo "</ul>";
+		echo "</select>";
 	}
 
 	public function afficherBoitesDeplacement()
 	{
 		echo "<ul class=\"boites_deplacement\">\n";
+
 		foreach($this->modele->boites as $boite)
 		{
 			$l = explode($boite->delimiter,utf7_to_utf8($boite->name));
+
+			$t = array('RSS', 'Trash','Interesting','Normal','Unexciting');
+			if (isset($l[1]) && in_array($l[1], $t))
+			{
+				continue;
+			}
 
 			$description = htmlspecialchars(implode(' : ',array_slice($l,1)));
 			
@@ -80,7 +87,7 @@ class CVueBoite extends AVueModele
 
 			echo "\t<li><a href=\"Courriels.php?EX=deplacer&amp;destination=$lien\">$description</a></li>\n";
 		}
-		echo "</ul>";
+		echo "</ul></div>";
 	}
 }
 ?>

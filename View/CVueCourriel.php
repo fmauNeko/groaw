@@ -38,7 +38,8 @@ class CVueCourriel extends AVueModele
 	public function afficherOutils($environemment)
 	{
 		echo <<<EOT
-<ul class="outils_courriel">
+<div class="outils_courriel">
+<ul class="outils_base">
 	<li><a href="#">Répondre</a></li>
 	<li><a href="#">Transférer</a></li>
 	<br/>
@@ -81,17 +82,20 @@ EOT;
 
 		echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>";
 		
-		echo "<tr>\n\t\t\t\t<th>Destinataires</th>",
-					"\n\t\t\t\t<td>\n\t\t\t\t\t<ul class=\"destinataires\">\n";
-	
-		foreach ($courriel->to as $destinataire)
+		if (isset($courriel->to))
 		{
-			echo "\t\t\t\t\t\t<li>";
-			$this->afficherPersonne($destinataire);
-			echo "</li>\n";
-		}
+			echo "<tr>\n\t\t\t\t<th>Destinataires</th>",
+						"\n\t\t\t\t<td>\n\t\t\t\t\t<ul class=\"destinataires\">\n";
 
-		echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>";
+			foreach ($courriel->to as $destinataire)
+			{
+				echo "\t\t\t\t\t\t<li>";
+				$this->afficherPersonne($destinataire);
+				echo "</li>\n";
+			}
+
+			echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>";
+		}
 			
 		echo "\n\t\t</table>\n\t</div>\n\t<div class=\"corp\">\n";
 

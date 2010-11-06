@@ -126,11 +126,15 @@ font-family: Georgia, "DejaVu Serif", Norasi, serif;
 
 .outils_courriel
 {
-list-style:none;
 position:absolute;
 left:0;
-top:15em;
-font-size:1.5em;
+top:28em;
+font-size:0.75em;
+}
+
+.outils_courriel ul
+{
+list-style:none;
 }
 
 .outils_courriel a
@@ -143,4 +147,9 @@ text-decoration:none;
 .outils_courriel a:hover
 {
 text-decoration:underline;
+}
+
+.outils_courriel .outils_base
+{
+font-size:1.2em;
 }

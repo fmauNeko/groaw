@@ -49,6 +49,7 @@ class CModCourriel extends AModele
 
             // quoted-printable moche
             case 4:
+				groaw("qprint");
                 $texte = imap_qprint($texte);
                 break;
 
@@ -70,10 +71,10 @@ class CModCourriel extends AModele
                 }
             }
 
-			groaw($charset);
 
             if ($charset !== null && strtoupper($charset) !== 'UTF-8')
             {
+			groaw($charset);
                 $texte = iconv($charset, 'UTF-8', $texte);	
             }
         }
