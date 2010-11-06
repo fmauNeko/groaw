@@ -42,7 +42,7 @@ class CVueCourriel extends AVueModele
 	<li><a href="#">Répondre</a></li>
 	<li><a href="#">Transférer</a></li>
 	<li><a href="#">Archiver</a></li>
-	<li><a href="#">Supprimer</a></li>
+	<li><a href="Courriels.php?EX=deplacer&amp;destination=Trash">Supprimer</a></li>
 	<li><a href="#">Plus tard !</a></li>
 </ul>
 

@@ -11,7 +11,10 @@ class CVueBoite extends AVueModele
 		echo "<ul class=\"boites\">\n";
 		foreach($this->modele->boites as $boite => $infos)
 		{
-			echo "\t<li class=\"$boite\">\n\t\t<h3>$infos->titre</h3>\n\t\t<a href=\"Courriels.php?EX=liste&boite=",rawurlencode($infos->nom),"\"><p>",
+			$action = ($boite === 'livraison') ? 'afficher' : 'liste';
+			
+			echo "\t<li class=\"$boite\">\n\t\t<h3>$infos->titre</h3>\n\t\t<a href=\"Courriels.php?EX=$action&boite=",
+				 rawurlencode($infos->nom),"\"><p>",
 				'Vous avez <strong>', $infos->messages,'</strong> messages à trier :D',
 				"</p></a>\n\t</li>\n";
 		}

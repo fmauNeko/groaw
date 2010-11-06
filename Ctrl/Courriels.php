@@ -5,7 +5,8 @@ $ACTIONS = array(
 	'afficher'	=> array('Afficher','Afficher un courriel'),
 	'raw'		=> array('Afficher en raw','Afficher un courriel sans transformations'),
 	'liste'		=> array('Messages','Liste des mails'),
-    'partie'    => array('Partie', 'Télécharger une partie d\'un courriel')
+    'partie'    => array('Partie', 'Télécharger une partie d\'un courriel'),
+    'deplacer'	=> array('Déplacer', 'Déplace un courriel')
 );
 
 $DEFAULT_ACTION = 'liste';
@@ -15,9 +16,8 @@ require ('../Inc/haut.php');
 
 function afficher()
 {
-	$mod = new CModCourriel();
-	$numero = $mod::numeroCourriel();
-	$mod->analyserCourriel($numero);
+	$mod = new CModCourriel(CModCourriel::numero());
+	$mod->analyser();
 
     $vue = new CVueCourriel($mod);
     $vue->afficherOutils(null);
@@ -26,8 +26,21 @@ function afficher()
 
 function raw()
 {
-	$numero = $mod::numeroCourriel();
+	$numero = $mod::numero();
 	echo nl2br(htmlspecialchars(CImap::body($numero)));
+}
+
+function deplacer()
+{
+	if (isset($_REQUEST['destination']))
+	{
+		$destination = 'INBOX.'.$_REQUEST['destination'];
+		
+		$courriel = new CModCourriel(CModCourriel::numero());
+		$courriel->deplacer($destination);
+	}
+	
+	new CRedirection('Courriels.php?EX=afficher');
 }
 
 function liste()
@@ -42,9 +55,8 @@ function liste()
 function partie()
 {
 
-	$mod = new CModCourriel();
-	$numero = $mod::numeroCourriel();
-	$mod->analyserCourriel($numero);
+	$mod = new CModCourriel(CModCourriel::numero());
+	$mod->analyser($numero);
 
     $structure = $mod->structure;
 

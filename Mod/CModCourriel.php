@@ -6,12 +6,16 @@ class CModCourriel extends AModele
     public $structure;
 	public $courriels;
 
-	public function analyserCourriel($numero)
+	public function CModCourriel($numero = 0)
 	{
         $this->num_courriel = $numero;
-		$this->structure = CImap::fetchstructure($numero);
+	}
 
-		$headers = CImap::fetchheader($numero);
+	public function analyser()
+	{
+		$this->structure = CImap::fetchstructure($this->num_courriel);
+
+		$headers = CImap::fetchheader($this->num_courriel);
 
 		$c = imap_rfc822_parse_headers($headers);
 
@@ -100,8 +104,17 @@ class CModCourriel extends AModele
 		}
 	}
 
+	public function deplacer($destination)
+	{
+		if (CImap::mail_move($this->num_courriel, $destination))
+		{
+			// Applique la suppression du message dans la boite de départ
+			CImap::expunge();
+		}
+	}
+
 	// Utilitaire permettant de récupérer le numéro d'un message
-	public static function numeroCourriel()
+	public static function numero()
 	{
 		if (isset($_REQUEST['numero']))
 		{
