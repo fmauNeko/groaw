@@ -35,11 +35,6 @@ abstract class AVueModele
 		return $output;
 	}
 
-	public function utf7_to_utf8($texte)
-	{
-		return utf8_encode(imap_utf7_decode($texte));
-	}
-
 	public function formater_date_liste($date)
 	{
 		// Il est intéressant de noter que ça fonctionne du premier coup

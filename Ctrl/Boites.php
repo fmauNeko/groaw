@@ -51,28 +51,27 @@ function accueil()
 
 function gestion()
 {
-	if (CFormulaire::soumis() && isset($_REQUEST['input_nom']))
+	if (CFormulaire::soumis() && isset($_REQUEST['nom']))
 	{
-		$boite = new CModBoite($_REQUEST['input_nom']);
+		$boite = new CModBoite('INBOX.'.$_REQUEST['nom']);
 		$boite->creer();
+		$boite->effacerCaches();
 	}
-	else
+
+	new CVueHTML('creer_boite');
+
+	$mod = new CModBoite();
+
+	if (!$mod->chargerCacheBoites('liste_boites_nb_messages'))
 	{
-		new CVueHTML('creer_boite');
-
-		$mod = new CModBoite();
-
-		if (!$mod->chargerCacheBoites('liste_boites_nb_messages'))
-		{
-			$mod->recupererBoites();
-			$mod->recupererNbVusBoites();
-			$mod->trierBoitesNbVus();
-			$mod->enregistrerCacheBoites('liste_boites_nb_messages');
-		}
-
-		$vue = new CVueBoite($mod);
-		$vue->afficherBoitesSuppression();
+		$mod->recupererBoites();
+		$mod->recupererNbVusBoites();
+		$mod->trierBoitesNbVus();
+		$mod->enregistrerCacheBoites('liste_boites_nb_messages');
 	}
+
+	$vue = new CVueBoite($mod);
+	$vue->afficherBoitesSuppression();
 }
 
 // Fin de la liste des fonctions

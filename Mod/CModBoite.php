@@ -47,7 +47,7 @@ class CModBoite extends AModele
 
 	public function chargerCacheBoites($fichier)
 	{
-		$fichier = '../Cache/'.md5($_SESSION['email']).'_'.$fichier;
+		$fichier = $this->calculerNomfichier($fichier);
 
 		if (file_exists($fichier))
 		{
@@ -67,11 +67,26 @@ class CModBoite extends AModele
 	public function enregistrerCacheBoites($fichier)
 	{
 		$donnees = serialize($this->boites);
-		$fichier = '../Cache/'.md5($_SESSION['email']).'_'.$fichier;
+		$fichier = $this->calculerNomfichier($fichier);
 
 		if (!file_put_contents($fichier, $donnees))
 		{
 			groaw("Impossible de mettre en cache les boites. L'application peut être lente.");	
+		}
+	}
+
+	private function calculerNomfichier($fichier)
+	{
+		return '../Cache/'.md5($_SESSION['email']).'_'.$fichier;
+	}
+
+	public function effacerCaches()
+	{
+		$fichiers = glob($this->calculerNomfichier('*'));
+
+		foreach ($fichiers as $fichier)
+		{
+			unlink($fichier);
 		}
 	}
 
@@ -108,7 +123,7 @@ class CModBoite extends AModele
 
 	public function creer()
 	{
-		$nom = imap_utf7_encode($this->boite);
+		$nom = utf8_to_utf7($this->boite);
 		if (CImap::createmailbox(SERVEUR_IMAP.$nom)===false)
 		{
 			throw new Exception('Impossible de créer la boite:«'.$this->boite.'»');

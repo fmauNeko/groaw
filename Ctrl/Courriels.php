@@ -21,6 +21,16 @@ function afficher()
 
     $vue = new CVueCourriel($mod);
     $vue->afficherOutils(null);
+
+	$mod_boite = new CModBoite();
+
+	if (!$mod->chargerCacheBoites('liste_boites_nb_messages'))
+	{
+		$mod->recupererBoites();
+		$mod->recupererNbVusBoites();
+		$mod->trierBoitesNbVus();
+		$mod->enregistrerCacheBoites('liste_boites_nb_messages');
+	}
     $vue->afficherCourriel();
 }
 

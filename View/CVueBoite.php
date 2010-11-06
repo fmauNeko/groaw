@@ -7,7 +7,7 @@ class CVueBoite extends AVueModele
 		echo "<ul class=\"boites\">\n";
 		foreach($this->modele->boites as $boite)
 		{
-			$l = explode($boite->delimiter,$this->utf7_to_utf8($boite->name));
+			$l = explode($boite->delimiter,utf7_to_utf8($boite->name));
 
 			$description = htmlspecialchars(implode(' : ',array_slice($l,1)));
 			
@@ -46,7 +46,7 @@ class CVueBoite extends AVueModele
 		echo "<ul>\n";
 		foreach($this->modele->boites as $boite)
 		{
-			$l = explode($boite->delimiter,$this->utf7_to_utf8($boite->name));
+			$l = explode($boite->delimiter,utf7_to_utf8($boite->name));
 
 			$description = htmlspecialchars(implode(' : ',array_slice($l,1)));
 			
@@ -58,6 +58,27 @@ class CVueBoite extends AVueModele
 			$lien = rawurlencode(preg_replace('/^\{.+?\}/','',$boite->name));
 
 			echo "\t<li>$description (",$boite->nb_messages," messages)</li>\n";
+		}
+		echo "</ul>";
+	}
+
+	public function afficherBoitesDeplacement()
+	{
+		echo "<ul class=\"boites_deplacement\">\n";
+		foreach($this->modele->boites as $boite)
+		{
+			$l = explode($boite->delimiter,utf7_to_utf8($boite->name));
+
+			$description = htmlspecialchars(implode(' : ',array_slice($l,1)));
+			
+			if ($description === '')
+			{
+				$description = "Groaw";
+			}
+
+			$lien = rawurlencode(preg_replace('/^\{.+?\}/','',$boite->name));
+
+			echo "\t<li><a href=\"Courriels.php?EX=deplacer&amp;destination=$lien\">$description</a></li>\n";
 		}
 		echo "</ul>";
 	}
