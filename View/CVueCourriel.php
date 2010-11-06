@@ -42,8 +42,14 @@ class CVueCourriel extends AVueModele
 	<li><a href="#">Répondre</a></li>
 	<li><a href="#">Transférer</a></li>
 	<li><a href="#">Archiver</a></li>
-	<li><a href="Courriels.php?EX=deplacer&amp;destination=Trash">Supprimer</a></li>
-	<li><a href="#">Plus tard !</a></li>
+	<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Trash">Supprimer</a></li>
+	<li><a href="#">Plus tard !</a>
+		<ul>
+			<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Interesting">Intéressant</a></li>
+			<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Normal">Normal</a></li>
+			<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Unexciting">Inintéressant</a></li>
+		</ul>
+	</li>
 </ul>
 
 EOT;

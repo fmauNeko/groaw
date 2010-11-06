@@ -34,10 +34,8 @@ function deplacer()
 {
 	if (isset($_REQUEST['destination']))
 	{
-		$destination = 'INBOX.'.$_REQUEST['destination'];
-		
 		$courriel = new CModCourriel(CModCourriel::numero());
-		$courriel->deplacer($destination);
+		$courriel->deplacer($_REQUEST['destination']);
 	}
 	
 	new CRedirection('Courriels.php?EX=afficher');
@@ -56,7 +54,7 @@ function partie()
 {
 
 	$mod = new CModCourriel(CModCourriel::numero());
-	$mod->analyser($numero);
+	$mod->analyser();
 
     $structure = $mod->structure;
 
