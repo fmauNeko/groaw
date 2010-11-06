@@ -70,6 +70,8 @@ class CModCourriel extends AModele
                 }
             }
 
+			groaw($charset);
+
             if ($charset !== null && strtoupper($charset) !== 'UTF-8')
             {
                 $texte = iconv($charset, 'UTF-8', $texte);	

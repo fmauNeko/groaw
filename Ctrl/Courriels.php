@@ -78,7 +78,7 @@ function partie()
 
         $n = $n-1;
 
-        if (isset($structure->parts[$n]))
+        if (isset($structure->parts[$n-1]))
         {
             $structure = $structure->parts[$n-1];
         }
