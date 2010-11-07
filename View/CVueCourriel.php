@@ -68,9 +68,12 @@ EOT;
         $numero = $this->modele->num_courriel;
 
 		$courriel = $this->modele->courriel;
+
+		$sujet = $this->mime_to_utf8($courriel->subject);
+		$sujet = ($sujet === '') ? 'Pas de sujet' : $sujet;
 	
         echo "<div class=\"courriel\">\n\t<div class=\"headers\">\n\t\t<h2>",
-					htmlspecialchars($this->mime_to_utf8($courriel->subject)),
+					htmlspecialchars($sujet),
 					"</h2>\n\t\t<table>\n\t\t\t";
 		
 		echo "<tr>\n\t\t\t\t<th>Émetteurs</th>",
