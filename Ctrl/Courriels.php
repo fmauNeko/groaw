@@ -23,11 +23,12 @@ function afficher()
 		new CRedirection("Boites.php");
 	}
 
-	$mod = new CModCourriel(CModCourriel::numero());
+	$numero = CModCourriel::numero();
+	$mod = new CModCourriel($numero);
 	$mod->analyser();
 
     $vue = new CVueCourriel($mod);
-    $vue->afficherOutils(null);
+    $vue->afficherOutils();
 
 	$mod_boite = new CModBoite();
 
@@ -40,7 +41,7 @@ function afficher()
 	}
 	
 	$vue_boite = new CVueBoite($mod_boite);
-	$vue_boite->afficherBoitesDeplacement();
+	$vue_boite->afficherBoitesDeplacement($numero);
     
 	$vue->afficherCourriel();
 }
@@ -58,8 +59,17 @@ function deplacer()
 		$courriel = new CModCourriel(CModCourriel::numero());
 		$courriel->deplacer($_REQUEST['destination']);
 	}
-	
-	new CRedirection('Courriels.php?EX=afficher');
+
+	$boite = $GLOBALS['boite'];
+
+	if ($boite === 'INBOX')
+	{
+		new CRedirection('Courriels.php?EX=afficher');
+	}
+	else
+	{
+		new CRedirection('Courriels.php?EX=liste&boite='.rawurlencode($boite));
+	}
 }
 
 function liste()

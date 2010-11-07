@@ -93,7 +93,7 @@ class CVueBoite extends AVueModele
 		echo "</select>";
 	}
 
-	public function afficherBoitesDeplacement()
+	public function afficherBoitesDeplacement($numero_courriel)
 	{
 		echo "<ul class=\"boites_deplacement\">\n";
 
@@ -118,7 +118,8 @@ class CVueBoite extends AVueModele
 
 			$lien = rawurlencode($nom);
 
-			echo "\t<li><a href=\"Courriels.php?EX=deplacer&amp;destination=$lien\">$description</a></li>\n";
+			echo "\t<li><a href=\"Courriels.php?EX=deplacer&amp;destination=$lien&amp;boite=",
+			rawurlencode($GLOBALS['boite']),"&amp;numero=$numero_courriel\">$description</a></li>\n";
 		}
 		echo "</ul></div>";
 	}

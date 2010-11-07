@@ -35,19 +35,21 @@ class CVueCourriel extends AVueModele
 		}
 	}
 
-	public function afficherOutils($environemment)
+	public function afficherOutils()
 	{
+		$boite = rawurlencode($GLOBALS['boite']);
+		$numero = $this->modele->num_courriel;
 		echo <<<EOT
 <div class="outils_courriel">
 <ul class="outils_base">
 	<li><a href="#">Répondre</a></li>
 	<li><a href="#">Transférer</a></li>
 	<br/>
-	<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Interesting" accesskey="1">Intéressant</a></li>
-	<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Normal" accesskey="2">Normal</a></li>
-	<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Unexciting" accesskey="3">Inintéressant</a></li>
+	<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Interesting&amp;boite=$boite&amp;numero=$numero" accesskey="1">Intéressant</a></li>
+	<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Normal&amp;boite=$boite&amp;numero=$numero" accesskey="2">Normal</a></li>
+	<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Unexciting&amp;boite=$boite&amp;numero=$numero" accesskey="3">Inintéressant</a></li>
 	<br/>
-	<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Trash" accesskey="0">Supprimer</a></li>
+	<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Trash&amp;boite=$boite&amp;numero=$numero" accesskey="0">Supprimer</a></li>
 	</li>
 </ul>
 
@@ -195,7 +197,7 @@ EOT;
                 {
 			    	//groaw(htmlspecialchars($texte));
 
-                    echo '<iframe id="apercu_html" src="?EX=partie&amp;numero='.$numero.'&amp;section='.$num_section.'" sandbox="allow-scripts"></iframe>';
+                    echo '<iframe id="apercu_html" src="?EX=partie&amp;numero='.$numero.'&amp;section='.$num_section.'&amp;boite=',rawurlencode($GLOBALS['boite']),'" sandbox="allow-scripts"></iframe>';
 
                 }
                 else
