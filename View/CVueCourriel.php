@@ -12,10 +12,13 @@ class CVueCourriel extends AVueModele
 			
 			foreach ($this->modele->courriels as $message)
 			{
+				$sujet = $this->mime_to_utf8($message->subject);
+				$sujet = ($sujet === '') ? 'Pas de sujet' : $sujet;
+
 				echo "\t<li>\n\t\t<a href=\"Courriels.php?EX=afficher&amp;boite=$boite&amp;numero=",
 					$message->msgno,
 					"\">\n\t\t\t<h4>",
-					htmlspecialchars($this->mime_to_utf8($message->subject)),
+					htmlspecialchars($sujet),
 					"</h4>\n\t\t\t<p>",
 					$message->seen ? "Lu" : "Non lu",
 					", de <strong>",
