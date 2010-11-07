@@ -1,61 +1,38 @@
 ul.messages
 {
-font-size:0.8em;
 list-style:none;
 padding:0;
 }
 
 ul.messages li
 {
-position:relative;
-padding:0.8em;
+padding-bottom:1.5em;
 }
 
-ul.messages li.nonlu
+ul.messages strong
 {
-color:blue;
-font-weight:bold;
+color:red;
 }
 
-ul.messages li.lu, ul.messages li.lu a
+ul.messages p
 {
-color:green;
+margin:0.2em 0 0 2em;
 }
 
-ul.messages li:nth-child(odd)
+ul.messages a
 {
-background-color:#eee;
-}
-ul.messages li:nth-child(even)
-{
-background-color:#fff;
+color:white;
+text-decoration:none;
 }
 
-ul.messages li:hover
+ul.messages h4
 {
-background:grey;
-}
-
-ul.messages div.date
-{
-position:absolute;
-right:0.8em;
-top:0.8em;
-}
-
-ul.messages div.num
-{
-display:none;
-}
-
-ul.messages div.sujet
-{
+margin:0;
 font-size:1.1em;
 }
-
-ul.messages div.expediteur
+ul.messages a:hover
 {
-margin-bottom:0.5em;
+text-decoration:underline;
 }
 
 div.courriel

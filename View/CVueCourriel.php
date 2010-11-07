@@ -12,19 +12,17 @@ class CVueCourriel extends AVueModele
 			
 			foreach ($this->modele->courriels as $message)
 			{
-				echo "\t<li class=\"",
-					$message->seen ? "lu" : "nonlu",
-				 	"\">\n\t\t<a href=\"Courriels.php?EX=afficher&amp;boite=$boite&amp;numero=",
+				echo "\t<li>\n\t\t<a href=\"Courriels.php?EX=afficher&amp;boite=$boite&amp;numero=",
 					$message->msgno,
-					"\">\n\t\t\t<div class=\"num\">",
-					$message->msgno,
-					"</div>\n\t\t\t<div class=\"expediteur\">",
-					htmlspecialchars($this->mime_to_utf8($message->from)),
-					"</div>\n\t\t\t<div class=\"date\">",
-					$this->formater_date_liste($message->date),
-					"</div>\n\t\t\t<div class=\"sujet\">",
+					"\">\n\t\t\t<h4>",
 					htmlspecialchars($this->mime_to_utf8($message->subject)),
-					"</div>\n\t\t</a>\n\t</li>\n";
+					"</h4>\n\t\t\t<p>",
+					$message->seen ? "Lu" : "Non lu",
+					", de <strong>",
+					$this->formater_date_liste($message->date),
+					"</strong> par <strong>",
+					htmlspecialchars(preg_replace('/\s<.+>$/','',$this->mime_to_utf8($message->from))),
+					"</strong>.</p>\n\t\t</a>\n\t</li>\n";
 			}
 
 			echo "</ul>";
@@ -214,6 +212,11 @@ EOT;
                 new Exception("Une partie du mail est non gérée");
 				break;
 		}
+	}
+
+	public static function afficherAucunMessage()
+	{
+		echo "<h3>Il n'y a aucun message…</h3>";
 	}
 }
 ?>

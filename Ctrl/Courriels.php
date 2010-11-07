@@ -18,9 +18,11 @@ function afficher()
 {
 	$numero = CModCourriel::numero();
 
+	// Si il n'y a aucun message
 	if ($numero === 0)
 	{
-		new CRedirection("Boites.php");
+		CVueCourriel::afficherAucunMessage();
+		return;
 	}
 
 	$numero = CModCourriel::numero();
