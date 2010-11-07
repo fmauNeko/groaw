@@ -123,7 +123,8 @@ class CModBoite extends AModele
 
 		if ($info===false)
 		{
-			$this->creerBoite($nom);
+			$boite = new CModBoite($nom);
+			$boite->creer();
 			$info = CImap::status(SERVEUR_IMAP.$nom, $type);
 		}
 
