@@ -18,7 +18,7 @@ text-align:center;
 font-size:1.4em;
 }
 
-ul.boites li a
+ul.boites li.boite_pleine a, ul.boites li.boite_vide div
 {
 position:relative;
 display:block;
@@ -31,7 +31,18 @@ height:11.25em;
 width:20em;
 text-decoration:none;
 }
-ul.boites li:hover
+
+ul.boites li.boite_vide div
+{
+background:#3a3a3a;
+}
+
+ul.boites .boite_vide h3
+{
+color:#3a3a3a;
+}
+
+ul.boites li.boite_pleine:hover
 {
 background:white;
 border-radius:1.2em;

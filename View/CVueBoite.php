@@ -30,14 +30,40 @@ class CVueBoite extends AVueModele
 		echo "<ul class=\"boites\">\n";
 		foreach($this->modele->boites as $boite => $infos)
 		{
-			$action = ($boite === 'livraison') ? 'afficher' : 'liste';
-			
-			echo "\t<li class=\"$boite\">\n\t\t<h3>$infos->titre</h3>\n\t\t<a href=\"Courriels.php?EX=$action&boite=",
-				 rawurlencode($infos->nom),"\"><p>",
-				'Vous avez <strong>', $infos->messages,'</strong> messages à trier :D',
-				"</p></a>\n\t</li>\n";
+			$nb_messages = $infos->messages;
+
+			if ($nb_messages > 0)
+			{
+				if ($boite === 'livraison')
+				{
+					$action = 'afficher';
+					$verbe = 'trier';
+					$phrase_max = 'Ça <strong>déborde</strong> du TGV…';
+				}
+				else if ($boite === 'poubelle')
+				{
+					$action = 'liste';
+					$verbe = 'supprimer';
+					$phrase_max = '<strong>Il est temps</strong> de sortir les poubelles.';
+				}
+				else
+				{
+					$action = 'liste';
+					$verbe = 'gérer';
+					$phrase_max = '<strong>Prenez votre journée</strong> pour gérer tout ça.';
+				}
+				
+				echo "\t<li class=\"boite_pleine $boite\">\n\t\t<h3>$infos->titre</h3>\n\t\t<a href=\"Courriels.php?EX=$action&boite=",
+					 rawurlencode($infos->nom),"\"><p>",
+					 CPifometrie::nbMailsBoites($infos->messages, $verbe, $phrase_max),
+					"</p></a>\n\t</li>\n";
+			}
+			else
+			{
+				echo "\t<li class=\"boite_vide $boite\"><h3>$infos->titre</h3><div></div></li>\n";
+			}
 		}
-		echo "\t<li class=\"archives\">\n\t\t<h3>Archives</h3>\n\t\t<a href=\"?EX=boites\"><p>Accédez aux courriels classifiés</p></a>\n\t</li>\n</ul>";
+		echo "\t<li class=\"boite_pleine archives\">\n\t\t<h3>Archives</h3>\n\t\t<a href=\"?EX=boites\"><p>Accédez aux courriels classifiés</p></a>\n\t</li>\n</ul>";
 	}
 
 	public function afficherBoitesSuppression()

@@ -14,7 +14,7 @@ define('FORMAT_DATE_NORMAL',	'%d/%m/%Y à %Hh%M');
 
 define('FUSEAU_HORAIRE', 'Europe/Paris');
 
-define('SERVEUR_IMAP','{localhost:4567/imap/ssl/novalidate-cert}');
+define('SERVEUR_IMAP','{88.191.117.94:993/imap/ssl/novalidate-cert}');
 
 // Les mails peuvent définir un contenu alternatif
 // Voici les types que l'on préfère par ordre de préférence
