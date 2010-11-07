@@ -7,7 +7,9 @@ class CVueBoite extends AVueModele
 		echo "<ul class=\"boites\">\n";
 		foreach($this->modele->boites as $boite)
 		{
-			$l = explode($boite->delimiter,utf7_to_utf8($boite->name));
+			$nom = $this->simplifierNomBoite($boite->name);
+
+			$l = $this->explodeNomBoite($boite, $nom);
 
 			$description = htmlspecialchars(implode(' : ',array_slice($l,1)));
 			
@@ -16,9 +18,9 @@ class CVueBoite extends AVueModele
 				$description = "Groaw";
 			}
 
-			$lien = rawurlencode(preg_replace('/^\{.+?\}/','',$boite->name));
+			$lien = rawurlencode($nom);
 
-			echo "\t<li>\n\t<h3>$description</h3>\n\t<a href=\"Courriels.php?EX=liste&amp;boite=$lien\"><p>",
+			echo "\t<li class=\"boite_pleine\">\n\t<h3>$description</h3>\n\t<a href=\"Courriels.php?EX=liste&amp;boite=$lien\"><p>",
 				'Vous avez <strong>', $boite->nb_non_vus,'</strong> messages à lire :D',
 				"</p></a>\n</li>\n";
 		}
@@ -72,16 +74,19 @@ class CVueBoite extends AVueModele
 		echo "<select name=\"supprimer_boites[]\" multiple>\n";
 		foreach(array_reverse($this->modele->boites) as $boite)
 		{
-			$l = explode($boite->delimiter,utf7_to_utf8($boite->name));
+			$nom = $this->simplifierNomBoite($boite->name);
+
+			$l = $this->explodeNomBoite($boite, $nom);
 
 			$description = htmlspecialchars(implode(' : ',array_slice($l,1)));
 			
-			if ($description === '')
+			$t = array('Trash','Interesting','Normal','Unexciting');
+			if (!isset($l[1]) || in_array($l[1], $t))
 			{
-				$description = "Groaw";
+				continue;
 			}
 
-			$lien = rawurlencode(preg_replace('/^\{.+?\}/','',$boite->name));
+			$lien = rawurlencode($nom);
 
 			echo "\t<option value=\"$lien\">$description (",$boite->nb_messages," messages)</option>\n";
 		}
@@ -94,7 +99,9 @@ class CVueBoite extends AVueModele
 
 		foreach($this->modele->boites as $boite)
 		{
-			$l = explode($boite->delimiter,utf7_to_utf8($boite->name));
+			$nom = $this->simplifierNomBoite($boite->name);
+
+			$l = $this->explodeNomBoite($boite, $nom);
 
 			$t = array('RSS', 'Trash','Interesting','Normal','Unexciting');
 			if (isset($l[1]) && in_array($l[1], $t))
@@ -109,11 +116,21 @@ class CVueBoite extends AVueModele
 				$description = "Groaw";
 			}
 
-			$lien = rawurlencode(preg_replace('/^\{.+?\}/','',$boite->name));
+			$lien = rawurlencode($nom);
 
 			echo "\t<li><a href=\"Courriels.php?EX=deplacer&amp;destination=$lien\">$description</a></li>\n";
 		}
 		echo "</ul></div>";
+	}
+
+	private function simplifierNomBoite($nom)
+	{
+		return preg_replace('/^\{.+?\}/','',$nom);
+	}
+
+	private function explodeNomBoite($boite, $nom)
+	{
+		return explode($boite->delimiter,utf7_to_utf8($nom));
 	}
 }
 ?>
