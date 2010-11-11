@@ -61,5 +61,31 @@ class CNavigation
 		}
 		echo "</ul>\n";
 	}
+
+	public static function gestionNomBoite()
+	{
+		global $NOM_BOITE, $boite;
+
+		switch ($boite)
+		{
+			case 'INBOX':
+				$NOM_BOITE = 'livraison';
+				break;
+			case 'INBOX.Interesting':
+				$NOM_BOITE = 'interessant';
+				break;
+			case 'INBOX.Normal':
+				$NOM_BOITE = 'normal';
+				break;
+			case 'INBOX.Unexciting':
+				$NOM_BOITE = 'ininteressant';
+				break;
+			case 'INBOX.Trash':
+				$NOM_BOITE = 'poubelle';
+				break;
+			default:
+				$NOM_BOITE = 'archives';
+		}
+	}
 }
 ?>

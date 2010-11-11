@@ -9,14 +9,21 @@
 </head>
 <body>
 <?php
+
+if (isset($NOM_BOITE))
+{
+	echo '<h2 id="titre" class="',$NOM_BOITE,'"><a href="#">',
+		 CNavigation::titre(), "</a></h3>\n";
+}
+
 echo $CONTENU_PAGE;
 ?>
 
-<nav>
+<!--<nav>
 <h3>Navigation</h3>
 <?php
-CNavigation::afficher();
-echo "</nav>\n";
+//CNavigation::afficher();
+echo "</nav>-->\n";
 if (isset($_SESSION['connecte']))
 {
 	echo "<a href=\"Connexion.php?EX=deconnexion\" id=\"bouton_deconnexion\">Sortir de là</a>\n";

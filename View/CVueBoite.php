@@ -1,26 +1,60 @@
 <?php
 class CVueBoite extends AVueModele
 {
-	
+
+	public static function simplifierNomBoite($nom)
+	{
+		return preg_replace('/^\{.+?\}/','',$nom);
+	}
+
+	public static function explodeNomBoite($boite, $nom)
+	{
+		return explode($boite->delimiter,utf7_to_utf8($nom));
+	}
+
+	public static function creerDescription($tableau_boite)
+	{
+		$description = htmlspecialchars(implode(' : ',array_slice($tableau_boite,1)));
+		
+		if ($description === '')
+		{
+			$description = "Groaw";
+		}
+
+		return $description;
+	}
+
+	public function traiterNomsBoites()
+	{
+		$boites = &$this->modele->boites;
+
+		foreach($boites as $clef => $boite)
+		{
+			$nom = CVueBoite::simplifierNomBoite($boite->name);
+
+			$l = CVueBoite::explodeNomBoite($boite, $nom);
+			$description = CVueBoite::creerDescription($l); 
+			
+			$lien = rawurlencode($nom);
+
+			$boite->lien = $lien;
+			$boite->tableau_boite = $l;
+			$boite->nom = $nom;
+			$boite->description = $description;
+
+			$boites[$clef] = $boite;
+		}
+
+		return $boites;
+
+	}
+
 	public function afficherBoites()
 	{
 		echo "<ul class=\"boites\">\n";
-		foreach($this->modele->boites as $boite)
+		foreach($this->traiterNomsBoites() as $boite)
 		{
-			$nom = $this->simplifierNomBoite($boite->name);
-
-			$l = $this->explodeNomBoite($boite, $nom);
-
-			$description = htmlspecialchars(implode(' : ',array_slice($l,1)));
-			
-			if ($description === '')
-			{
-				$description = "Groaw";
-			}
-
-			$lien = rawurlencode($nom);
-
-			echo "\t<li class=\"boite_pleine\">\n\t<h3>$description</h3>\n\t<a href=\"Courriels.php?EX=liste&amp;boite=$lien\"><p>",
+			echo "\t<li class=\"boite_pleine\">\n\t<h3>$boite->description</h3>\n\t<a href=\"Courriels.php?EX=liste&amp;boite=$boite->lien\"><p>",
 				'Vous avez <strong>', $boite->nb_non_vus,'</strong> messages à lire :D',
 				"</p></a>\n</li>\n";
 		}
@@ -38,25 +72,27 @@ class CVueBoite extends AVueModele
 			{
 				if ($boite === 'livraison')
 				{
-					$action = 'afficher';
+					$action = 'trier';
 					$verbe = 'trier';
 					$phrase_max = 'Ça <strong>déborde</strong> du TGV…';
 				}
-				else if ($boite === 'poubelle')
-				{
-					$action = 'liste';
-					$verbe = 'supprimer';
-					$phrase_max = '<strong>Il est temps</strong> de sortir les poubelles.';
-				}
 				else
 				{
-					$action = 'liste';
-					$verbe = 'gérer';
-					$phrase_max = '<strong>Prenez votre journée</strong> pour gérer tout ça.';
+					$action = 'liste&boite='.rawurlencode($infos->nom);
+
+					if ($boite === 'poubelle')
+					{
+						$verbe = 'supprimer';
+						$phrase_max = '<strong>Il est temps</strong> de sortir les poubelles.';
+					}
+					else
+					{
+						$verbe = 'gérer';
+						$phrase_max = '<strong>Prenez votre journée</strong> pour gérer tout ça.';
+					}
 				}
 				
-				echo "\t<li class=\"boite_pleine $boite\">\n\t\t<h3>$infos->titre</h3>\n\t\t<a href=\"Courriels.php?EX=$action&boite=",
-					 rawurlencode($infos->nom),"\"><p>",
+				echo "\t<li class=\"boite_pleine $boite\">\n\t\t<h3>$infos->titre</h3>\n\t\t<a href=\"Courriels.php?EX=$action\"><p>",
 					 CPifometrie::nbMailsBoites($infos->messages, $verbe, $phrase_max),
 					"</p></a>\n\t</li>\n";
 			}
@@ -72,66 +108,48 @@ class CVueBoite extends AVueModele
 	{
 
 		echo "<select name=\"supprimer_boites[]\" multiple>\n";
-		foreach(array_reverse($this->modele->boites) as $boite)
+		foreach(array_reverse($this->traiterNomsBoites()) as $boite)
 		{
-			$nom = $this->simplifierNomBoite($boite->name);
-
-			$l = $this->explodeNomBoite($boite, $nom);
-
-			$description = htmlspecialchars(implode(' : ',array_slice($l,1)));
-			
 			$t = array('Trash','Interesting','Normal','Unexciting');
-			if (!isset($l[1]) || in_array($l[1], $t))
+			if (!isset($boite->tableau_boite[1]) || in_array($boite->tableau_boite[1], $t))
 			{
 				continue;
 			}
 
-			$lien = rawurlencode($nom);
-
-			echo "\t<option value=\"$lien\">$description (",$boite->nb_messages," messages)</option>\n";
+			echo "\t<option value=\"$boite->lien\">$boite->description (",$boite->nb_messages," messages)</option>\n";
 		}
 		echo "</select>";
 	}
 
 	public function afficherBoitesDeplacement($numero_courriel)
 	{
-		echo "<ul class=\"boites_deplacement\">\n";
+		echo "<h3>Classer dans :</h3><ul class=\"boites_deplacement\">\n";
 
-		foreach($this->modele->boites as $boite)
+		foreach($this->traiterNomsBoites() as $boite)
 		{
-			$nom = $this->simplifierNomBoite($boite->name);
-
-			$l = $this->explodeNomBoite($boite, $nom);
 
 			$t = array('RSS', 'Trash','Interesting','Normal','Unexciting');
-			if (isset($l[1]) && in_array($l[1], $t))
+			if (!isset($boite->tableau_boite[1]) || in_array($boite->tableau_boite[1], $t))
 			{
 				continue;
 			}
 
-			$description = htmlspecialchars(implode(' : ',array_slice($l,1)));
-			
-			if ($description === '')
-			{
-				$description = "Groaw";
-			}
-
-			$lien = rawurlencode($nom);
-
-			echo "\t<li><a href=\"Courriels.php?EX=deplacer&amp;destination=$lien&amp;boite=",
-			rawurlencode($GLOBALS['boite']),"&amp;numero=$numero_courriel\">$description</a></li>\n";
+			echo "\t<li><a href=\"Courriels.php?EX=deplacer&amp;destination=$boite->lien&amp;boite=",
+			rawurlencode($GLOBALS['boite']),"&amp;numero=$numero_courriel\">$boite->description</a></li>\n";
 		}
 		echo "</ul></div>";
 	}
 
-	private function simplifierNomBoite($nom)
+	public function afficherArbreBoites()
 	{
-		return preg_replace('/^\{.+?\}/','',$nom);
-	}
-
-	private function explodeNomBoite($boite, $nom)
-	{
-		return explode($boite->delimiter,utf7_to_utf8($nom));
+		echo "<ul class=\"boites_deplacement\">\n";
+		foreach($this->traiterNomsBoites() as $boite)
+		{
+			echo "\t<li><a href=\"Courriels.php?EX=liste&amp;boite=$boite->lien&amp;\">",
+				 wordwrap($boite->description, 25, "<br/>", true),
+				 ($boite->nb_non_vus > 0) ? " ($boite->nb_non_vus)" : '', "</a></li>\n";
+		}
+		echo "</ul></div>";
 	}
 }
 ?>

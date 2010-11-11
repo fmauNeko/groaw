@@ -44,6 +44,19 @@ class CModBoite extends AModele
 			return ($a->nb_messages > $b->nb_messages) ? -1 : 1;
 		});
 	}
+	
+	public function trierBoitesNbNonVus()
+	{
+		usort($this->boites, function($a,$b)
+		{
+			if ($a->nb_non_vus === $b->nb_non_vus)
+			{
+				return 0;
+			}
+
+			return ($a->nb_non_vus > $b->nb_non_vus) ? -1 : 1;
+		});
+	}
 
 	public function chargerCacheBoites($fichier)
 	{
@@ -97,6 +110,28 @@ class CModBoite extends AModele
 		foreach ($fichiers as $fichier)
 		{
 			unlink($fichier);
+		}
+	}
+
+	public function listeBoitesNbNonLus()
+	{
+		if (!$this->chargerCacheBoites('liste_boites_nb_non_lus'))
+		{
+			$this->recupererBoites();
+			$this->recupererNbNonVusBoites();
+			$this->trierBoitesNbNonVus();
+			$this->enregistrerCacheBoites('liste_boites_nb_non_lus');
+		}
+	}
+
+	public function listeBoitesNbMessages()
+	{
+		if (!$this->chargerCacheBoites('liste_boites_nb_messages'))
+		{
+			$this->recupererBoites();
+			$this->recupererNbVusBoites();
+			$this->trierBoitesNbVus();
+			$this->enregistrerCacheBoites('liste_boites_nb_messages');
 		}
 	}
 

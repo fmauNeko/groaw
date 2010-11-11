@@ -28,13 +28,7 @@ function informations()
 function boites()
 {
 	$mod = new CModBoite();
-
-	if (!$mod->chargerCacheBoites('liste_boites_nb_non_lus'))
-	{
-		$mod->recupererBoites();
-		$mod->recupererNbNonVusBoites();
-		$mod->enregistrerCacheBoites('liste_boites_nb_non_lus');
-	}
+	$mod->listeBoitesNbNonLus();
 
 	$vue = new CVueBoite($mod);
 	$vue->afficherBoites();
@@ -81,14 +75,7 @@ function gestion()
 	new CVueHTML('creer_boite');
 
 	$mod = new CModBoite();
-
-	if (!$mod->chargerCacheBoites('liste_boites_nb_messages'))
-	{
-		$mod->recupererBoites();
-		$mod->recupererNbVusBoites();
-		$mod->trierBoitesNbVus();
-		$mod->enregistrerCacheBoites('liste_boites_nb_messages');
-	}
+	$mod->listeBoitesNbMessages();
 
 	$vue = new CVueBoite($mod);
 	$vue->afficherBoitesSuppression();

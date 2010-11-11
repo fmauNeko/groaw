@@ -68,28 +68,3 @@ ul.boites strong
 font-weight:bold;
 color:red;
 }
-
-ul.boites li.livraison a
-{
-background-image:url(../Img/livraison.jpeg);
-}
-ul.boites li.interessant a
-{
-background-image:url(../Img/interessant.jpeg);
-}
-ul.boites li.normal a
-{
-background-image:url(../Img/normal.jpeg);
-}
-ul.boites li.ininteressant a
-{
-background-image:url(../Img/ininteressant.jpeg);
-}
-ul.boites li.poubelle a
-{
-background-image:url(../Img/poubelle.jpeg);
-}
-ul.boites li.archives a
-{
-background-image:url(../Img/archives.jpeg);
-}

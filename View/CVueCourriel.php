@@ -4,32 +4,39 @@ class CVueCourriel extends AVueModele
 	
 	public function afficherCourriels()
 	{
-		$boite = rawurlencode($GLOBALS['boite']);
-
-		echo "<ul class=\"messages\">\n";	
-		
-		foreach ($this->modele->courriels as $message)
+		if (count($this->modele->courriels) > 0)
 		{
-			$sujet = $this->mime_to_utf8($message->subject);
-			$sujet = ($sujet === '') ? 'Pas de sujet' : $sujet;
+			$boite = rawurlencode($GLOBALS['boite']);
 
-			echo "\t<li>\n\t\t<a href=\"Courriels.php?EX=afficher&amp;boite=$boite&amp;numero=",
-				$message->msgno,
-				"\">\n\t\t\t<h4>",
-				htmlspecialchars($sujet),
-				"</h4>\n\t\t\t<p>",
-				$message->seen ? "Lu" : "Non lu",
-				", de <strong>",
-				$this->formater_date_liste($message->date),
-				"</strong> par <strong>",
-				htmlspecialchars(preg_replace('/\s<.+>$/','',$this->mime_to_utf8($message->from))),
-				"</strong>.</p>\n\t\t</a>\n\t</li>\n";
+			echo "<ul class=\"messages\">\n";	
+			
+			foreach ($this->modele->courriels as $message)
+			{
+				$sujet = $this->mime_to_utf8($message->subject);
+				$sujet = ($sujet === '') ? 'Pas de sujet' : $sujet;
+
+				echo "\t<li>\n\t\t<a href=\"Courriels.php?EX=afficher&amp;boite=$boite&amp;numero=",
+					$message->msgno,
+					"\">\n\t\t\t<h4>",
+					htmlspecialchars($sujet),
+					"</h4>\n\t\t\t<p>",
+					$message->seen ? "Lu" : "Non lu",
+					", de <strong>",
+					$this->formater_date_liste($message->date),
+					"</strong> par <strong>",
+					htmlspecialchars(preg_replace('/\s<.+>$/','',$this->mime_to_utf8($message->from))),
+					"</strong>.</p>\n\t\t</a>\n\t</li>\n";
+			}
+
+			echo "</ul>";
 		}
-
-		echo "</ul>";
+		else
+		{
+			echo "<h3>La boite est vide.</h3>";
+		}
 	}
 
-	public function afficherOutils()
+	public function afficherOutilsMessage()
 	{
 		$boite = rawurlencode($GLOBALS['boite']);
 		$numero = $this->modele->num_courriel;
@@ -44,8 +51,21 @@ class CVueCourriel extends AVueModele
 	<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Unexciting&amp;boite=$boite&amp;numero=$numero" accesskey="3">Inintéressant</a></li>
 	<br/>
 	<li><a href="Courriels.php?EX=deplacer&amp;destination=INBOX.Trash&amp;boite=$boite&amp;numero=$numero" accesskey="0">Supprimer</a></li>
-	</li>
 </ul>
+
+EOT;
+	}
+	
+	public function afficherOutilsListe()
+	{
+		$boite = rawurlencode($GLOBALS['boite']);
+		$numero = $this->modele->num_courriel;
+		echo <<<EOT
+<div class="outils_courriel">
+<ul class="outils_base">
+	<li><a href="#">Enterrer tout ça</a></li>
+</ul>
+<h3>Changer de boite :</h3>
 
 EOT;
 	}
@@ -213,9 +233,5 @@ EOT;
 		}
 	}
 
-	public static function afficherAucunMessage()
-	{
-		echo "<h3>Il n'y a aucun message…</h3>";
-	}
 }
 ?>
