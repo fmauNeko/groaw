@@ -79,8 +79,15 @@ function liste()
 	$mod = new CModCourriel();
 	$mod->recupererCourriels();
 
-	$vue = new CVueCourriel($mod);
-	$vue->afficherCourriels();
+	if (count($mod->courriels) > 0)
+	{
+		$vue = new CVueCourriel($mod);
+		$vue->afficherCourriels();
+	}
+	else
+	{
+		new CMessage("Il n'y a aucun courriel dans la boite.");	
+	}
 }
 
 function partie()

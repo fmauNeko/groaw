@@ -4,36 +4,29 @@ class CVueCourriel extends AVueModele
 	
 	public function afficherCourriels()
 	{
-		if (count($this->modele->courriels) > 0)
+		$boite = rawurlencode($GLOBALS['boite']);
+
+		echo "<ul class=\"messages\">\n";	
+		
+		foreach ($this->modele->courriels as $message)
 		{
-			$boite = rawurlencode($GLOBALS['boite']);
+			$sujet = $this->mime_to_utf8($message->subject);
+			$sujet = ($sujet === '') ? 'Pas de sujet' : $sujet;
 
-			echo "<ul class=\"messages\">\n";	
-			
-			foreach ($this->modele->courriels as $message)
-			{
-				$sujet = $this->mime_to_utf8($message->subject);
-				$sujet = ($sujet === '') ? 'Pas de sujet' : $sujet;
-
-				echo "\t<li>\n\t\t<a href=\"Courriels.php?EX=afficher&amp;boite=$boite&amp;numero=",
-					$message->msgno,
-					"\">\n\t\t\t<h4>",
-					htmlspecialchars($sujet),
-					"</h4>\n\t\t\t<p>",
-					$message->seen ? "Lu" : "Non lu",
-					", de <strong>",
-					$this->formater_date_liste($message->date),
-					"</strong> par <strong>",
-					htmlspecialchars(preg_replace('/\s<.+>$/','',$this->mime_to_utf8($message->from))),
-					"</strong>.</p>\n\t\t</a>\n\t</li>\n";
-			}
-
-			echo "</ul>";
+			echo "\t<li>\n\t\t<a href=\"Courriels.php?EX=afficher&amp;boite=$boite&amp;numero=",
+				$message->msgno,
+				"\">\n\t\t\t<h4>",
+				htmlspecialchars($sujet),
+				"</h4>\n\t\t\t<p>",
+				$message->seen ? "Lu" : "Non lu",
+				", de <strong>",
+				$this->formater_date_liste($message->date),
+				"</strong> par <strong>",
+				htmlspecialchars(preg_replace('/\s<.+>$/','',$this->mime_to_utf8($message->from))),
+				"</strong>.</p>\n\t\t</a>\n\t</li>\n";
 		}
-		else
-		{
-			echo "<h3>Il n'y a pas de messages</h3>";
-		}
+
+		echo "</ul>";
 	}
 
 	public function afficherOutils()

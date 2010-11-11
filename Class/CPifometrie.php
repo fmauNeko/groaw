@@ -14,17 +14,25 @@ class CPifometrie
 		}
 		else if ($nombre < 4)
 		{
+			return "Vous devez $verbe <strong>très peu</strong> de courriels.";
+		}
+		else if ($nombre < 8)
+		{
 			return "Vous devez $verbe <strong>quelques</strong> courriels.";
 		}
-		else if ($nombre < 10)
+		else if ($nombre < 13)
 		{
-			return "Vous devez $verbe <strong>un peu</strong> de courriels.";
+			return "Vous devez $verbe <strong>une dizaine</strong> de courriels.";
+		}
+		else if ($nombre < 21)
+		{
+			return "Vous avez <strong>un bon lot</strong> de courriels à $verbe.";
 		}
 		else if ($nombre < 42)
 		{
 			return "Vous avez <strong>pas mal</strong> de courriels à $verbe.";
 		}
-		else if ($nombre < 100)
+		else if ($nombre < 84)
 		{
 			return "Vous avez <strong>beaucoup</strong> de courriels à $verbe.";
 		}

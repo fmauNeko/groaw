@@ -3,6 +3,7 @@
 ob_start();
 try
 {
+	CMessage::afficherCMessages();
 	$FONCTION_CTRL();
     echo "\n<br/>\n";
 	groaw(imap_errors());
