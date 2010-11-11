@@ -142,14 +142,62 @@ class CVueBoite extends AVueModele
 
 	public function afficherArbreBoites()
 	{
-		echo "<ul class=\"boites_deplacement\">\n";
+		$arbre = array();
+		
+		// Création de la hiérarchie
 		foreach($this->traiterNomsBoites() as $boite)
 		{
-			echo "\t<li><a href=\"Courriels.php?EX=liste&amp;boite=$boite->lien&amp;\">",
+			$l = $boite->tableau_boite;
+			$branche = &$arbre;
+
+			$l_l = count($l)-1;
+			for ($i = 0; $i < $l_l; ++$i)
+			{
+				$e = $l[$i];
+
+				if (!isset($branche[$e]))
+				{
+					$branche[$e] = array();
+				}
+
+				$branche = &$branche[$e];
+			}
+
+			array_push($branche, $boite);
+		}
+
+
+			/*echo "\t<li><a href=\"Courriels.php?EX=liste&amp;boite=$boite->lien&amp;\">",
 				 wordwrap($boite->description, 25, "<br/>", true),
-				 ($boite->nb_non_vus > 0) ? " ($boite->nb_non_vus)" : '', "</a></li>\n";
+				 ($boite->nb_non_vus > 0) ? " ($boite->nb_non_vus)" : '', "</a></li>\n";*/
+		echo "<ul class=\"boites_deplacement\">\n";
+		foreach ($arbre['INBOX'] as $sous_clef => $sous_branche)
+		{
+			CVueBoite::afficherArbreBoitesRec($sous_clef, $sous_branche);
 		}
 		echo "</ul></div>";
 	}
+	
+	public static function afficherArbreBoitesRec($clef, $branche)
+		{
+			if (is_array($branche))
+			{
+				echo "<li><h4>$clef</h4><ul>\n";
+				foreach ($branche as $sous_clef => $sous_branche)
+				{
+					CVueBoite::afficherArbreBoitesRec($sous_clef, $sous_branche);
+				}
+				echo "</ul></li>\n";
+			}
+			else
+			{
+				$description = htmlspecialchars($branche->tableau_boite[count($branche->tableau_boite)-1]);
+				$nb_non_vus = $branche->nb_non_vus;
+
+				echo "\t<li><a href=\"Courriels.php?EX=liste&amp;boite=$branche->lien&amp;\">",
+					($nb_non_vus > 0) ? '<em>' : '', wordwrap($description, 20, "<br/>", true),
+					($nb_non_vus > 0) ? " ($nb_non_vus)</em>" : '', "</a></li>\n";
+			}
+		}
 }
 ?>

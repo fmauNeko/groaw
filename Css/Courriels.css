@@ -149,3 +149,14 @@ ul.boites_deplacement li
 {
 padding-bottom:0.4em;
 }
+
+ul.boites_deplacement ul
+{
+margin:0;
+padding-left:1.5em;
+}
+
+ul.boites_deplacement h4
+{
+margin:0;
+}
