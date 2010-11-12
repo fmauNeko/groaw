@@ -26,6 +26,7 @@ class CModCourriel extends AModele
 
     public function recupererPartieTexte($num_section, $structure)
     {
+		//groaw($structure);
         $texte = CImap::fetchbody($this->num_courriel,$num_section);
 
         switch ($structure->encoding)
@@ -49,7 +50,6 @@ class CModCourriel extends AModele
 
             // quoted-printable moche
             case 4:
-				groaw("qprint");
                 $texte = imap_qprint($texte);
                 break;
 
@@ -58,7 +58,6 @@ class CModCourriel extends AModele
                 new Exception("Une partie du mail est illisible");
                 break;
         }
-
         // Recherche de l'encodage, pour effectuer une conversion
         if ($structure->ifparameters)
         {
@@ -67,15 +66,14 @@ class CModCourriel extends AModele
             {
                 if ($parametre->attribute === 'charset')
                 {
-                    $charset = $parametre->value;
+                    $charset = strtoupper($parametre->value);
                 }
             }
 
 
-            if ($charset !== null && strtoupper($charset) !== 'UTF-8')
+            if ($charset !== null && $charset !== 'UTF-8')
             {
-			groaw($charset);
-                $texte = iconv($charset, 'UTF-8', $texte);	
+                $texte = str_replace('charset=iso-8859-1', '', iconv($charset, 'UTF-8', $texte));
             }
         }
 

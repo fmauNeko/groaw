@@ -24,7 +24,7 @@ class CVueCourriel extends AVueModele
 					", de <strong>",
 					$this->formater_date_liste($message->date),
 					"</strong> par <strong>",
-					htmlspecialchars(preg_replace('/\s<.+>$/','',$this->mime_to_utf8($message->from))),
+					htmlspecialchars(str_replace('@MISSING_DOMAIN','',preg_replace('/\s<.+>$/','',$this->mime_to_utf8($message->from)))),
 					"</strong>.</p>\n\t\t</a>\n\t</li>\n";
 			}
 

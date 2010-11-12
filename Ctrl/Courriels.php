@@ -52,7 +52,7 @@ function afficher()
 
 function raw()
 {
-	$numero = $mod::numero();
+	$numero = CModCourriel::numero();
 	echo nl2br(htmlspecialchars(CImap::body($numero)));
 }
 
@@ -142,17 +142,20 @@ function partie()
 
         $n = $n-1;
 
-        if (isset($structure->parts[$n-1]))
+        if (isset($structure->parts[$n]))
         {
-            $structure = $structure->parts[$n-1];
+            $structure = $structure->parts[$n];
         }
+		else
+		{
+		}
     }
 
 	$texte = $mod->recupererPartieTexte($nouvelle_section, $structure);
     
     global $BODY_ONLY;
     $BODY_ONLY = true;
-    header('Content-type:   text/html');
+    header('Content-type:   text/html; charset=UTF-8');
 
     echo $texte;
 	
