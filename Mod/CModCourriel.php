@@ -83,25 +83,20 @@ class CModCourriel extends AModele
 	public function recupererCourriels()
 	{
 		$liste_triee = CImap::sort(SORTDATE, 1);
-		$nb_entetes = count($liste_triee);
+		$nb_entetes = min(count($liste_triee), 4);
 
 		if ($nb_entetes === 0)
 		{
-			$this->messages = array();
+			$this->courriels = array();
 		}
 		else
 		{
-			$liste_entetes = CImap::fetch_overview("1:$nb_entetes");
-
-			$liste_finale = $liste_triee;
-
-			foreach ($liste_entetes as $entete)
+			$liste = strval($liste_triee[0]);
+			for ($i = 1; $i < $nb_entetes; ++$i)
 			{
-				$clef = array_search($entete->msgno,$liste_triee);
-				$liste_finale[$clef] = $entete;
+				$liste .= ','.strval($liste_triee[$i]);
 			}
-
-			$this->courriels = $liste_finale;
+			$this->courriels = CImap::fetch_overview($liste);
 		}
 	}
 
