@@ -1,6 +1,7 @@
 ul.boites
 {
 list-style:none;
+margin-left:-18em;
 }
 ul.boites li
 {

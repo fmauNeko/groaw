@@ -4,11 +4,11 @@ $NOM_CTRL = 'Boites';
 $ACTIONS = array(
 	'boites'		=> array('Boites aux lettres','Liste des boites aux lettres'),
 	'informations'	=> array('Informations','Informations sur le compte'),
-	'accueil'		=> array('Accueil','Page d\'accueil du logiciel'),
-	'gestion'			=> array('Gestion', 'Gestion des boites aux lettres')
+	'tableau'		=> array('Tableau','Tableau de bord'),
+	'gestion'		=> array('Gestion', 'Gestion des boites aux lettres')
 );
 
-$DEFAULT_ACTION = 'accueil';
+$DEFAULT_ACTION = 'tableau';
 
 require ('../Inc/haut.php');
 
@@ -34,7 +34,7 @@ function boites()
 	$vue->afficherBoites();
 }
 
-function accueil()
+function tableau()
 {
 	$mod = new CModBoite();
 	$mod->recupererInfosAcceuil();
