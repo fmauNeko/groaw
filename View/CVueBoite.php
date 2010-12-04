@@ -101,7 +101,7 @@ class CVueBoite extends AVueModele
 				echo "\t<li class=\"boite_vide $boite\"><h3>$infos->titre</h3><div></div></li>\n";
 			}
 		}
-		echo "\t<li class=\"boite_pleine archives\">\n\t\t<h3>Archives</h3>\n\t\t<a href=\"?EX=boites\"><p>Accédez aux courriels classifiés</p></a>\n\t</li>\n</ul>";
+		echo "\t<li class=\"boite_pleine archives\">\n\t\t<h3>Archives</h3>\n\t\t<a href=\"Courriels.php?EX=archive\"><p>Accédez aux courriels classifiés</p></a>\n\t</li>\n</ul>";
 	}
 
 	public function afficherBoitesSuppression()

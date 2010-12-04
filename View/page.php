@@ -19,14 +19,14 @@ if (isset($_SESSION['connecte']))
 	}
 
 	echo "<ul id=\"navigation\">\n";
-	if ($NOM_CTRL !== 'Boites' || $FONCTION_CTRL !== 'tableau')
-	{
-		echo "\t<li><a href=\"Boites.php\">Tableau de bord</a></li>\n";
-	}
 	if ($NOM_CTRL === 'Courriels' && $FONCTION_CTRL === 'afficher')
 	{
 		$boite = htmlspecialchars($GLOBALS['boite']);
 		echo "\t<li><a href=\"Courriels.php?EX=liste&amp;boite=$boite\">Liste des messages</a></li>\n";
+	}
+	if ($NOM_CTRL !== 'Boites' || $FONCTION_CTRL !== 'tableau')
+	{
+		echo "\t<li><a href=\"Boites.php\">Tableau de bord</a></li>\n";
 	}
 	echo "\t<li><a href=\"Connexion.php?EX=deconnexion\">Sortir de là</a></li>\n";
 	echo "</ul>\n";

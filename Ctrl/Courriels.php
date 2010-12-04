@@ -9,7 +9,8 @@ $ACTIONS = array(
     'partie'    => array('Partie', 'Télécharger une partie d\'un courriel'),
     'deplacer'	=> array('Déplacer', 'Déplace un courriel'),
 	'enterrer'	=> array('Entérrer', 'Déplace la liste de courriels dans les archives'),
-	'detruire_courriels'	=> array('Détruire courriels', 'Détruit définitivement tout les courriers de la boite')
+	'detruire_courriels'	=> array('Détruire courriels', 'Détruit définitivement tout les courriers de la boite'),
+	'archive'	=> array('Archive', 'Espace des archives')
 );
 
 $DEFAULT_ACTION = 'liste';
@@ -199,6 +200,22 @@ function partie()
 
     echo $texte;
 	
+}
+
+function archive()
+{
+	$GLOBALS['NOM_BOITE'] = 'archives';
+	
+	$mod_boite = new CModBoite();
+	$mod_boite->listeBoitesNbNonLus();
+	
+	$vue_boite = new CVueBoite($mod_boite);
+
+	echo <<<EOT
+<div class="outils_courriel">
+<h3>Sélectionner une boite :</h3>
+EOT;
+	$vue_boite->afficherArbreBoites();
 }
 
 // Fin de la liste des fonctions
