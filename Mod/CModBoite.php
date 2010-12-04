@@ -167,9 +167,16 @@ class CModBoite extends AModele
 		return $info;
 	}
 
+	public function existe()
+	{
+		$nom = utf8_to_utf7($this->boite);
+		$status = CImap::status(SERVEUR_IMAP.$nom, 0);
+
+		return $status !== false;
+	}
+
 	public function creer()
 	{
-		groaw($this->boite);
 		$nom = utf8_to_utf7($this->boite);
 		if (CImap::createmailbox(SERVEUR_IMAP.$nom)===false)
 		{
@@ -183,6 +190,12 @@ class CModBoite extends AModele
 		{
 			throw new Exception('Impossible de supprimer la boite:«'.$this->boite.'»');
 		}
+	}
+
+	public function vider()
+	{
+		CImap::delete("1:*");
+		CImap::expunge();
 	}
 }
 

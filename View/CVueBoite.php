@@ -179,25 +179,34 @@ class CVueBoite extends AVueModele
 	}
 	
 	public static function afficherArbreBoitesRec($clef, $branche)
+	{
+		if (is_array($branche))
 		{
-			if (is_array($branche))
+			echo "<li><h4>$clef</h4><ul>\n";
+			foreach ($branche as $sous_clef => $sous_branche)
 			{
-				echo "<li><h4>$clef</h4><ul>\n";
-				foreach ($branche as $sous_clef => $sous_branche)
-				{
-					CVueBoite::afficherArbreBoitesRec($sous_clef, $sous_branche);
-				}
-				echo "</ul></li>\n";
+				CVueBoite::afficherArbreBoitesRec($sous_clef, $sous_branche);
 			}
-			else
-			{
-				$description = htmlspecialchars($branche->tableau_boite[count($branche->tableau_boite)-1]);
-				$nb_non_vus = $branche->nb_non_vus;
-
-				echo "\t<li><a href=\"Courriels.php?EX=liste&amp;boite=$branche->lien&amp;\">",
-					($nb_non_vus > 0) ? '<em>' : '', wordwrap($description, 20, "<br/>", true),
-					($nb_non_vus > 0) ? " ($nb_non_vus)</em>" : '', "</a></li>\n";
-			}
+			echo "</ul></li>\n";
 		}
+		else
+		{
+			$description = htmlspecialchars($branche->tableau_boite[count($branche->tableau_boite)-1]);
+			$nb_non_vus = $branche->nb_non_vus;
+
+			echo "\t<li><a href=\"Courriels.php?EX=liste&amp;boite=$branche->lien&amp;\">",
+				($nb_non_vus > 0) ? '<em>' : '', wordwrap($description, 20, "<br/>", true),
+				($nb_non_vus > 0) ? " ($nb_non_vus)</em>" : '', "</a></li>\n";
+		}
+	}
+
+	public static function afficherConfirmationVidageBoite($boite, $url_boite)
+	{
+		echo <<<EOT
+		<p>Les courriels ne pourront plus jamais être récupérés, êtes-vous certain de votre action ?</p>
+		<p><a href="?EX=detruire_courriels&amp;boite=$url_boite&amp;confirmation=ok">T'es qui pour me poser ces questions ? Oui je supprime tout.</a></p>
+		<p><a href="?EX=liste&amp;boite=$url_boite">Non, j'ose pas.</a></p>
+EOT;
+	}
 }
 ?>

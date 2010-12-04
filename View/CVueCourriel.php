@@ -32,43 +32,46 @@ class CVueCourriel extends AVueModele
 
 			$pagination = CNavigation::pagination($this->modele->nb_max_courriels, $numero_page, $nb_par_page);
 
-			function afficherPage($boite, $num_page, $texte)
+			if ($pagination)
 			{
-				if ($num_page !== false)
+				function afficherPage($boite, $num_page, $texte)
 				{
-					echo "<a href=\"?EX=liste&amp;boite=$boite&amp;page=$num_page\">$texte</a> ";
-				}
-			}
-			
-			echo "<p class=\"pagination\">Pages:<br/>\n";
-
-			afficherPage($boite, $pagination['directions']['precedent'], 'Précedent');
-
-			$difference = -1;
-			foreach ($pagination['pages'] as $pagin)
-			{
-				// Si il y a un décalage supérieur à 1
-				// C'est qu'il y a eu un saut dans la pagination
-				if ($pagin-$difference > 1)
-				{
-					echo '… ';
-				}
-
-				if ($pagin === $numero_page)
-				{
-					echo "<strong>";
-					afficherPage($boite, $pagin, $pagin+1);
-					echo "</strong>";
-				} else {
-					afficherPage($boite, $pagin, $pagin+1);
+					if ($num_page !== false)
+					{
+						echo "<a href=\"?EX=liste&amp;boite=$boite&amp;page=$num_page\">$texte</a> ";
+					}
 				}
 				
-				$difference = $pagin;
-			}
+				echo "<p class=\"pagination\">Pages:<br/>\n";
 
-			afficherPage($boite, $pagination['directions']['suivant'], 'Suivant');
-			
-			echo "\n</p>\n";
+				afficherPage($boite, $pagination['directions']['precedent'], 'Précedent');
+
+				$difference = -1;
+				foreach ($pagination['pages'] as $pagin)
+				{
+					// Si il y a un décalage supérieur à 1
+					// C'est qu'il y a eu un saut dans la pagination
+					if ($pagin-$difference > 1)
+					{
+						echo '… ';
+					}
+
+					if ($pagin === $numero_page)
+					{
+						echo "<strong>";
+						afficherPage($boite, $pagin, $pagin+1);
+						echo "</strong>";
+					} else {
+						afficherPage($boite, $pagin, $pagin+1);
+					}
+					
+					$difference = $pagin;
+				}
+
+				afficherPage($boite, $pagination['directions']['suivant'], 'Suivant');
+				
+				echo "\n</p>\n";
+			}
 
 		}
 		else
@@ -97,14 +100,23 @@ class CVueCourriel extends AVueModele
 EOT;
 	}
 	
-	public function afficherOutilsListe()
+	public function afficherOutilsListe($numero_page)
 	{
 		$boite = rawurlencode($GLOBALS['boite']);
 		$numero = $this->modele->num_courriel;
-		echo <<<EOT
+
+echo <<<EOT
 <div class="outils_courriel">
 <ul class="outils_base">
-	<li><a href="#">Enterrer tout ça</a></li>
+	<li><a href="?EX=enterrer&amp;boite=$boite&amp;page=$numero_page">Enterrer tout ça</a></li>
+EOT;
+
+		if ($boite === 'INBOX.Trash')
+		{
+			echo "\t<li><a href=\"?EX=detruire_courriels&amp;boite=$boite\">Sortir les poubelles</a></li>\n";
+		}
+
+		echo <<<EOT
 </ul>
 <h3>Changer de boite :</h3>
 

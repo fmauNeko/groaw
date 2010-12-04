@@ -81,7 +81,7 @@ class CModCourriel extends AModele
         return $texte;
     }
 
-	public function recupererCourriels($page = 0, $nb_par_page = 12)
+	public function recupererListeTriee($page = 0, $nb_par_page = 12)
 	{
 		$liste_triee = CImap::sort(SORTDATE, 1);
 		$nb_courriels = count($liste_triee);
@@ -91,7 +91,7 @@ class CModCourriel extends AModele
 
 		if (($i_fin - $i_debut) === 0)
 		{
-			$this->courriels = array();
+			$liste = '';
 		}
 		else
 		{
@@ -100,15 +100,33 @@ class CModCourriel extends AModele
 			{
 				$liste .= ','.strval($liste_triee[$i]);
 			}
-			$this->courriels = CImap::fetch_overview($liste);
 		}
-
+		
 		$this->nb_max_courriels = $nb_courriels;
+
+		return $liste;
+	}
+
+	public function recupererCourriels($page = 0, $nb_par_page = 12)
+	{
+		$this->courriels = CImap::fetch_overview($this->recupererListeTriee($page, $nb_par_page));
 	}
 
 	public function deplacer($destination)
 	{
-		if (CImap::mail_move($this->num_courriel, $destination))
+		$this->deplacerListe($this->num_courriel, $destination);
+	}
+
+	public function deplacerListe($liste, $destination)
+	{
+		$boite = new CModBoite($destination);
+
+		if (!$boite->existe())
+		{
+			$boite->creer();
+		}
+
+		if (CImap::mail_move($liste, $destination))
 		{
 			// Applique la suppression du message dans la boite de départ
 			CImap::expunge();

@@ -7,7 +7,9 @@ $ACTIONS = array(
 	'raw'		=> array('Afficher en raw','Afficher un courriel sans transformations'),
 	'liste'		=> array('Messages','Liste des mails'),
     'partie'    => array('Partie', 'Télécharger une partie d\'un courriel'),
-    'deplacer'	=> array('Déplacer', 'Déplace un courriel')
+    'deplacer'	=> array('Déplacer', 'Déplace un courriel'),
+	'enterrer'	=> array('Entérrer', 'Déplace la liste de courriels dans les archives'),
+	'detruire_courriels'	=> array('Détruire courriels', 'Détruit définitivement tout les courriers de la boite')
 );
 
 $DEFAULT_ACTION = 'liste';
@@ -76,6 +78,41 @@ function deplacer()
 	}
 }
 
+function enterrer()
+{
+	// Récupération du numéro de la page
+	$numero_page = isset($_REQUEST['page']) ? abs(intval($_REQUEST['page'])) : 0;
+
+	$mod = new CModCourriel();
+	$liste = $mod->recupererListeTriee($numero_page, COURRIELS_PAR_PAGE);
+
+	$boite = $GLOBALS['boite'];
+
+	// Inutile d'archiver ce qui est déjà archivé
+	if (strpos($boite, 'INBOX.Archive.') !== 0)
+	{
+		$destination = 'INBOX.Archive.'.substr($boite, 6);
+		$mod->deplacerListe($liste, $destination);
+	}
+		
+	new CRedirection('Courriels.php?EX=liste&boite='.rawurlencode($boite));
+}
+
+function detruire_courriels()
+{
+	$boite = $GLOBALS['boite'];
+	$url_boite = rawurlencode($boite);
+
+	if (isset($_REQUEST['confirmation']))
+	{
+		$mod = new CModBoite();
+		$mod->vider();
+		new CRedirection('Courriels.php?EX=liste&boite='.$url_boite);
+	}
+	
+	CVueBoite::afficherConfirmationVidageBoite($boite, $url_boite);
+}
+
 function liste()
 {
 	switch ($GLOBALS['boite'])
@@ -106,7 +143,7 @@ function liste()
 	$mod->recupererCourriels($numero_page, COURRIELS_PAR_PAGE);
 
 	$vue = new CVueCourriel($mod);
-    $vue->afficherOutilsListe();
+    $vue->afficherOutilsListe($numero_page);
 
 	$mod_boite = new CModBoite();
 	$mod_boite->listeBoitesNbNonLus();
