@@ -15,7 +15,7 @@ if (isset($_SESSION['connecte']))
 	if (isset($NOM_BOITE))
 	{
 		echo '<h2 id="titre" class="',$NOM_BOITE,'"><a href="#">',
-			 CNavigation::titre(), "</a></h3>\n";
+			 CNavigation::titre(), "</a></h2>\n";
 	}
 
 	echo "<ul id=\"navigation\">\n";
