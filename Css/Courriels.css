@@ -1,3 +1,7 @@
+body
+{
+margin-left:18em;
+}
 ul.messages
 {
 list-style:none;
@@ -19,7 +23,7 @@ ul.messages p
 margin:0.2em 0 0 2em;
 }
 
-ul.messages a
+ul.messages a, .pagination a
 {
 color:white;
 text-decoration:none;
@@ -30,7 +34,7 @@ ul.messages h4
 margin:0;
 font-size:1.1em;
 }
-ul.messages a:hover
+ul.messages a:hover, .pagination a:hover
 {
 text-decoration:underline;
 }

@@ -16,6 +16,8 @@ define('FUSEAU_HORAIRE', 'Europe/Paris');
 
 define('SERVEUR_IMAP','{88.191.117.94:993/imap/ssl/novalidate-cert}');
 
+define('COURRIELS_PAR_PAGE', 10);
+
 // Les mails peuvent définir un contenu alternatif
 // Voici les types que l'on préfère par ordre de préférence
 

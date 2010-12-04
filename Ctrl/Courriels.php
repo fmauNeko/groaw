@@ -99,8 +99,11 @@ function liste()
 			CNavigation::nommer("Boite ".htmlspecialchars($GLOBALS['boite']));
 	}
 
+	// Récupération du numéro de la page
+	$numero_page = isset($_REQUEST['page']) ? abs(intval($_REQUEST['page'])) : 0;
+
 	$mod = new CModCourriel();
-	$mod->recupererCourriels();
+	$mod->recupererCourriels($numero_page, COURRIELS_PAR_PAGE);
 
 	$vue = new CVueCourriel($mod);
     $vue->afficherOutilsListe();
@@ -111,7 +114,7 @@ function liste()
 	$vue_boite = new CVueBoite($mod_boite);
 	$vue_boite->afficherArbreBoites();
 	
-	$vue->afficherCourriels();
+	$vue->afficherCourriels($numero_page, COURRIELS_PAR_PAGE);
 }
 
 function partie()

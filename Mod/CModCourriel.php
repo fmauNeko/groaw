@@ -5,6 +5,7 @@ class CModCourriel extends AModele
     public $num_courriel;
     public $structure;
 	public $courriels;
+	public $nb_max_courriels;
 
 	public function __construct($numero = 0)
 	{
@@ -80,24 +81,29 @@ class CModCourriel extends AModele
         return $texte;
     }
 
-	public function recupererCourriels()
+	public function recupererCourriels($page = 0, $nb_par_page = 12)
 	{
 		$liste_triee = CImap::sort(SORTDATE, 1);
-		$nb_entetes = min(count($liste_triee), 4);
+		$nb_courriels = count($liste_triee);
 
-		if ($nb_entetes === 0)
+		$i_debut = min($nb_courriels, $page * $nb_par_page);
+		$i_fin = min($nb_courriels, $i_debut + $nb_par_page);
+
+		if (($i_fin - $i_debut) === 0)
 		{
 			$this->courriels = array();
 		}
 		else
 		{
-			$liste = strval($liste_triee[0]);
-			for ($i = 1; $i < $nb_entetes; ++$i)
+			$liste = strval($liste_triee[$i_debut]);
+			for ($i = $i_debut+1; $i < $i_fin; ++$i)
 			{
 				$liste .= ','.strval($liste_triee[$i]);
 			}
 			$this->courriels = CImap::fetch_overview($liste);
 		}
+
+		$this->nb_max_courriels = $nb_courriels;
 	}
 
 	public function deplacer($destination)

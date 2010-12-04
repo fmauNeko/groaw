@@ -87,5 +87,63 @@ class CNavigation
 				$NOM_BOITE = 'archives';
 		}
 	}
+
+	# Pageur fait maison car celui de pear est vilain (très vilain)
+	public static function pagination($nb_elements = 0, $page = 0, $nb_par_page = 12, $sauts = 3)
+	{
+		$directions = array();
+		
+		$nb_pages = ceil($nb_elements / $nb_par_page);
+
+		if ($nb_pages <= 1)
+		{
+			return false;
+		}
+
+		if ($page >= $nb_pages)
+		{
+			$page = 0;
+		}
+
+		if ($page === 0)
+		{
+			$directions['precedent'] = false;
+		} else {
+			$directions['precedent'] = $page - 1 ;
+		}
+
+		if ($page < $nb_pages-1)
+		{
+			$directions['suivant'] = $page + 1;
+		} else {
+			$directions['suivant'] = false;
+		}
+
+		$pages	= array();
+
+		$fin	= min($sauts, $page - $sauts + 1);
+		$fin	= ($fin < 0) ? 0 : $fin;		
+		for ($i = 0; $i < $fin; $i++) {
+			$pages[] = $i;	
+		}
+
+		$debut	= max($fin,	$page - $sauts + 1);
+		$fin	= min($nb_pages,	$page + $sauts);
+
+		for ($i = $debut; $i < $fin; $i++) {
+			$pages[] = $i;	
+		}
+
+
+		$debut = max($fin + 1,	$nb_pages - $sauts + 1);
+		 
+		for ($i = $debut; $i < $nb_pages; $i++) {
+			$pages[] = $i;	
+		}
+		
+		return array("pages"		=> $pages,
+					 "directions"	=> $directions
+					);
+	}
 }
 ?>

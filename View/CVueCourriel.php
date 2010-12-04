@@ -2,7 +2,7 @@
 class CVueCourriel extends AVueModele
 {
 	
-	public function afficherCourriels()
+	public function afficherCourriels($numero_page, $nb_par_page)
 	{
 		if (count($this->modele->courriels) > 0)
 		{
@@ -15,7 +15,7 @@ class CVueCourriel extends AVueModele
 				$sujet = $this->mime_to_utf8($message->subject);
 				$sujet = ($sujet === '') ? 'Pas de sujet' : $sujet;
 
-				echo "\t<li>\n\t\t<a href=\"Courriels.php?EX=afficher&amp;boite=$boite&amp;numero=",
+				echo "\t<li>\n\t\t<a href=\"?EX=afficher&amp;boite=$boite&amp;numero=",
 					$message->msgno,
 					"\">\n\t\t\t<h4>",
 					htmlspecialchars($sujet),
@@ -29,6 +29,47 @@ class CVueCourriel extends AVueModele
 			}
 
 			echo "</ul>";
+
+			$pagination = CNavigation::pagination($this->modele->nb_max_courriels, $numero_page, $nb_par_page);
+
+			function afficherPage($boite, $num_page, $texte)
+			{
+				if ($num_page !== false)
+				{
+					echo "<a href=\"?EX=liste&amp;boite=$boite&amp;page=$num_page\">$texte</a> ";
+				}
+			}
+			
+			echo "<p class=\"pagination\">Pages:<br/>\n";
+
+			afficherPage($boite, $pagination['directions']['precedent'], 'Précedent');
+
+			$difference = -1;
+			foreach ($pagination['pages'] as $pagin)
+			{
+				// Si il y a un décalage supérieur à 1
+				// C'est qu'il y a eu un saut dans la pagination
+				if ($pagin-$difference > 1)
+				{
+					echo '… ';
+				}
+
+				if ($pagin === $numero_page)
+				{
+					echo "<strong>";
+					afficherPage($boite, $pagin, $pagin+1);
+					echo "</strong>";
+				} else {
+					afficherPage($boite, $pagin, $pagin+1);
+				}
+				
+				$difference = $pagin;
+			}
+
+			afficherPage($boite, $pagination['directions']['suivant'], 'Suivant');
+			
+			echo "\n</p>\n";
+
 		}
 		else
 		{
