@@ -89,27 +89,26 @@ class CModCourriel extends AModele
 		$i_debut = min($nb_courriels, $page * $nb_par_page);
 		$i_fin = min($nb_courriels, $i_debut + $nb_par_page);
 
-		if (($i_fin - $i_debut) === 0)
-		{
-			$liste = '';
-		}
-		else
-		{
-			$liste = strval($liste_triee[$i_debut]);
-			for ($i = $i_debut+1; $i < $i_fin; ++$i)
-			{
-				$liste .= ','.strval($liste_triee[$i]);
-			}
-		}
-		
 		$this->nb_max_courriels = $nb_courriels;
-
-		return $liste;
+		return array_slice($liste_triee, $i_debut, $i_fin-$i_debut);
 	}
 
 	public function recupererCourriels($page = 0, $nb_par_page = 12)
 	{
-		$this->courriels = CImap::fetch_overview($this->recupererListeTriee($page, $nb_par_page));
+		$liste_triee = $this->recupererListeTriee($page, $nb_par_page);
+
+		$liste_entetes = CImap::fetch_overview(implode(',',$liste_triee));
+
+		$liste_finale = $liste_triee;
+
+		foreach ($liste_entetes as $entete)
+		{
+			$clef = array_search($entete->msgno, $liste_triee);
+			$liste_finale[$clef] = $entete;
+		}
+
+
+		$this->courriels = $liste_finale;
 	}
 
 	public function deplacer($destination)
@@ -126,7 +125,7 @@ class CModCourriel extends AModele
 			$boite->creer();
 		}
 
-		if (CImap::mail_move($liste, $destination))
+		if (CImap::mail_move(implode(',',$liste), $destination))
 		{
 			// Applique la suppression du message dans la boite de départ
 			CImap::expunge();
