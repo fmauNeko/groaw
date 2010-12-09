@@ -125,6 +125,11 @@ class CModCourriel extends AModele
 			$boite->creer();
 		}
 
+		if (!is_array($liste))
+		{
+			$liste = array($liste);
+		}
+
 		if (CImap::mail_move(implode(',',$liste), $destination))
 		{
 			// Applique la suppression du message dans la boite de départ
