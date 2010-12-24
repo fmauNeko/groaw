@@ -22,7 +22,7 @@ class CModCourriel extends AModele
 		$headers = preg_replace('/\r\n([\t ])/', '$1', $headers);
 
 		// Parsage bourrin
-		preg_match_all('/(.+)\s*:\s*(.+)/', $headers, $matches);
+		preg_match_all('/(.+?)\s*:\s*(.+)/', $headers, $matches);
 
 		$headers = new stdClass();
 		$l_matches = count($matches[0]);

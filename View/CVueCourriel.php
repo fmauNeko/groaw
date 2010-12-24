@@ -22,7 +22,7 @@ class CVueCourriel extends AVueModele
 					"</h4>\n\t\t\t<p>",
 					$message->seen ? "Lu" : "Non lu",
 					", de <strong>",
-					$this->formater_date_liste($message->date),
+					$this->formaterDate($message->date),
 					"</strong> par <strong>",
 					htmlspecialchars(str_replace('@MISSING_DOMAIN','',preg_replace('/\s<.+>$/','',$this->mime_to_utf8($message->from)))),
 					"</strong>.</p>\n\t\t</a>\n\t</li>\n";
@@ -131,7 +131,7 @@ EOT;
 		}
 		else
 		{
-			if ($objet->personal)
+			if (isset($objet->personal))
 			{
 				echo htmlspecialchars($objet->personal), ' <em>&lt;';
 			}
@@ -143,7 +143,7 @@ EOT;
 				echo '@', htmlspecialchars($objet->host);
 			}
 			
-			if ($objet->personal)
+			if (isset($objet->personal))
 			{
 				echo '&gt;</em>';
 			}
@@ -177,6 +177,10 @@ EOT;
 
 		$courriel = $this->modele->courriel;
 
+		echo "\n<!--\n";
+		print_r($courriel);
+		echo "-->\n";
+
 		$sujet = $this->mime_to_utf8($courriel->subject);
 		$sujet = ($sujet === '') ? 'Pas de sujet' : $sujet;
 	
@@ -192,6 +196,26 @@ EOT;
 		if (isset($courriel->to))
 		{
 			$this->afficherListePersonnes("Destinataires", "destinataires", $courriel->to);
+		}
+
+		if (isset($courriel->date))
+		{
+			$date = $this->formaterDate($courriel->date);
+		}
+		else
+		{
+			$date = 'Inconnue';
+		}
+
+		echo "<tr>\n\t\t\t\t<th>Date d'envoi</th>",
+				"\n\t\t\t\t<td>$date</td>\n\t\t\t</tr>";
+
+		// C'est pour mes flux rss :-)
+		if (isset($courriel->{'x-rss-item-link'}))
+		{
+			$lien = htmlspecialchars($courriel->{'x-rss-item-link'});
+			echo "<tr>\n\t\t\t\t<th>Url de l'article</th>",
+				"\n\t\t\t\t<td><a href=\"$lien\">$lien</a></td>\n\t\t\t</tr>";
 		}
 
 		echo "\n\t\t</table>\n\t</div>\n\t<div class=\"corp\">\n";

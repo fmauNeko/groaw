@@ -35,7 +35,7 @@ abstract class AVueModele
 		return $output;
 	}
 
-	public function formater_date_liste($date)
+	public function formaterDate($date)
 	{
 		// Il est intéressant de noter que ça fonctionne du premier coup
 		$t =  strtotime($date);
