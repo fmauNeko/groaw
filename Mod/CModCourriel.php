@@ -18,11 +18,22 @@ class CModCourriel extends AModele
 
 		$headers = CImap::fetchheader($this->num_courriel);
 
-		$c = imap_rfc822_parse_headers($headers);
+		// Déplissage des headers
+		$headers = preg_replace('/\r\n([\t ])/', '$1', $headers);
 
-		//groaw($c);	
+		// Parsage bourrin
+		preg_match_all('/(.+)\s*:\s*(.+)/', $headers, $matches);
 
-		$this->courriel = $c;	
+		$headers = new stdClass();
+		$l_matches = count($matches[0]);
+
+		for ($i = 0; $i < $l_matches; ++$i)
+		{
+			$clef = strtolower($matches[1][$i]);
+			$headers->$clef = $matches[2][$i];
+		}
+
+		$this->courriel = $headers;	
 	}
 
     public function recupererPartieTexte($num_section, $structure)

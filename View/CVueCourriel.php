@@ -125,7 +125,49 @@ EOT;
 
 	public function afficherPersonne($objet)
 	{
-		echo htmlspecialchars($objet->mailbox),'@',htmlspecialchars($objet->host); 
+		if ($objet->host === 'SYNTAX-ERROR')
+		{
+			echo "Adresse invalide";
+		}
+		else
+		{
+			if ($objet->personal)
+			{
+				echo htmlspecialchars($objet->personal), ' <em>&lt;';
+			}
+
+			echo htmlspecialchars($objet->mailbox);
+			
+			if ($objet->host !== '')
+			{
+				echo '@', htmlspecialchars($objet->host);
+			}
+			
+			if ($objet->personal)
+			{
+				echo '&gt;</em>';
+			}
+		}
+	}
+
+	public function afficherListePersonnes($nom, $classe, $texte)
+	{
+		echo "<tr>\n\t\t\t\t<th>$nom</th>",
+					"\n\t\t\t\t<td>\n\t\t\t\t\t<ul class=\"$classe\">\n";
+
+		$adresses = imap_rfc822_parse_adrlist($texte, '');
+
+		if (is_array($adresses))
+		{
+			foreach ($adresses as $adresse)
+			{
+				echo "\t\t\t\t\t\t<li>";
+				$this->afficherPersonne($adresse);
+				echo "</li>\n";
+			}
+		}
+
+		echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>";
 	}
 
     public function afficherCourriel()
@@ -142,33 +184,16 @@ EOT;
 					htmlspecialchars($sujet),
 					"</h2>\n\t\t<table>\n\t\t\t";
 		
-		echo "<tr>\n\t\t\t\t<th>Émetteurs</th>",
-					"\n\t\t\t\t<td>\n\t\t\t\t\t<ul class=\"emetteurs\">\n";
-	
-		foreach ($courriel->from as $emetteur)
+		if (isset($courriel->from))
 		{
-			echo "\t\t\t\t\t\t<li>";
-			$this->afficherPersonne($emetteur);
-			echo "</li>\n";
-		}
-
-		echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>";
-		
-		if (isset($courriel->to))
-		{
-			echo "<tr>\n\t\t\t\t<th>Destinataires</th>",
-						"\n\t\t\t\t<td>\n\t\t\t\t\t<ul class=\"destinataires\">\n";
-
-			foreach ($courriel->to as $destinataire)
-			{
-				echo "\t\t\t\t\t\t<li>";
-				$this->afficherPersonne($destinataire);
-				echo "</li>\n";
-			}
-
-			echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>";
+			$this->afficherListePersonnes("Émetteurs", "emetteurs", $courriel->from);
 		}
 			
+		if (isset($courriel->to))
+		{
+			$this->afficherListePersonnes("Destinataires", "destinataires", $courriel->to);
+		}
+
 		echo "\n\t\t</table>\n\t</div>\n\t<div class=\"corp\">\n";
 
         // Si c'est un beau mail de plusieurs parties
