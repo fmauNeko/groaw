@@ -369,10 +369,4 @@ class CNettoyeurHtml
 	}
 
 }
-
-$html = file_get_contents("page.html");
-
-$lapin = new CNettoyeurHtml($html);
-
-echo $lapin->recupererHtmlNettoye();
 ?>
