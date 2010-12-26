@@ -374,11 +374,5 @@ $html = file_get_contents("page.html");
 
 $lapin = new CNettoyeurHtml($html);
 
-$t_a = microtime();
-for ($i = 0; $i < 30; $i++)
-{
-	$lapin->recupererHtmlNettoye();
-}
-
-echo microtime()-$t_a;
+echo $lapin->recupererHtmlNettoye();
 ?>
