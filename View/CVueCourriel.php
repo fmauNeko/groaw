@@ -311,17 +311,21 @@ EOT;
 				break;
 			case TYPETEXT:
 				//groaw("ok c'est du texte");
+                $texte = $this->modele->recupererPartieTexte($num_section, $structure);
 			    
                 if ($structure->ifsubtype && $structure->subtype === 'HTML')
                 {
-			    	//groaw(htmlspecialchars($texte));
+					echo '<div class="desole_c_moche">';
+					
+					$nettoyeur = new CNettoyeurHtml($texte, CONTENU_DISTANT);
+					$nettoyeur->nettoyerEtAfficher();
 
-                    echo '<iframe id="apercu_html" src="?EX=partie&amp;numero='.$numero.'&amp;section='.$num_section.'&amp;boite=',rawurlencode($GLOBALS['boite']),'" sandbox="allow-scripts"></iframe>';
+					echo '</div>';
+                    //echo '<iframe id="apercu_html" src="?EX=partie&amp;numero='.$numero.'&amp;section='.$num_section.'&amp;boite=',rawurlencode($GLOBALS['boite']),'" sandbox="allow-scripts"></iframe>';
 
                 }
                 else
                 {
-                    $texte = $this->modele->recupererPartieTexte($num_section, $structure);
                     $texte = htmlspecialchars($texte);
 
                     $texte = preg_replace('/(\s)(https?|ftp)\:\/\/(.+?)(\s)/', '$1<a href="$2://$3">$2://$3</a>$4',' '.$texte.' ');

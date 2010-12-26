@@ -19,6 +19,9 @@ class CNettoyeurHtml
 	// Code html à nettoyer
 	public $html;
 
+	// Charger ou pas les images à distance
+	public $distance_accepte;
+
 	// Buffer utilisé entre les différentes méthodes
 	protected $buffer = null;
 
@@ -37,9 +40,10 @@ class CNettoyeurHtml
 	// Les numéros des états et l'ordre dans le tableau sont liés
 	protected $attributs_dangereux = array('canard','style', 'src', 'href');
 
-	public function __construct($html)
+	public function __construct($html, $distance_accepte = false)
 	{
 		$this->html = $html;
+		$this->distance_accepte = $distance_accepte;
 	}
 
 	public function nettoyerEtAfficher()
@@ -357,10 +361,17 @@ class CNettoyeurHtml
 				$this->buffer = 'canard';
 				break;
 			case CNETTOYEURHTML_ETAT_B_STYLE:
-				$this->buffer = 'color:red;background:red;';
+				if (!$this->distance_accepte)
+				{
+					$this->buffer = 'color:red;background:red;';
+				}
+
 				break;
 			case CNETTOYEURHTML_ETAT_B_SRC:
-				$this->buffer = '#';
+				if (!$this->distance_accepte)
+				{
+					$this->buffer = 'about:blank';
+				}
 				break;
 			/*case CNETTOYEURHTML_ETAT_B_HREF:
 				$this->buffer = '#';

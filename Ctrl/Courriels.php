@@ -193,12 +193,14 @@ function partie()
     }
 
 	$texte = $mod->recupererPartieTexte($nouvelle_section, $structure);
-    
-    global $BODY_ONLY;
+
+	$nettoyeur = new CNettoyeurHtml($texte, CONTENU_DISTANT);
+   
+	global $BODY_ONLY;
     $BODY_ONLY = true;
     header('Content-type:   text/html; charset=UTF-8');
-
-    echo $texte;
+	
+	$nettoyeur->nettoyerEtAfficher();
 	
 }
 
