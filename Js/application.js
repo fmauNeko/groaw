@@ -6,5 +6,6 @@ window.onload = function()
 	{
 		var hauteur = frame.contentWindow.document.body.scrollHeight;
 		frame.style.height = hauteur+'px';
+		frame.contentWindow.document.body.style.overflowY = 'hidden';
 	}
 }

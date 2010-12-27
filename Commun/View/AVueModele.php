@@ -35,7 +35,63 @@ abstract class AVueModele
 		return $output;
 	}
 
+	public function traduirePeriodeDate($periode, $semaine = null)
+	{
+		switch($periode)
+		{
+			case -1:
+				return 'dans le futur';
+			case 0:
+				return 'ce soir';
+			case 1:
+				return 'en fin d\'après midi';
+			case 2:
+				return 'cette après midi';
+			case 3:
+				return 'vers midi';
+			case 4:
+				return 'ce matin';
+			case 5:
+				return 'tôt ce matin';
+			case 6:
+				return 'dans la nuit';
+			case 7:
+				return 'hier';
+			case 8:
+				return ($semaine) ? $semaine : 'cette semaine';
+			default:
+				return 'plus d\'une semaine';
+		}
+	}
+
 	public function formaterDate($date)
+	{
+		if (!is_array($date))
+		{
+			$date = $this->repererDate($date);
+		}
+
+		$periode = $date[0];
+
+		if ($periode < 0 || $periode > 8)
+		{
+			$format = FORMAT_DATE_NORMAL;
+		}
+		elseif ($periode == 8)
+		{
+			$format = FORMAT_DATE_SEMAINE;
+		}
+		else
+		{
+			$format = FORMAT_DATE_JOUR;
+		}
+
+		$format = $this->traduirePeriodeDate($periode).' '.$format;
+
+		return strftime($format, $date[1]);
+	}
+
+	public function repererDate($date)
 	{
 		// Il est intéressant de noter que ça fonctionne du premier coup
 		$t =  strtotime($date);
@@ -50,29 +106,35 @@ abstract class AVueModele
 
 		$an = getdate($n);
 
-		$l_jour		= mktime(0, 0, 0, $an['mon'], $an['mday'], $an['year']);
-		$l_semaine	= mktime(0, 0, 0, $an['mon'], $an['mday']-6, $an['year']);
+		// On commence à la fin de minuit
+		$heure_c = mktime(23, 59, 59, $an['mon'], $an['mday'], $an['year']);
 
-		$format = FORMAT_DATE_NORMAL;
-
+		$heures = array(
+			23400, // 1 À partir de 18h30
+			36000, // 2 À partir de 14h
+			45000, // 3 À partir de 11h30
+			57600, // 4 À partir de 8h00
+			68400, // 5 À partir de 5h00
+			86400, // 6 À partir de 0h0
+			172800,// 7 Hier
+			604800,// 8 Cette semaine
+			0
+		);
+		
 		// Si la date n'est pas dans le futur
 		if ($t <= $n)
 		{
-			if ($t > $l_jour)
+			$i;
+			$heure = $heure_c;
+			for ($i = 0; $t < $heure && $i < 9 ; ++$i)
 			{
-				$format = FORMAT_DATE_JOUR;
+				$heure = $heure_c - $heures[$i];
 			}
-			else if ($t > $l_semaine)
-			{
-				$format = FORMAT_DATE_SEMAINE;
-			}
-		}
-		else
-		{
-			$format = 'Futur : '.$format;
+			return array($i, $t, ($i === 8) ? strftime('%A', $t) : null);
 		}
 
-		return strftime($format, $t);
+		// Si l'on est dans le futur
+		return array(-1, $t, null);
 	}
 
 }

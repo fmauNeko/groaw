@@ -9,11 +9,21 @@ class CVueCourriel extends AVueModele
 			$boite = rawurlencode($GLOBALS['boite']);
 
 			echo "<ul class=\"messages\">\n";	
-			
+
+			$nom_periode = null;
 			foreach ($this->modele->courriels as $message)
 			{
 				$sujet = $this->mime_to_utf8($message->subject);
 				$sujet = ($sujet === '') ? 'Pas de sujet' : $sujet;
+
+				$date = $this->repererDate($message->date);
+				$nouveau_nom_periode = ucfirst($this->traduirePeriodeDate($date[0], $date[2]));
+
+				if ($nouveau_nom_periode !== $nom_periode)
+				{
+					$nom_periode = $nouveau_nom_periode;
+					echo "\t<li class=\"section\">$nom_periode</li>\n";
+				}
 
 				echo "\t<li>\n\t\t<a href=\"?EX=afficher&amp;boite=$boite&amp;numero=",
 					$message->msgno,
@@ -21,9 +31,9 @@ class CVueCourriel extends AVueModele
 					htmlspecialchars($sujet),
 					"</h4>\n\t\t\t<p>",
 					$message->seen ? "Lu" : "Non lu",
-					", de <strong>",
-					$this->formaterDate($message->date),
-					"</strong> par <strong>",
+					", de ",
+					$this->formaterDate($date),
+					" par <strong>",
 					htmlspecialchars(str_replace('@MISSING_DOMAIN','',preg_replace('/\s<.+>$/','',$this->mime_to_utf8($message->from)))),
 					"</strong>.</p>\n\t\t</a>\n\t</li>\n";
 			}

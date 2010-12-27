@@ -8,11 +8,12 @@ $LISTE_CTRLS = array(
 	'Courriels'		=> 'Gestion des courriels'
 );
 
-define('FORMAT_DATE_JOUR',		'Aujourd\'hui à %Hh%M');
-define('FORMAT_DATE_SEMAINE',	'%A à %Hh%M');
-define('FORMAT_DATE_NORMAL',	'%d/%m/%Y à %Hh%M');
+define('FORMAT_DATE_JOUR',		'à <strong>%Hh%M</strong>');
+define('FORMAT_DATE_SEMAINE',	'le <strong>%A à %Hh%M</strong>');
+define('FORMAT_DATE_NORMAL',	'le <strong>%A %d %B %Y à %Hh%M</strong>');
 
 define('FUSEAU_HORAIRE', 'Europe/Paris');
+setlocale (LC_ALL, 'fr_FR.utf8','fr_FR', 'fr'); 
 
 define('SERVEUR_IMAP','{88.191.117.94:993/imap/ssl/novalidate-cert}');
 
