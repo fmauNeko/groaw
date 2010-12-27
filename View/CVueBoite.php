@@ -9,7 +9,8 @@ class CVueBoite extends AVueModele
 
 	public static function explodeNomBoite($boite, $nom)
 	{
-		return explode($boite->delimiter,utf7_to_utf8($nom));
+		$nom = new CUtf7($nom);
+		return explode($boite->delimiter, $nom->toUtf8());
 	}
 
 	public static function creerDescription($tableau_boite)

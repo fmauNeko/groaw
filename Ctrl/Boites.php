@@ -63,7 +63,7 @@ function gestion()
 
 			foreach ($_REQUEST['supprimer_boites'] as $nom_boite)
 			{
-				$boite->boite = $nom_boite;
+				$boite->boite = rawurldecode($nom_boite);
 				groaw($nom_boite);
 				$boite->supprimer();
 			}

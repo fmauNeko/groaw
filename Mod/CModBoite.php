@@ -169,16 +169,16 @@ class CModBoite extends AModele
 
 	public function existe()
 	{
-		$nom = utf8_to_utf7($this->boite);
-		$status = CImap::status(SERVEUR_IMAP.$nom, 0);
+		$nom = new CUtf7($this->boite);
+		$status = CImap::status(SERVEUR_IMAP.$nom->fromUtf8(), 0);
 
 		return $status !== false;
 	}
 
 	public function creer()
 	{
-		$nom = utf8_to_utf7($this->boite);
-		if (CImap::createmailbox(SERVEUR_IMAP.$nom)===false)
+		$nom = new CUtf7($this->boite);
+		if (CImap::createmailbox(SERVEUR_IMAP.$nom->fromUtf8())===false)
 		{
 			throw new Exception('Impossible de créer la boite:«'.$this->boite.'»');
 		}
