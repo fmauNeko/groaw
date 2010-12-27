@@ -19,6 +19,9 @@ define('SERVEUR_IMAP','{88.191.117.94:993/imap/ssl/novalidate-cert}');
 define('COURRIELS_PAR_PAGE', 40);
 define('CONTENU_DISTANT', true);
 
+// cache de 5 minutes
+define('DUREE_CACHE_LISTE',300); 
+
 // Les mails peuvent définir un contenu alternatif
 // Voici les types que l'on préfère par ordre de préférence
 

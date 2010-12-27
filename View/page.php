@@ -21,7 +21,7 @@ if (isset($_SESSION['connecte']))
 	echo "<ul id=\"navigation\">\n";
 	if ($NOM_CTRL === 'Courriels' && $FONCTION_CTRL === 'afficher')
 	{
-		$boite = htmlspecialchars($GLOBALS['boite']);
+		$boite = rawurlencode($GLOBALS['boite']);
 		echo "\t<li><a href=\"Courriels.php?EX=liste&amp;boite=$boite\">Liste des messages</a></li>\n";
 	}
 	if ($NOM_CTRL !== 'Boites' || $FONCTION_CTRL !== 'tableau')

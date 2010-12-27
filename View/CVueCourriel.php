@@ -125,7 +125,7 @@ EOT;
 
 	public function afficherPersonne($objet)
 	{
-		if ($objet->host === 'SYNTAX-ERROR')
+		if (isset($objet->host) && $objet->host === 'SYNTAX-ERROR')
 		{
 			echo "Adresse invalide";
 		}
@@ -136,9 +136,12 @@ EOT;
 				echo htmlspecialchars($objet->personal), ' <em>&lt;';
 			}
 
-			echo htmlspecialchars($objet->mailbox);
+			if (isset($objet->mailbox))
+			{
+				echo htmlspecialchars($objet->mailbox);
+			}
 			
-			if ($objet->host !== '')
+			if (isset($objet->host) && $objet->host !== '')
 			{
 				echo '@', htmlspecialchars($objet->host);
 			}
@@ -315,13 +318,14 @@ EOT;
 			    
                 if ($structure->ifsubtype && $structure->subtype === 'HTML')
                 {
-					echo '<div class="desole_c_moche">';
-					
-					$nettoyeur = new CNettoyeurHtml($texte, CONTENU_DISTANT);
-					$nettoyeur->nettoyerEtAfficher();
 
-					echo '</div>';
-                    //echo '<iframe id="apercu_html" src="?EX=partie&amp;numero='.$numero.'&amp;section='.$num_section.'&amp;boite=',rawurlencode($GLOBALS['boite']),'" sandbox="allow-scripts"></iframe>';
+					$nettoyeur = new CNettoyeurHtml($texte, CONTENU_DISTANT);
+					$texte = $nettoyeur->recupererHtmlNettoye();
+
+					$chemin = '../Cache/mail-'.md5($texte).'.html';
+					file_put_contents($chemin, $texte);
+					
+                    echo '<iframe id="apercu_html" src="',$chemin, '"></iframe>';
 
                 }
                 else

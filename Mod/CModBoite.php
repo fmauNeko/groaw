@@ -58,7 +58,7 @@ class CModBoite extends AModele
 		});
 	}
 
-	public function chargerCacheBoites($fichier)
+	public function chargerCacheBoites($fichier, $duree_cache = DUREE_CACHE_LISTE)
 	{
 		$fichier = $this->calculerNomfichier($fichier);
 
@@ -67,8 +67,8 @@ class CModBoite extends AModele
 			return false;
 		}
 
-		// Si le cache a plus de 5 minutes
-		if (time() - filemtime($fichier) > 300)
+		// Si le cache a plus de 5 minutes
+		if (time() - filemtime($fichier) > $duree_cache)
 		{
 			groaw("cache");
 			return false;
@@ -126,7 +126,7 @@ class CModBoite extends AModele
 
 	public function listeBoitesNbMessages()
 	{
-		if (!$this->chargerCacheBoites('liste_boites_nb_messages'))
+		if (!$this->chargerCacheBoites('liste_boites_nb_messages', 7200))
 		{
 			$this->recupererBoites();
 			$this->recupererNbVusBoites();

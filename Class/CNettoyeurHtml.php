@@ -49,10 +49,11 @@ class CNettoyeurHtml
 	public function nettoyerEtAfficher()
 	{
 		// Si il y a une balise body, on ne récupère que son contenu
-		if (preg_match('/<\w*body.*?>(.+)<\\/\w*body\w*>/s', $this->html, $p_html))
+		/*if (preg_match('/<\w*body.*?>(.+)<\\/\w*body\w*>/s', $this->html, $p_html))
 		{
 			$this->html = $p_html[1];
-		}
+		}*/
+		$this->html = preg_replace('/<\w*style.*?>.*?<\\/\w*style\w*>/s', '', $this->html);
 
 		$taille_html = strlen($this->html);
 		
@@ -288,7 +289,7 @@ class CNettoyeurHtml
 			// sans quotes  
 			default:
 				$this->buffer = $lettre;
-				$this->etat_a = ETAT_A_ATTRIBUT_C;
+				$this->etat_a = CNETTOYEURHTML_ETAT_A_SANSQUOTE_ATTRIBUT;
 				return;
 		}
 
@@ -321,7 +322,7 @@ class CNettoyeurHtml
 		// Gestion du buffer
 		$this->etat_b();
 
-		echo $buffer, $lettre;
+		echo $this->buffer, $lettre;
 	}
 
 	// Gestion d'un attribut avec quotes
