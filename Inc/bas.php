@@ -32,6 +32,14 @@ else
 	$CONTENU_PAGE = ob_get_contents();
 	ob_end_clean();
 
-	require('../View/page.php');
+	if (isset($_REQUEST['PRELOAD_MODE']))
+	{
+		header('Content-Type: image/gif');
+		echo file_get_contents('../Img/Transparent.gif');
+	}
+	else
+	{
+		require('../View/page.php');
+	}
 }
 ?>

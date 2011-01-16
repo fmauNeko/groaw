@@ -41,6 +41,8 @@ function tableau()
 
 	$vue = new CVueBoite($mod);
 	$vue->afficherBoitesAcceuil();
+	
+	CHead::ajouterJs('tableau');
 }
 
 function gestion()
