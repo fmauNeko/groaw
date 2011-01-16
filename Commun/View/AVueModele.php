@@ -37,6 +37,7 @@ abstract class AVueModele
 
 	public function traduirePeriodeDate($periode, $semaine = null)
 	{
+		groaw($periode);
 		switch($periode)
 		{
 			case -1:

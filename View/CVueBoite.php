@@ -164,7 +164,7 @@ class CVueBoite extends AVueModele
 				$branche = &$branche[$e];
 			}
 
-			array_push($branche, $boite);
+			$branche[] = $boite;
 		}
 
 

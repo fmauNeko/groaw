@@ -13,7 +13,7 @@ class CMessage
 			$_SESSION['CMessage_list'] = array();
 		}
 
-		array_push($_SESSION['CMessage_list'], $this);
+		$_SESSION['CMessage_list'][] = $this;
 	}
 
 	public function afficher()
@@ -41,3 +41,4 @@ class CMessage
 		}
 	}
 }
+?>

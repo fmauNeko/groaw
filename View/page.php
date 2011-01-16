@@ -2,10 +2,15 @@
 <html>
 <head>
 	<title><?php echo CNavigation::titre();?> - GROAW !</title>
-	<link href="../Css/application.css" media="screen" rel="Stylesheet" type="text/css" />
-	<link href="../Commun/Css/modeles.css" media="screen" rel="Stylesheet" type="text/css" />
-	<link href="../Css/<?php echo $NOM_CTRL; ?>.css" media="screen" rel="Stylesheet" type="text/css" />
-	<script type="text/javascript" src="../Js/application.js"></script>
+<?php foreach (CHead::$css as $css)
+{
+	echo "\t<link href=\"../Css/$css.css\" media=\"screen\" rel=\"Stylesheet\" type=\"text/css\" />\n";
+}
+foreach (CHead::$js as $js)
+{
+	echo "\t<script type=\"text/javascript\" src=\"../Js/$js.js\"></script>\n";
+}
+?>
 </head>
 <body>
 <?php

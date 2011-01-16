@@ -24,6 +24,6 @@ if (isset($_REQUEST['AJAX_MODE']))
 }
 else
 {
-    $BODY_ONLY = false;
+	$BODY_ONLY = false;
 }
 ?>

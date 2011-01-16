@@ -3,9 +3,16 @@
 ob_start();
 try
 {
+	CHead::ajouterCss('application');
+	CHead::ajouterCss($NOM_CTRL);
+	CHead::ajouterJs('application');
+	CHead::ajouterJs($NOM_CTRL);
+	
 	CMessage::afficherCMessages();
+
 	$FONCTION_CTRL();
-    echo "\n<br/>\n";
+   
+	echo "\n<br/>\n";
 	groaw(imap_errors());
 }
 catch (CException $e)
@@ -24,6 +31,7 @@ else
 {
 	$CONTENU_PAGE = ob_get_contents();
 	ob_end_clean();
+
 	require('../View/page.php');
 }
 ?>
