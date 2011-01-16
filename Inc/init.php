@@ -1,7 +1,7 @@
 <?php
 if (!isset($_REQUEST['PRELOAD_MODE']))
 {
-	header ('Content-Type:	text/html; charset=utf-8');
+	header ('Content-Type: text/html; charset=utf-8');
 }
 
 // Fuseau horaire

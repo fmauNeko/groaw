@@ -203,12 +203,14 @@ EOT;
 		
 		if (isset($courriel->from))
 		{
-			$this->afficherListePersonnes("Émetteurs", "emetteurs", $courriel->from);
+			$this->afficherListePersonnes("Émetteurs", "emetteurs",
+					$this->mime_to_utf8($courriel->from));
 		}
 			
 		if (isset($courriel->to))
 		{
-			$this->afficherListePersonnes("Destinataires", "destinataires", $courriel->to);
+			$this->afficherListePersonnes("Destinataires", "destinataires",
+					$this->mime_to_utf8($courriel->to));
 		}
 
 		if (isset($courriel->date))

@@ -37,7 +37,7 @@ abstract class AVueModele
 
 	public function traduirePeriodeDate($periode, $semaine = null)
 	{
-		groaw($periode);
+		/*groaw($periode);*/
 		switch($periode)
 		{
 			case -1:
@@ -73,6 +73,8 @@ abstract class AVueModele
 		}
 
 		$periode = $date[0];
+
+		/*groaw($periode);*/
 
 		if ($periode < 0 || $periode > 8)
 		{

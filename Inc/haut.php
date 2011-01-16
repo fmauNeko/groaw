@@ -4,6 +4,11 @@ require_once('../Commun/Inc/autoload.php');
 require_once('../Commun/Inc/exceptions.php');
 require_once('../Commun/Inc/outils.php');
 
+if (FORCE_HTTPS && !isset($_SERVER['HTTPS']))
+{
+	new CRedirection('https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+}
+
 $EX = isset($_REQUEST['EX']) ? $_REQUEST['EX'] : '@DEFAULT_ACTION@';
 
 if (array_key_exists($EX, $ACTIONS))

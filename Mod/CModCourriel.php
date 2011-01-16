@@ -22,15 +22,15 @@ class CModCourriel extends AModele
 		$headers = preg_replace('/\r\n([\t ])/', '$1', $headers);
 
 		// Parsage bourrin
-		preg_match_all('/(.+?)\s*:\s*(.+)/', $headers, $matches);
-
+		preg_match_all('/(.+?)[\t ]*:[\t ]*(.+)/', $headers, $matches);
+		
 		$headers = new stdClass();
 		$l_matches = count($matches[0]);
 
 		for ($i = 0; $i < $l_matches; ++$i)
 		{
 			$clef = strtolower($matches[1][$i]);
-			$headers->$clef = $matches[2][$i];
+			$headers->$clef = rtrim($matches[2][$i]);
 		}
 
 		$this->courriel = $headers;	

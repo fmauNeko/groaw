@@ -21,7 +21,10 @@ define('COURRIELS_PAR_PAGE', 40);
 define('CONTENU_DISTANT', true);
 
 // cache de 5 minutes
-define('DUREE_CACHE_LISTE',300); 
+define('DUREE_CACHE_LISTE',300);
+
+// Forcer le https si il est disponible ?
+define('FORCE_HTTPS', false);
 
 // Les mails peuvent définir un contenu alternatif
 // Voici les types que l'on préfère par ordre de préférence
