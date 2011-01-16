@@ -4,9 +4,19 @@ require_once('../Commun/Inc/autoload.php');
 require_once('../Commun/Inc/exceptions.php');
 require_once('../Commun/Inc/outils.php');
 
-if (FORCE_HTTPS && !isset($_SERVER['HTTPS']))
+if (FORCE_HTTPS)
 {
-	new CRedirection('https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+
+	// Si c'est possible de s'en occuper cotés serveur
+	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTP'] !== 'on')
+	{
+		new CRedirection('https://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+	};
+
+	// Sinon, c'est cotés client
+	// chez moi, le reverse proxy charge les pages en http, ce qui fait que php
+	// n'a aucune info sur la sécurité cotés serveur :D
+	CHead::ajouterJs('forcerHttps');
 }
 
 $EX = isset($_REQUEST['EX']) ? $_REQUEST['EX'] : '@DEFAULT_ACTION@';
