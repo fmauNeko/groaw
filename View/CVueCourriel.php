@@ -337,7 +337,8 @@ EOT;
 					$chemin = '../Cache/mail-'.md5($texte).'.html';
 					file_put_contents($chemin, $texte);
 					
-                    echo '<iframe id="apercu_html" src="',$chemin, '"></iframe>';
+					echo '<iframe id="apercu_html" src="',$chemin, '"></iframe>';
+					CHead::ajouterJs('ajusterFrame');
 
                 }
                 else
