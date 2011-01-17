@@ -194,8 +194,14 @@ class CModBoite extends AModele
 
 	public function vider()
 	{
-		CImap::delete("1:*");
+		CImap::delete('1:*');
 		CImap::expunge();
+	}
+
+	public function marquerToutLus()
+	{
+		CImap::setflag_full('1:*', '\Seen');
+		$this->effacerCaches();
 	}
 }
 

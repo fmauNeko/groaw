@@ -119,6 +119,7 @@ echo <<<EOT
 <div class="outils_courriel">
 <ul class="outils_base">
 	<li><a href="?EX=enterrer&amp;boite=$boite&amp;page=$numero_page">Enterrer tout ça</a></li>
+	<li><a href="?EX=marquer_tout_lu&amp;boite=$boite&amp;page=$numero_page">C'est bon, j'ai tout lu</a></li>
 EOT;
 
 		if ($boite === 'INBOX.Trash')

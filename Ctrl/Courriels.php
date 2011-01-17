@@ -10,7 +10,8 @@ $ACTIONS = array(
     'deplacer'	=> array('Déplacer', 'Déplace un courriel'),
 	'enterrer'	=> array('Entérrer', 'Déplace la liste de courriels dans les archives'),
 	'detruire_courriels'	=> array('Détruire courriels', 'Détruit définitivement tout les courriers de la boite'),
-	'archive'	=> array('Archive', 'Espace des archives')
+	'archive'	=> array('Archive', 'Espace des archives'),
+	'marquer_tout_lu'	=> array('Lus', 'Marquer tout les messages comme lus')
 );
 
 $DEFAULT_ACTION = 'liste';
@@ -112,6 +113,29 @@ function detruire_courriels()
 	}
 	
 	CVueBoite::afficherConfirmationVidageBoite($boite, $url_boite);
+}
+
+function marquer_tout_lu()
+{
+
+	$mod = new CModBoite();
+	$mod->marquerToutLus();
+
+	$mod->listeBoitesNbNonLus();
+
+	$boites = $mod->boites;
+
+	if (count($boites) > 0 && $boites[0]->nb_non_vus > 0)
+	{
+		$boite = rawurlencode(CVueBoite::simplifierNomBoite($boites[0]->name));
+	}
+	else
+	{
+		$boite = rawurlencode($GLOBALS['boite']).
+			(isset($_REQUEST['page']) ? '&page='.abs(intval($_REQUEST['page'])) : '');
+	}
+
+	new CRedirection('Courriels.php?EX=liste&boite='.$boite);
 }
 
 function liste()

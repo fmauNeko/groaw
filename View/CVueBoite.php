@@ -195,7 +195,7 @@ class CVueBoite extends AVueModele
 			$description = htmlspecialchars($branche->tableau_boite[count($branche->tableau_boite)-1]);
 			$nb_non_vus = $branche->nb_non_vus;
 
-			echo "\t<li><a href=\"Courriels.php?EX=liste&amp;boite=$branche->lien&amp;\">",
+			echo "\t<li><a href=\"Courriels.php?EX=liste&amp;boite=$branche->lien\">",
 				($nb_non_vus > 0) ? '<em>' : '', wordwrap($description, 20, "<br/>", true),
 				($nb_non_vus > 0) ? " ($nb_non_vus)</em>" : '', "</a></li>\n";
 		}
