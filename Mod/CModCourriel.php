@@ -36,40 +36,55 @@ class CModCourriel extends AModele
 		$this->courriel = $headers;	
 	}
 
-    public function recupererPartieTexte($num_section, $structure)
+    public function recupererPartie($num_section, $structure)
     {
+		/*define('ENC7BIT', 0);
+		define('ENC8BIT', 1);
+		define('ENCBINARY', 2);
+		define('ENCBASE64', 3);
+		define('ENCQUOTEDPRINTABLE', 4);
+		define('ENCOTHER', 5);*/
+
 		//groaw($structure);
-        $texte = CImap::fetchbody($this->num_courriel,$num_section);
+        $partie = CImap::fetchbody($this->num_courriel,$num_section);
 
         switch ($structure->encoding)
         {
-            /*// 7 bits (donc de l'ASCII de pas rigolo)
-            case 0:
+            // 7 bits (donc de l'ASCII de pas rigolo)
+            case ENC7BIT:
                 break;
 
             // 8 bits (plein d'encodages)
-            case 1:
-                break;*/
-
-            // binaire
-            case 2:
+            case ENC8BIT:
                 break;
 
+            // binaire
+			case ENCBINARY:
+				$partie = imap_binary($partie);
+                // Pas de break;
+
             // base64
-            case 3:
-                $texte = imap_base64($texte);
+            case ENCBASE64:
+                $partie = imap_base64($partie);
                 break;
 
             // quoted-printable moche
-            case 4:
-                $texte = imap_qprint($texte);
+            case ENCQUOTEDPRINTABLE:
+                $partie = imap_qprint($partie);
                 break;
 
             // autre (pas de chance mec)
-            case 5:
-                new Exception("Une partie du mail est illisible");
-                break;
-        }
+            case ENCOTHER:
+                throw new Exception("Une partie du mail est illisible");
+		}
+
+		return $partie;
+	}
+
+	public function recupererPartieTexte($num_section, $structure)
+	{
+		$texte = $this->recupererPartie($num_section, $structure);
+
         // Recherche de l'encodage, pour effectuer une conversion
         if ($structure->ifparameters)
         {
@@ -157,8 +172,8 @@ class CModCourriel extends AModele
 		}
 		else
 		{
-			// Si on ne connait pas le numéro, on prends le dernier numéro
-			return CImap::num_msg();
+			// Si on ne connait pas le numéro, on prends le premier
+			return min(1, CImap::num_msg());
 
 		}
 	}

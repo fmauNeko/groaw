@@ -248,110 +248,155 @@ EOT;
         echo "\n\t</div>\n</div>\n<!-- Structure du courriel\n";
         print_r($structure);
         echo "-->\n";
-    }
+	}
+
+	private function affichageRecursifMultipart($numero, $structure, $num_section=null)
+	{
+		if ($structure->ifsubtype && strtoupper($structure->subtype) === 'ALTERNATIVE')
+		{
+			//groaw("alternative");
+		   
+			// Recherche de chaque type que l'on préfère
+			global $PREFERENCES_MIME;
+			foreach ($PREFERENCES_MIME as $mime)
+			{
+				$c = 1;
+				foreach ($structure->parts as $partie)
+				{
+					if (strtoupper($partie->subtype) === $mime)
+					{
+						// Gestion du numéro de section
+						if ($num_section === null)
+						{
+							$section = $c;
+						}
+						else
+						{
+							$section = $num_section.'.'.$c;
+						}
+						//groaw($partie->subtype);
+						$this->affichageRecursif($numero, $partie, $section);
+						return;
+					}
+					++$c;
+				}
+			}
+
+			// Si on est là, c'est que l'on ne préfère rien du tout,
+			// on prends donc le premier de la liste
+			if (count($structure->parts) > 0)
+			{
+				// Gestion du numéro de section
+				if ($num_section === null)
+				{
+					$section = '1';
+				}
+				else
+				{
+					$section = $num_section.'.1';
+				}
+				$this->affichageRecursif($numero, $structure->parts[0], $section);
+			}
+		}
+		else
+		{
+			// Compteur pour les sections
+			$c = 1;
+			//groaw("multipart");
+			foreach ($structure->parts as $partie)
+			{
+				// Gestion du numéro de section
+				if ($num_section === null)
+				{
+					$section = $c++;
+				}
+				else
+				{
+					$section = $num_section.'.'.$c++;
+				}
+				
+				// Oh mon DIEU de la récursivité !
+				$this->affichageRecursif($numero, $partie, $section);
+			}
+		}
+	}
+
+	private function affichageRecursifText($numero, $structure, $num_section=null)
+	{
+		//groaw("ok c'est du texte");
+		$texte = $this->modele->recupererPartieTexte($num_section, $structure);
+		
+		if ($structure->ifsubtype && $structure->subtype === 'HTML')
+		{
+
+			$nettoyeur = new CNettoyeurHtml($texte, CONTENU_DISTANT);
+			$texte = $nettoyeur->recupererHtmlNettoye();
+
+			$chemin = '../Cache/mail-'.md5($texte).'.html';
+			file_put_contents($chemin, $texte);
+			
+			echo '<iframe id="apercu_html" src="',$chemin, '"></iframe>';
+			CHead::ajouterJs('ajusterFrame');
+
+		}
+		else
+		{
+			$texte = htmlspecialchars($texte);
+
+			$texte = preg_replace('/(\s)(https?|ftp)\:\/\/(.+?)(\s)/', '$1<a href="$2://$3">$2://$3</a>$4',' '.$texte.' ');
+
+			echo nl2br($texte);
+		}
+	}
+
+	private function affichageRecursifImage($numero, $structure, $num_section=null)
+	{
+		$image = $this->modele->recupererPartie($num_section, $structure);
+		$image = base64_encode($image);
+
+		echo "<img src=\"data:image/jpeg;base64,$image\" alt=\"\"/>";
+		groaw($structure);
+
+		//groaw($image);
+	}
 
     private function affichageRecursif($numero, $structure, $num_section=null)
     {
+		/*define('TYPETEXT', 0);
+		define('TYPEMULTIPART', 1);
+		define('TYPEMESSAGE', 2);
+		define('TYPEAPPLICATION', 3);
+		define('TYPEAUDIO', 4);
+		define('TYPEIMAGE', 5);
+		define('TYPEVIDEO', 6);
+		define('TYPEMODEL', 7);
+		define('TYPEOTHER', 8);*/
+
+
 		//groaw($num_section);
 		switch($structure->type)
 		{
-			case TYPEMULTIPART:
-                if ($structure->ifsubtype && strtoupper($structure->subtype) === 'ALTERNATIVE')
-                {
-                    //groaw("alternative");
-                   
-                    // Recherche de chaque type que l'on préfère
-                    global $PREFERENCES_MIME;
-                    foreach ($PREFERENCES_MIME as $mime)
-                    {
-                        $c = 1;
-                        foreach ($structure->parts as $partie)
-                        {
-                            if (strtoupper($partie->subtype) === $mime)
-                            {
-                                // Gestion du numéro de section
-                                if ($num_section === null)
-                                {
-                                    $section = $c;
-                                }
-                                else
-                                {
-                                    $section = $num_section.'.'.$c;
-                                }
-                                //groaw($partie->subtype);
-                                $this->affichageRecursif($numero, $partie, $section);
-                                return;
-                            }
-                            ++$c;
-                        }
-                    }
-
-                    // Si on est là, c'est que l'on ne préfère rien du tout,
-                    // on prends donc le premier de la liste
-                    if (count($structure->parts) > 0)
-                    {
-                        // Gestion du numéro de section
-                        if ($num_section === null)
-                        {
-                            $section = '1';
-                        }
-                        else
-                        {
-                            $section = $num_section.'.1';
-                        }
-                        $this->affichageRecursif($numero, $structure->parts[0], $section);
-                    }
-                }
-                else
-                {
-                    // Compteur pour les sections
-                    $c = 1;
-
-                    //groaw("multipart");
-                    foreach ($structure->parts as $partie)
-                    {
-                        // Gestion du numéro de section
-                        if ($num_section == null)
-                        {
-                            $section = $c++;
-                        }
-                        else
-                        {
-                            $section = $num_section.'.'.$c++;
-                        }
-                        // Oh mon DIEU de la récursivité !
-                        $this->affichageRecursif($numero, $partie, $section);
-                    }
-                }
-				break;
 			case TYPETEXT:
-				//groaw("ok c'est du texte");
-                $texte = $this->modele->recupererPartieTexte($num_section, $structure);
-			    
-                if ($structure->ifsubtype && $structure->subtype === 'HTML')
-                {
-
-					$nettoyeur = new CNettoyeurHtml($texte, CONTENU_DISTANT);
-					$texte = $nettoyeur->recupererHtmlNettoye();
-
-					$chemin = '../Cache/mail-'.md5($texte).'.html';
-					file_put_contents($chemin, $texte);
-					
-					echo '<iframe id="apercu_html" src="',$chemin, '"></iframe>';
-					CHead::ajouterJs('ajusterFrame');
-
-                }
-                else
-                {
-                    $texte = htmlspecialchars($texte);
-
-                    $texte = preg_replace('/(\s)(https?|ftp)\:\/\/(.+?)(\s)/', '$1<a href="$2://$3">$2://$3</a>$4',' '.$texte.' ');
-
-                    echo nl2br($texte);
-                }
+				$this->affichageRecursifText($numero, $structure, $num_section);
+				break;
+			case TYPEMULTIPART:
+				$this->affichageRecursifMultipart($numero, $structure, $num_section);
+				break;
+			case TYPEMESSAGE:
+				groaw("Je ne sais pas ce qu'est un message lol");
+				break;
+			case TYPEIMAGE:
+				$this->affichageRecursifImage($numero, $structure, $num_section);
+				break;
+			case TYPEAPPLICATION:
+			case TYPEAUDIO:
+			case TYPEVIDEO:
+			case TYPEMODEL:
+			case TYPEOTHER:
+				groaw("Non géré");
 				break;
 			default:
-                new Exception("Une partie du mail est non gérée");
+                throw new Exception("Une partie du mail est d'un type inconnu : ".$structure->type);
 				break;
 		}
 	}
