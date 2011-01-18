@@ -392,11 +392,94 @@ EOT;
 			echo "<a href=\"$chemin_ext\"><img src=\"$vignette\" alt=\"\" /></a>\n";
 		}
 
+		$this->affichageRecursifFichier($numero, $structure, $num_section);
+
 		/*$image = base64_encode($image);
 
 		echo "<img src=\"data:image/jpeg;base64,$image\" alt=\"\"/>";*/
 
 		//groaw($image);
+	}
+	
+	private function affichageRecursifFichier($numero, $structure, $num_section=null)
+	{
+		$types = array('text', 'multipart', 'message', 'application', 'audio', 'image', 'video', 'model', 'other');
+
+		$mimetype = $types[$structure->type];
+
+		if ($structure->ifsubtype)
+		{
+			$mimetype .= '/'.strtolower($structure->subtype);
+		}
+
+		$nom = $this->getNomAttachment($structure);
+		$taille = intval($structure->bytes);
+
+		self::afficherVignetteFichier($mimetype, $nom, $taille);
+
+		//groaw($structure);
+	}
+
+	public static function afficherVignetteFichier($mimetype, $nom, $taille)
+	{
+		$fichier = self::getMimeIcone($mimetype);
+		$taille = self::nbBytesToKibis($taille);
+
+		echo "<a href=\"#\"><div class=\"piece_jointe\">\n\t<img src=\"../Img/mimes/$fichier.png\" alt=\"",
+			htmlspecialchars($mimetype), "\" />\n\t<strong>",
+			htmlspecialchars($nom), "</strong>\n\t<em>",
+			sprintf("%0.2f ", $taille[0]), $taille[1], "</em>\n</div></a>\n";
+	}
+
+	private static function getMimeIcone($mimetype)
+	{
+
+		$fichier = str_replace('/', '-', $mimetype);
+
+        if (file_exists("../Img/mimes/$fichier.png"))
+        {
+                return $fichier;
+        }
+
+        $generics = array('image', 'audio', 'text', 'video', 'package');
+
+        foreach($generics as $id => $generic)
+        {
+                if (strpos($mime, $generic) !== FALSE)
+                {
+                        return "$generic-x-generic";
+                }
+        }
+
+        return 'unknown';
+	}
+	
+	/* Fonction qui converti en unit?s standarts la taille d'un fichier */
+	private static function nbBytesToKibis($nb_bytes)
+	{
+		static $unites = array (
+			'o',
+			'Kio',
+			'Mio',
+			'Gio',
+			'Tio',
+			'Pio',
+			'Eio',
+			'Zio',
+			'Yio'
+		); // On a le temps de voir venir comme ?a
+
+		// On regarde quelle unit? correspond
+		$u = (int)log((double)$nb_bytes, 1024);
+
+		// Si l'unit? est inconnue, tout en bits
+		if (isset($unites[$u]) === false)
+			$u = 0;
+
+		// Conversion en valeur ? virgule
+		$nb_kibis = $nb_bytes/pow(1024, $u);
+
+		return array($nb_kibis, $unites[$u], $u);
 	}
 
 	private function getNomAttachment($structure)
@@ -439,6 +522,7 @@ EOT;
 				break;
 			case TYPEMESSAGE:
 				groaw("Je ne sais pas ce qu'est un message lol");
+				groaw($structure);
 				break;
 			case TYPEIMAGE:
 				$this->affichageRecursifImage($numero, $structure, $num_section);
@@ -448,12 +532,10 @@ EOT;
 			case TYPEVIDEO:
 			case TYPEMODEL:
 			case TYPEOTHER:
-				groaw("Non géré");
-				groaw($structure);
+				$this->affichageRecursifFichier($numero, $structure, $num_section);
 				break;
 			default:
                 throw new Exception("Une partie du mail est d'un type inconnu : ".$structure->type);
-				break;
 		}
 	}
 
