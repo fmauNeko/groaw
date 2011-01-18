@@ -137,3 +137,40 @@ ul.boites li.archives a, #titre.archives
 {
 background-image:url(../Img/archives.jpeg) !important;
 }
+
+label
+{
+	font-weight:bold;
+}
+
+input
+{
+	width:100%;
+}
+
+form .erreur
+{
+color:red;
+}
+form .erreur input
+{
+color:black;
+border:2px solid red;
+}
+form .erreur p
+{
+text-indent:2em;
+}
+form textarea
+{
+width:100%;
+height:20em;
+}
+input[required]
+{
+background-color:lightgreen;
+}
+input:invalid 
+{
+background-color: white;
+}
