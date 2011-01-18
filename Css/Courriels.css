@@ -46,6 +46,14 @@ ul.messages a:hover, .pagination a:hover
 {
 text-decoration:underline;
 }
+ul.messages li.message_lu a
+{
+color:grey;
+}
+ul.messages li.message_lu strong
+{
+color:#A20000;
+}
 
 div.courriel
 {

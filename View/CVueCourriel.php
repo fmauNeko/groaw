@@ -25,7 +25,8 @@ class CVueCourriel extends AVueModele
 					echo "\t<li class=\"section\">$nom_periode</li>\n";
 				}
 
-				echo "\t<li>\n\t\t<a href=\"?EX=afficher&amp;boite=$boite&amp;numero=",
+				echo "\t<li class=\"", $message->seen ? "message_lu" : "message_non_lu",
+					"\" >\n\t\t<a href=\"?EX=afficher&amp;boite=$boite&amp;numero=",
 					$message->msgno,
 					"\">\n\t\t\t<h4>",
 					htmlspecialchars($sujet),
