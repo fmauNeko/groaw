@@ -491,7 +491,7 @@ EOT;
 		{
 			if ($parametre->attribute === 'filename' || $parametre->attribute === 'name')
 			{
-				return $parametre->value;	
+				return $this->mime_to_utf8($parametre->value);
 			}
 		}
 
