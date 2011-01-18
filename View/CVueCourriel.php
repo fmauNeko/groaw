@@ -359,13 +359,15 @@ EOT;
 			throw new exception("canard");
 		}
 
-		$extention = array_search(strtolower($structure->subtype),
-			array('jpeg','png','gif'));
+		$extentions = array('jpeg','png','gif');
+		$extention = array_search(strtolower($structure->subtype), $extentions);
 
 		if ($extention === false)
 		{
 			throw new exception("type non supporté");
 		}
+
+		$extention = $extentions[$extention];
 
 		$nom = $this->getNomAttachment($structure);
 
@@ -387,7 +389,7 @@ EOT;
 
 		if ($vignette)
 		{
-			echo "<img src=\"$vignette\" alt=\"\" />\n";
+			echo "<a href=\"$chemin_ext\"><img src=\"$vignette\" alt=\"\" /></a>\n";
 		}
 
 		/*$image = base64_encode($image);
