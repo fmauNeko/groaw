@@ -4,7 +4,7 @@ var ajusterHauteur = function()
 {
 	if (!frame)
 	{
-		var frame = document.getElementById('apercu_html');
+		frame = document.getElementById('apercu_html');
 	};
 	
 	if (frame)
@@ -32,8 +32,6 @@ window.onload = function()
 	if (!frame)
 	{
 		window.clearInterval(intervalle);
-	} else
-	{
-		ajusterHauteur();	
-	};
+	}
+	ajusterHauteur();
 };
