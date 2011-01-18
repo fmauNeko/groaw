@@ -20,6 +20,8 @@ define('SERVEUR_IMAP','{88.191.117.94:993/imap/ssl/novalidate-cert}');
 define('COURRIELS_PAR_PAGE', 40);
 define('CONTENU_DISTANT', true);
 
+define('TAILLE_VIGNETTES', 200);
+
 // cache de 5 minutes
 define('DUREE_CACHE_LISTE',300);
 

@@ -353,13 +353,64 @@ EOT;
 
 	private function affichageRecursifImage($numero, $structure, $num_section=null)
 	{
-		$image = $this->modele->recupererPartie($num_section, $structure);
-		$image = base64_encode($image);
 
-		echo "<img src=\"data:image/jpeg;base64,$image\" alt=\"\"/>";
-		groaw($structure);
+		if (!$structure->ifsubtype)
+		{
+			throw new exception("canard");
+		}
+
+		$extention = array_search(strtolower($structure->subtype),
+			array('jpeg','png','gif'));
+
+		if ($extention === false)
+		{
+			throw new exception("type non supporté");
+		}
+
+		$nom = $this->getNomAttachment($structure);
+
+		$chemin = '../Cache/attachment-'.md5($GLOBALS['boite'].$numero.$num_section.$structure->bytes.$nom);
+		$chemin_ext = "$chemin.$extention";
+
+		if (file_exists($chemin_ext))
+		{
+			groaw("cache");
+			$image = file_get_contents($chemin_ext);
+		}
+		else
+		{
+			$image = $this->modele->recupererPartie($num_section, $structure);
+			file_put_contents($chemin_ext, $image);
+		}
+
+		$vignette = CVignette::cheminVignette($chemin,$extention,TAILLE_VIGNETTES,TAILLE_VIGNETTES);
+
+		if ($vignette)
+		{
+			echo "<img src=\"$vignette\" alt=\"\" />\n";
+		}
+
+		/*$image = base64_encode($image);
+
+		echo "<img src=\"data:image/jpeg;base64,$image\" alt=\"\"/>";*/
 
 		//groaw($image);
+	}
+
+	private function getNomAttachment($structure)
+	{
+
+		foreach (	array_merge($structure->ifdparameters ? $structure->dparameters : array(),
+					$structure->ifparameters ? $structure->parameters : array())
+					as $parametre)
+		{
+			if ($parametre->attribute === 'filename' || $parametre->attribute === 'name')
+			{
+				return $parametre->value;	
+			}
+		}
+
+		return '';
 	}
 
     private function affichageRecursif($numero, $structure, $num_section=null)
@@ -396,6 +447,7 @@ EOT;
 			case TYPEMODEL:
 			case TYPEOTHER:
 				groaw("Non géré");
+				groaw($structure);
 				break;
 			default:
                 throw new Exception("Une partie du mail est d'un type inconnu : ".$structure->type);
