@@ -91,6 +91,7 @@ var changerVisage = function(n)
 			p = "111px 0px";
 			break;
 		case 1:
+			p = "-222px -128px";
 			break;
 		case 2:
 			p = "-222px -256px";
