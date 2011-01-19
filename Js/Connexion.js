@@ -35,33 +35,21 @@ canard();
 var changerLunettes = function(n)
 {
 	var p;
-	switch(n)
+	switch(n%5)
 	{
 		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
 			p = "111px 0px";
 			break;
-		case 5:
-		case 6:
+		case 1:
 			p = "0px 0px";
 			break;
-		case 7:
-		case 8:
+		case 2:
 			p = "0px -128px";
 			break;
-		case 9:
-		case 10:
-		case 11:
+		case 3:
 			p = "0px -256px";
 			break;
-		case 12:
-		case 13:
-		case 14:
-		case 15:
-		default:
+		case 4:
 			p = "-111px -256px";
 			break;
 	}
@@ -72,33 +60,21 @@ var changerLunettes = function(n)
 var changerAccessoire = function(n)
 {
 	var p;
-	switch(n)
+	switch(n%5)
 	{
 		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
 			p = "111px 0px";
 			break;
-		case 6:
-		case 7:
+		case 1:
 			p = "-111px 0px";
 			break;
-		case 8:
-		case 9:
+		case 2:
 			p = "-111px -128px";
 			break;
-		case 10:
-		case 11:
-		case 12:
-		case 13:
+		case 3:
 			p = "-333px 0px";
 			break;
-		case 14:
-		case 15:
-		default:
+		case 4:
 			p = "-555px 0px";
 			break;
 	}
@@ -109,33 +85,20 @@ var changerAccessoire = function(n)
 var changerVisage = function(n)
 {
 	var p;
-	switch(n)
+	switch(n%5)
 	{
 		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
 			p = "111px 0px";
 			break;
-		case 6:
-		case 7:
-			p = "-222px -128px";
+		case 1:
 			break;
-		case 8:
-		case 9:
+		case 2:
 			p = "-222px -256px";
 			break;
-		case 10:
-		case 11:
-		case 12:
+		case 3:
 			p = "-333px -128px";
 			break;
-		case 13:
-		case 14:
-		case 15:
-		default:
+		case 4:
 			p = "-444px 0px";
 			break;
 	}
@@ -146,33 +109,21 @@ var changerVisage = function(n)
 var changerVetements = function(n)
 {
 	var p;
-	switch(n)
+	switch(n%5)
 	{
 		case 0:
-		case 1:
 			p = "-333px -256px";
 			break;
-		case 2:
-		case 3:
-		case 4:
+		case 1:
 			p = "-444px -128px";
 			break;
-		case 5:
-		case 6:
-		case 7:
-		case 8:
+		case 2:
 			p = "-444px -256px";
 			break;
-		case 9:
-		case 10:
-		case 11:
+		case 3:
 			p = "-555px -128px";
 			break;
-		case 12:
-		case 13:
-		case 14:
-		case 15:
-		default:
+		case 4:
 			p = "-555px -256px";
 			break;
 	}
@@ -192,9 +143,9 @@ var traiterSomme = function()
 	var resultat = mail + "GROAW" + mdp + "groaw";
 	for (var i = 0; i < mdp.length; ++i)
 	{
-		resultat += '#';
+		resultat += '-';
 	};
-	resultat = "groaw" + mdp + "GROAW" + mail;
+	resultat += "groaw" + mdp + "GROAW" + mail;
 
 	var s = new jsSHA(resultat, "ASCII");
 
