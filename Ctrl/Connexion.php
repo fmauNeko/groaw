@@ -33,7 +33,8 @@ function connexion()
 			echo "Impossible de se connecter";
 		}
 	}
-	
+
+	CHead::ajouterJs('sha1');
 	new CVueHTML("connexion");
 }
 

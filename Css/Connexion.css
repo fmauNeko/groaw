@@ -1,0 +1,21 @@
+.lapin {
+	margin:2em auto 2em auto;
+	height:128px;
+	width:111px;
+	position:relative;
+}
+
+.lapin div
+{
+	position:absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	background:url(../Img/spritelapins.png) no-repeat;
+}
+
+.lapin div.tete
+{
+	background-position:-222px 0px;
+}
