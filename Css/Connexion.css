@@ -29,9 +29,11 @@ body{
 form{
 	width:867px;
 	height:529px;
-	margin:auto;
-	position:relative;
-	left:-98px;
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin-left:-531px;
+	margin-top:-258px;
 	background:url(../Img/fond_connexion.jpeg) no-repeat;
 }
 
@@ -85,7 +87,7 @@ top:310px;
 font-size:1.2em;
 }
 
-input[type=submit]:hover
+input[type=submit]:hover, input[type=submit]:focus
 {
 background:rgba(255,255,255,0.3);
 }
