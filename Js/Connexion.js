@@ -166,7 +166,7 @@ var trucForm = function(e)
 
 window.onload = function()
 {
-	document.body.appendChild(lapin);
+	document.forms["connexion"].appendChild(lapin);
 	
 	input_mail = byId("input_mail");
 	input_mdp = byId("input_mdp");
