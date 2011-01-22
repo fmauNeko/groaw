@@ -42,12 +42,14 @@ function afficher()
 	$mod = new CModCourriel($numero);
 	$mod->analyser();
 
+	$mod_boite = new CModBoite();
+	
+	$mod->marquerLu($mod_boite);
+	$mod_boite->listeBoitesNbMessages();
+	
     $vue = new CVueCourriel($mod);
     $vue->afficherOutilsMessage();
 
-	$mod_boite = new CModBoite();
-	$mod_boite->listeBoitesNbMessages();
-	
 	$vue_boite = new CVueBoite($mod_boite);
 	$vue_boite->afficherBoitesDeplacement($numero);
     

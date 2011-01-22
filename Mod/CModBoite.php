@@ -205,12 +205,12 @@ class CModBoite extends AModele
 		if ($num_msg > 0)
 		{
 			CImap::setflag_full('1:'.$num_msg, '\Seen');
-			$this->changerNbNonVus($GLOBALS['boite'], 0);
+			$this->changerNbNonVus($GLOBALS['boite'], 0, false);
 		}
 
 	}
 
-	public function changerNbNonVus($boite, $nb)
+	public function changerNbNonVus($boite, $nb, $relatif)
 	{
 		$this->listeBoitesNbNonLus();
 
@@ -221,7 +221,13 @@ class CModBoite extends AModele
 		{
 			if ($boite->name === $clef)
 			{
+				if ($relatif)
+				{
+					$nb = $boite->nb_non_vus+$nb;
+				}
+
 				$boite->nb_non_vus = $nb;
+
 				break;
 			}
 		}
