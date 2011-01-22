@@ -196,15 +196,13 @@ class CVueBoite extends AVueModele
 			$branche[] = $boite;
 		}
 
-
-			/*echo "\t<li><a href=\"Courriels.php?EX=liste&amp;boite=$boite->lien&amp;\">",
-				 wordwrap($boite->description, 25, "<br/>", true),
-				 ($boite->nb_non_vus > 0) ? " ($boite->nb_non_vus)" : '', "</a></li>\n";*/
 		echo "<ul class=\"boites_deplacement\">\n";
+		
 		foreach ($arbre['INBOX'] as $sous_clef => $sous_branche)
 		{
 			CVueBoite::afficherArbreBoitesRec($sous_clef, $sous_branche);
 		}
+
 		echo "</ul></div>";
 	}
 	

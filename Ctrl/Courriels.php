@@ -158,7 +158,7 @@ function liste()
 
 	$mod_boite = new CModBoite();
 	$mod_boite->listeBoitesNbNonLus();
-	
+
 	$vue_boite = new CVueBoite($mod_boite);
 	$vue_boite->afficherArbreBoites();
 	

@@ -51,7 +51,7 @@ class CModBoite extends AModele
 		{
 			if ($a->nb_non_vus === $b->nb_non_vus)
 			{
-				return 0;
+				return strcmp($a->name, $b->name);
 			}
 
 			return ($a->nb_non_vus > $b->nb_non_vus) ? -1 : 1;
