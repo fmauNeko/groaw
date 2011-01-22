@@ -200,8 +200,34 @@ class CModBoite extends AModele
 
 	public function marquerToutLus()
 	{
-		CImap::setflag_full('1:*', '\Seen');
-		$this->effacerCaches();
+		$num_msg = CImap::num_msg();
+
+		if ($num_msg > 0)
+		{
+			CImap::setflag_full('1:'.$num_msg, '\Seen');
+			$this->changerNbNonVus($GLOBALS['boite'], 0);
+		}
+
+	}
+
+	public function changerNbNonVus($boite, $nb)
+	{
+		$this->listeBoitesNbNonLus();
+
+		$clef = SERVEUR_IMAP.$boite;
+		$boites = $this->boites;
+
+		foreach ($this->boites as $boite)
+		{
+			if ($boite->name === $clef)
+			{
+				$boite->nb_non_vus = $nb;
+				break;
+			}
+		}
+
+		$this->trierBoitesNbNonVus();
+		$this->enregistrerCacheBoites('liste_boites_nb_non_lus');
 	}
 }
 

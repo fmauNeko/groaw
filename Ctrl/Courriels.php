@@ -121,11 +121,14 @@ function marquer_tout_lu()
 	$mod = new CModBoite();
 	$mod->marquerToutLus();
 
-	$mod->listeBoitesNbNonLus();
+	if (!$mod->boites)
+	{
+		$mod->listeBoitesNbNonLus();
+	}
 
 	$boites = $mod->boites;
 
-	if (count($boites) > 0 && $boites[0]->nb_non_vus > 0)
+	if ($boites[0]->nb_non_vus > 0)
 	{
 		$boite = rawurlencode(CVueBoite::simplifierNomBoite($boites[0]->name));
 	}
@@ -235,13 +238,10 @@ function archive()
 	$mod_boite = new CModBoite();
 	$mod_boite->listeBoitesNbNonLus();
 	
-	$vue_boite = new CVueBoite($mod_boite);
+	$boite = rawurlencode(
+		CVueBoite::simplifierNomBoite($mod_boite->boites[0]->name));
 
-	echo <<<EOT
-<div class="outils_courriel">
-<h3>Sélectionner une boite :</h3>
-EOT;
-	$vue_boite->afficherArbreBoites();
+	new CRedirection('Courriels.php?EX=liste&boite='.$boite);
 }
 
 // Fin de la liste des fonctions
