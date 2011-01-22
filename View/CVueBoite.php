@@ -1,6 +1,35 @@
 <?php
 class CVueBoite extends AVueModele
 {
+	public static function nommerBoite($nom, $complement)
+	{
+		if ($complement && $complement !== '')
+		{
+			$complement = ' : '.$complement;
+		}
+
+		switch ($nom)
+		{
+			case 'INBOX':
+				CNavigation::nommer("Espace de livraison$complement");
+				break;
+			case 'INBOX.Interesting':
+				CNavigation::nommer("Courriers intéressant$complement");
+				break;
+			case 'INBOX.Normal':
+				CNavigation::nommer("Courriers normaux$complement");
+				break;
+			case 'INBOX.Unexciting':
+				CNavigation::nommer("Courriers inintéressant$complement");
+				break;
+			case 'INBOX.Trash':
+				CNavigation::nommer("Poubelle$complement");
+				break;
+			default:
+				$nom = new CUtf7($nom);
+				CNavigation::nommer(htmlspecialchars($nom->toUtf8()).$complement);
+		}
+	}
 
 	public static function simplifierNomBoite($nom)
 	{

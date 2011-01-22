@@ -38,14 +38,14 @@ class CModCourriel extends AModele
 
 	public function marquerLu($mod_boite)
 	{
-		// Parfois, fetchstructure de analyser ne suffit pas…
-		CImap::setflag_full($this->num_courriel, '\Seen');
-
-		// Gestion du cache
 		$mail = CImap::fetch_overview($this->num_courriel);
 
-		if (!$mail[0]->seen)
+		if ($mail[0]->seen === 0)
 		{
+			// Parfois, fetchstructure de analyser ne suffit pas…
+			CImap::setflag_full($this->num_courriel, '\Seen');
+			
+			// Gestion du cache
 			$mod_boite->changerNbNonVus($GLOBALS['boite'], -1, true);
 		}
 	}

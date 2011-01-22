@@ -54,6 +54,8 @@ function afficher()
 	$vue_boite->afficherBoitesDeplacement($numero);
     
 	$vue->afficherCourriel();
+	
+	CVueBoite::nommerBoite($GLOBALS['boite'], CNavigation::titre());
 }
 
 function raw()
@@ -145,27 +147,6 @@ function marquer_tout_lu()
 
 function liste()
 {
-	switch ($GLOBALS['boite'])
-	{
-		case 'INBOX':
-			CNavigation::nommer("Espace de livraison");
-			break;
-		case 'INBOX.Interesting':
-			CNavigation::nommer("Courriers intéressant");
-			break;
-		case 'INBOX.Normal':
-			CNavigation::nommer("Courriers normaux");
-			break;
-		case 'INBOX.Unexciting':
-			CNavigation::nommer("Courriers inintéressant");
-			break;
-		case 'INBOX.Trash':
-			CNavigation::nommer("Poubelle");
-			break;
-		default:
-			CNavigation::nommer("Boite ".htmlspecialchars($GLOBALS['boite']));
-	}
-
 	// Récupération du numéro de la page
 	$numero_page = isset($_REQUEST['page']) ? abs(intval($_REQUEST['page'])) : 0;
 
@@ -182,6 +163,8 @@ function liste()
 	$vue_boite->afficherArbreBoites();
 	
 	$vue->afficherCourriels($numero_page, COURRIELS_PAR_PAGE);
+
+	CVueBoite::nommerBoite($GLOBALS['boite'], false);
 }
 
 function partie()
