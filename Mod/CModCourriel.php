@@ -60,7 +60,7 @@ class CModCourriel extends AModele
 		define('ENCOTHER', 5);*/
 
 		//groaw($structure);
-        $partie = CImap::fetchbody($this->num_courriel,$num_section);
+		$partie = CImap::fetchbody($this->num_courriel,$num_section);
 
         switch ($structure->encoding)
         {
@@ -123,7 +123,7 @@ class CModCourriel extends AModele
 
 	public function recupererListeTriee($page = 0, $nb_par_page = 12)
 	{
-		$liste_triee = CImap::sort(SORTDATE, 1);
+		$liste_triee = CImap::sort(SORTDATE, 1, SE_NOPREFETCH);
 		$nb_courriels = count($liste_triee);
 
 		$i_debut = min($nb_courriels, $page * $nb_par_page);

@@ -274,50 +274,61 @@ EOT;
 
 	private function affichageRecursifMultipart($numero, $structure, $num_section=null)
 	{
-		if ($structure->ifsubtype && strtoupper($structure->subtype) === 'ALTERNATIVE')
+		if ($structure->ifsubtype)
 		{
-			//groaw("alternative");
-		   
-			// Recherche de chaque type que l'on préfère
-			global $PREFERENCES_MIME;
-			foreach ($PREFERENCES_MIME as $mime)
+			if (strtoupper($structure->subtype) === 'ALTERNATIVE')
 			{
-				$c = 1;
-				foreach ($structure->parts as $partie)
+				//groaw("alternative");
+			   
+				// Recherche de chaque type que l'on préfère
+				global $PREFERENCES_MIME;
+				foreach ($PREFERENCES_MIME as $mime)
 				{
-					if (strtoupper($partie->subtype) === $mime)
+					$c = 1;
+					foreach ($structure->parts as $partie)
 					{
-						// Gestion du numéro de section
-						if ($num_section === null)
+						if (strtoupper($partie->subtype) === $mime)
 						{
-							$section = $c;
+							// Gestion du numéro de section
+							if ($num_section === null)
+							{
+								$section = $c;
+							}
+							else
+							{
+								$section = $num_section.'.'.$c;
+							}
+							//groaw($partie->subtype);
+							$this->affichageRecursif($numero, $partie, $section);
+							return;
 						}
-						else
-						{
-							$section = $num_section.'.'.$c;
-						}
-						//groaw($partie->subtype);
-						$this->affichageRecursif($numero, $partie, $section);
-						return;
+						++$c;
 					}
-					++$c;
+				}
+
+				// Si on est là, c'est que l'on ne préfère rien du tout,
+				// on prends donc le premier de la liste
+				if (count($structure->parts) > 0)
+				{
+					// Gestion du numéro de section
+					if ($num_section === null)
+					{
+						$section = '1';
+					}
+					else
+					{
+						$section = $num_section.'.1';
+					}
+					$this->affichageRecursif($numero, $structure->parts[0], $section);
 				}
 			}
-
-			// Si on est là, c'est que l'on ne préfère rien du tout,
-			// on prends donc le premier de la liste
-			if (count($structure->parts) > 0)
+			elseif (strtoupper($structure->subtype) === 'MIXED')
 			{
-				// Gestion du numéro de section
-				if ($num_section === null)
-				{
-					$section = '1';
-				}
-				else
-				{
-					$section = $num_section.'.1';
-				}
-				$this->affichageRecursif($numero, $structure->parts[0], $section);
+				$this->affichageRecursif($numero, $structure->parts[0], $num_section);
+			}
+			else
+			{
+				new CException("erreur 65644857");
 			}
 		}
 		else
@@ -347,7 +358,7 @@ EOT;
 	{
 		//groaw("ok c'est du texte");
 		$texte = $this->modele->recupererPartieTexte($num_section, $structure);
-		
+
 		if ($structure->ifsubtype && $structure->subtype === 'HTML')
 		{
 

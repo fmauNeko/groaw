@@ -31,7 +31,7 @@ class CImap
 	public static function __callStatic ($nom, $arguments)
 	{
 		$fonction = 'imap_'.$nom;
-		
+
 		if (function_exists($fonction))
 		{
 			if (self::$jeton_imap === null)
