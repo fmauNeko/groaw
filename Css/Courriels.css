@@ -135,14 +135,14 @@ margin:1em 0 0 0;
 padding:0;
 }
 
-.outils_courriel a
+.outils_courriel a, .boutons_navigation a
 {
 font-weight:bold;
 color:white;
 text-decoration:none;
 }
 
-.outils_courriel a:hover
+.outils_courriel a:hover, .boutons_navigation a:hover
 {
 text-decoration:underline;
 }
@@ -174,4 +174,10 @@ padding-left:1.5em;
 ul.boites_deplacement h4
 {
 margin:0;
+}
+
+ul.boutons_navigation
+{
+list-style:none;
+padding:0;
 }

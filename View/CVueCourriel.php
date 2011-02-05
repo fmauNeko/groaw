@@ -185,6 +185,26 @@ EOT;
 		echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>";
 	}
 
+	public function afficherBoutonsPrecedentSuivant()
+	{
+		echo "<ul class=\"boutons_navigation\">\n";
+
+		$numero = $this->modele->num_courriel;
+		$boite = rawurlencode($GLOBALS['boite']);
+
+		if ($numero > 1)
+		{
+			echo "\t<li><a href=\"Courriels.php?EX=afficher&amp;boite=$boite&amp;numero=",$numero-1,"\">Prédecent</a></li>\n";
+		}
+		
+		if ($numero < CImap::num_msg())
+		{
+			echo "\t<li><a href=\"Courriels.php?EX=afficher&amp;boite=$boite&amp;numero=",$numero+1,"\">Suivant</a></li>\n";
+		}
+
+		echo "</ul>\n";
+	}
+
     public function afficherCourriel()
     {
         $structure = $this->modele->structure;

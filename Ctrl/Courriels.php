@@ -52,7 +52,8 @@ function afficher()
 
 	$vue_boite = new CVueBoite($mod_boite);
 	$vue_boite->afficherBoitesDeplacement($numero);
-    
+
+	$vue->afficherBoutonsPrecedentSuivant();	
 	$vue->afficherCourriel();
 	
 	CVueBoite::nommerBoite($GLOBALS['boite'], CNavigation::titre());
