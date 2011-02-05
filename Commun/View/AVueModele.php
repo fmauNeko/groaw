@@ -24,14 +24,14 @@ abstract class AVueModele
 			
 			if ($charset !== 'default')
 			{
-				$output = COutils::toUtf8($charset, $text);
+				$output .= COutils::toUtf8($charset, $text);
 			}
 			else
 			{
 				$output .= $text;
 			}
 		}
-
+	
 		return $output;
 	}
 
