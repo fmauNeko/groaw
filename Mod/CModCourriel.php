@@ -114,7 +114,7 @@ class CModCourriel extends AModele
 
             if ($charset !== null && $charset !== 'UTF-8')
             {
-                $texte = str_replace('charset=iso-8859-1', '', iconv($charset, 'UTF-8', $texte));
+                $texte = str_replace('charset=iso-8859-1', '', COutils::toUtf8($charset, $texte));
             }
         }
 

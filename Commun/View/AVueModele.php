@@ -24,7 +24,7 @@ abstract class AVueModele
 			
 			if ($charset !== 'default')
 			{
-				$output .= iconv($charset, 'UTF-8', $text);
+				$output = COutils::toUtf8($charset, $text);
 			}
 			else
 			{
