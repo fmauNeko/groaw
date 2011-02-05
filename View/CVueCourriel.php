@@ -444,13 +444,12 @@ EOT;
         $generics = array('image', 'audio', 'text', 'video', 'package');
 
         foreach($generics as $id => $generic)
-        {
-                if (strpos($mime, $generic) !== FALSE)
+		{
+                if (strpos($mimetype, $generic) !== FALSE)
                 {
                         return "$generic-x-generic";
                 }
         }
-
         return 'unknown';
 	}
 	

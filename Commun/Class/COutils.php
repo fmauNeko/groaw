@@ -12,7 +12,7 @@ class COutils
 			try
 			{
 				// La plupart des boulets utilisent de l'iso…
-				return iconv('ISO-8859-1', 'UTF-8//TRANSLIT//IGNORE', $texte);
+				return iconv('ISO-8859-15', 'UTF-8//TRANSLIT//IGNORE', $texte);
 			}
 			catch (Exception $e)
 			{
