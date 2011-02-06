@@ -1,84 +1,6 @@
 <?php
 class CVueBoite extends AVueModele
 {
-	public static function nommerBoite($nom, $complement)
-	{
-		if ($complement && $complement !== '')
-		{
-			$complement = ' : '.$complement;
-		}
-
-		switch ($nom)
-		{
-			case 'INBOX':
-				CNavigation::nommer("Espace de livraison$complement");
-				break;
-			case 'INBOX.Interesting':
-				CNavigation::nommer("Courriers intéressant$complement");
-				break;
-			case 'INBOX.Normal':
-				CNavigation::nommer("Courriers normaux$complement");
-				break;
-			case 'INBOX.Unexciting':
-				CNavigation::nommer("Courriers inintéressant$complement");
-				break;
-			case 'INBOX.Trash':
-				CNavigation::nommer("Poubelle$complement");
-				break;
-			default:
-				$nom = new CUtf7($nom);
-				CNavigation::nommer(htmlspecialchars($nom->toUtf8()).$complement);
-		}
-	}
-
-	public static function simplifierNomBoite($nom)
-	{
-		return preg_replace('/^\{.+?\}/','',$nom);
-	}
-
-	public static function explodeNomBoite($boite, $nom)
-	{
-		$nom = new CUtf7($nom);
-		return explode($boite->delimiter, $nom->toUtf8());
-	}
-
-	public static function creerDescription($tableau_boite)
-	{
-		$description = htmlspecialchars(implode(' : ',array_slice($tableau_boite,1)));
-		
-		if ($description === '')
-		{
-			$description = "Groaw";
-		}
-
-		return $description;
-	}
-
-	public function traiterNomsBoites()
-	{
-		$boites = &$this->modele->boites;
-
-		foreach($boites as $clef => $boite)
-		{
-			$nom = CVueBoite::simplifierNomBoite($boite->name);
-
-			$l = CVueBoite::explodeNomBoite($boite, $nom);
-			$description = CVueBoite::creerDescription($l); 
-			
-			$lien = rawurlencode($nom);
-
-			$boite->lien = $lien;
-			$boite->tableau_boite = $l;
-			$boite->nom = $nom;
-			$boite->description = $description;
-
-			$boites[$clef] = $boite;
-		}
-
-		return $boites;
-
-	}
-
 	public function afficherBoites()
 	{
 		echo "<ul class=\"boites\">\n";
@@ -155,7 +77,7 @@ class CVueBoite extends AVueModele
 	{
 		echo "<h3>Classer dans :</h3><ul class=\"boites_deplacement\">\n";
 
-		foreach($this->traiterNomsBoites() as $boite)
+		foreach($this->modele->boites as $boite)
 		{
 
 			$t = array('RSS', 'Trash','Interesting','Normal','Unexciting');
@@ -173,9 +95,9 @@ class CVueBoite extends AVueModele
 	public function afficherArbreBoites()
 	{
 		$arbre = array();
-		
+
 		// Création de la hiérarchie
-		foreach($this->traiterNomsBoites() as $boite)
+		foreach($this->modele->boites as $boite)
 		{
 			$l = $boite->tableau_boite;
 			$branche = &$arbre;

@@ -274,9 +274,12 @@ EOT;
 
 	private function affichageRecursifMultipart($numero, $structure, $num_section=null)
 	{
+		$traiter_sous_parties = true;
+
 		if ($structure->ifsubtype)
 		{
-			if (strtoupper($structure->subtype) === 'ALTERNATIVE')
+			$subtype = strtoupper($structure->subtype);
+			if ($subtype === 'ALTERNATIVE')
 			{
 				//groaw("alternative");
 			   
@@ -287,7 +290,7 @@ EOT;
 					$c = 1;
 					foreach ($structure->parts as $partie)
 					{
-						if (strtoupper($partie->subtype) === $mime)
+						if ($subtype === $mime)
 						{
 							// Gestion du numéro de section
 							if ($num_section === null)
@@ -321,35 +324,37 @@ EOT;
 					}
 					$this->affichageRecursif($numero, $structure->parts[0], $section);
 				}
+				$traiter_sous_parties = false;
 			}
-			elseif (strtoupper($structure->subtype) === 'MIXED')
+		}
+
+		if ($traiter_sous_parties)
+		{
+			// Si il n'y a qu'une partie à afficher
+			if (count($structure->parts) === 1)
 			{
 				$this->affichageRecursif($numero, $structure->parts[0], $num_section);
 			}
 			else
 			{
-				new CException("erreur 65644857");
-			}
-		}
-		else
-		{
-			// Compteur pour les sections
-			$c = 1;
-			//groaw("multipart");
-			foreach ($structure->parts as $partie)
-			{
-				// Gestion du numéro de section
-				if ($num_section === null)
+				// Compteur pour les sections
+				$c = 1;
+				//groaw("multipart");
+				foreach ($structure->parts as $partie)
 				{
-					$section = $c++;
+					// Gestion du numéro de section
+					if ($num_section === null)
+					{
+						$section = $c++;
+					}
+					else
+					{
+						$section = $num_section.'.'.$c++;
+					}
+					
+					// Oh mon DIEU de la récursivité !
+					$this->affichageRecursif($numero, $partie, $section);
 				}
-				else
-				{
-					$section = $num_section.'.'.$c++;
-				}
-				
-				// Oh mon DIEU de la récursivité !
-				$this->affichageRecursif($numero, $partie, $section);
 			}
 		}
 	}

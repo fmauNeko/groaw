@@ -56,7 +56,7 @@ function afficher()
 	$vue->afficherBoutonsPrecedentSuivant();	
 	$vue->afficherCourriel();
 	
-	CVueBoite::nommerBoite($GLOBALS['boite'], CNavigation::titre());
+	CModBoite::nommerBoite($GLOBALS['boite'], CNavigation::titre());
 }
 
 function raw()
@@ -117,7 +117,7 @@ function detruire_courriels()
 		new CRedirection('Courriels.php?EX=liste&boite='.$url_boite);
 	}
 	
-	CVueBoite::afficherConfirmationVidageBoite($boite, $url_boite);
+	CModBoite::afficherConfirmationVidageBoite($boite, $url_boite);
 }
 
 function marquer_tout_lu()
@@ -135,7 +135,7 @@ function marquer_tout_lu()
 
 	if ($boites[0]->nb_non_vus > 0)
 	{
-		$boite = rawurlencode(CVueBoite::simplifierNomBoite($boites[0]->name));
+		$boite = rawurlencode(CModBoite::simplifierNomBoite($boites[0]->name));
 	}
 	else
 	{
@@ -165,7 +165,7 @@ function liste()
 	
 	$vue->afficherCourriels($numero_page, COURRIELS_PAR_PAGE);
 
-	CVueBoite::nommerBoite($GLOBALS['boite'], false);
+	CModBoite::nommerBoite($GLOBALS['boite'], false);
 }
 
 function partie()
@@ -225,7 +225,7 @@ function archive()
 	$mod_boite->listeBoitesNbNonLus();
 	
 	$boite = rawurlencode(
-		CVueBoite::simplifierNomBoite($mod_boite->boites[0]->name));
+		CModBoite::simplifierNomBoite($mod_boite->boites[0]->name));
 
 	new CRedirection('Courriels.php?EX=liste&boite='.$boite);
 }
