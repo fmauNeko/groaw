@@ -464,7 +464,7 @@ EOT;
 		echo "<a href=\"#\"><div class=\"piece_jointe\">\n\t<img src=\"../Img/mimes/$fichier.png\" alt=\"",
 			htmlspecialchars($mimetype), "\" />\n\t<strong>",
 			htmlspecialchars($nom), "</strong>\n\t<em>",
-			sprintf("%0.2f ", $taille[0]), $taille[1], "</em>\n</div></a>\n";
+			number_format($taille[0], (fmod($taille[0], 1) == 0.0) ? 0 : 2), ' ', $taille[1], "</em>\n</div></a>\n";
 	}
 
 	private static function getMimeIcone($mimetype)
@@ -556,7 +556,8 @@ EOT;
 				$this->affichageRecursifMultipart($numero, $structure, $num_section);
 				break;
 			case TYPEMESSAGE:
-				groaw("Je ne sais pas ce qu'est un message lol");
+				groaw("ATTENTION : Affichage non supporté…");
+				$this->affichageRecursifFichier($numero, $structure, $num_section);
 				groaw($structure);
 				break;
 			case TYPEIMAGE:
