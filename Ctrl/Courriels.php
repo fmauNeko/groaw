@@ -217,15 +217,8 @@ function partie()
 
 		$nom = CModCourriel::getNomAttachment($structure, 'untitled');
 
-		$chemin = $nom['basename'];
-
-		if (isset($nom['extention']))
-		{
-			$chemin .= '.'.$nom['extention'];
-		}
-
 		$chemin = addcslashes(trim(
-			str_replace(array("\n", "\r"), ' ', $chemin)),'"');
+			str_replace(array("\n", "\r"), ' ', $nom['basename'])),'"');
 
 		header('Content-type: '.$mimetype);
 		header('Content-Disposition: inline; filename="'.$chemin.'"');

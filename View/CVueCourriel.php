@@ -455,17 +455,24 @@ EOT;
 		$fichier = self::getMimeIcone($mimetype);
 		$taille = COutils::nbBytesToKibis($taille);
 
-		$chemin = $nom['basename'];
+		$chemin = $nom['filename'];
+		$message_danger = '<br/>';
 
-		if (isset($nom['extention']))
+		if (isset($nom['extension']))
 		{
-			$chemin .= '.'.$nom['extention'];
+			$chemin .= '.'.$nom['extension'];
+
+			if (in_array($nom['extension'], $GLOBALS['EXTENSIONS_DANGEREUSES']))
+			{
+				$message_danger = "<p class=\"danger\">Ce fichier d'extension exécutable (.".htmlspecialchars($nom['extension']).") est probablement un programme malveillant.</p>";
+			}
 		}
 
-		echo "<a href=\"$lien\"><div class=\"piece_jointe\">\n\t<img src=\"../Img/mimes/$fichier.png\" alt=\"",
-			htmlspecialchars($mimetype), "\" />\n\t<strong>",
-			htmlspecialchars($chemin), "</strong>\n\t<em>",
-			number_format($taille[0], (fmod($taille[0], 1) == 0.0) ? 0 : 2), ' ', $taille[1], "</em>\n</div></a>\n";
+		echo "<div class=\"piece_jointe\"><a href=\"$lien\">\n\t<img src=\"../Img/mimes/$fichier.png\" alt=\"",
+			htmlspecialchars($mimetype), "\" />\n\t",
+			$message_danger,"\n\t<strong>",
+			htmlspecialchars($chemin), "</strong>\n\t<em class=\"taille\">",
+			number_format($taille[0], (fmod($taille[0], 1) == 0.0) ? 0 : 2), ' ', $taille[1], "</em>\n</a></div>\n";
 	}
 
 	private static function getMimeIcone($mimetype)

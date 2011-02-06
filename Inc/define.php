@@ -47,5 +47,13 @@ $ORDRE_BOITES = array(
 	'INBOX.Trash'
 );
 
+// Extention dangereuses (message d'avertissement pour les boulets)
+$EXTENSIONS_DANGEREUSES = array(
+	'exe',
+	'jar',
+	'sh',
+	'bat'
+);
+
 define('DEBUG',true);
 ?>

@@ -199,17 +199,18 @@ class CModCourriel extends AModele
 					$structure->ifparameters ? $structure->parameters : array())
 					as $parametre)
 		{
-			if ($parametre->attribute === 'filename' || $parametre->attribute === 'name')
+			if (strpos($parametre->attribute,'filename') === 0 || strpos($parametre->attribute,'name') === 0)
 			{
 				return pathinfo(COutils::mimeToUtf8($parametre->value));
 			}
 		}
 
-		$infos = array('basename' => $nom_base);
+		$infos = array('basename' => $nom_base, 'filename' => $nom_base);
 
 		if ($structure->type === 2)
 		{
 			$infos['extention'] = 'eml';
+			$infos['basename'] .= 'eml';
 		}
 
 		return $infos;

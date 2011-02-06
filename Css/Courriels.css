@@ -188,3 +188,43 @@ ul.boutons_navigation li
 display:inline-block;
 padding:0 1em 0 1em;
 }
+.piece_jointe a
+{
+text-decoration:none;
+}
+.piece_jointe
+{
+	padding:1em;
+	height:64px;
+}
+.piece_jointe img
+{
+	float:left;
+}
+.piece_jointe em
+{
+	display:block;
+}
+.piece_jointe p
+{
+	margin:0;
+}
+.piece_jointe .taille
+{
+	margin-left:64px;
+	font-size:0.9em;
+	color:black;
+}
+.piece_jointe .danger
+{
+color:red;
+font-size:1.2em;
+}
+.piece_jointe:hover
+{
+	background:grey;
+}
+.piece_jointe:hover strong
+{
+	text-decoration:underline;
+}
