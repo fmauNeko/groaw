@@ -193,20 +193,26 @@ class CModCourriel extends AModele
 	}
 
 	// Récupère le nom du fichier donné dans la structure
-	public static function getNomAttachment($structure)
+	public static function getNomAttachment($structure, $nom_base = 'Sans nom')
 	{
-
 		foreach (	array_merge($structure->ifdparameters ? $structure->dparameters : array(),
 					$structure->ifparameters ? $structure->parameters : array())
 					as $parametre)
 		{
 			if ($parametre->attribute === 'filename' || $parametre->attribute === 'name')
 			{
-				return COutils::mimeToUtf8($parametre->value);
+				return pathinfo(COutils::mimeToUtf8($parametre->value));
 			}
 		}
 
-		return 'Sans nom';
+		$infos = array('basename' => $nom_base);
+
+		if ($structure->type === 2)
+		{
+			$infos['extention'] = 'eml';
+		}
+
+		return $infos;
 	}
 
 	// Récupère le mimetype à partir de la structure donnée

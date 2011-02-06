@@ -456,9 +456,16 @@ EOT;
 		$fichier = self::getMimeIcone($mimetype);
 		$taille = COutils::nbBytesToKibis($taille);
 
+		$chemin = $nom['basename'];
+
+		if (isset($nom['extention']))
+		{
+			$chemin .= '.'.$nom['extention'];
+		}
+
 		echo "<a href=\"$lien\"><div class=\"piece_jointe\">\n\t<img src=\"../Img/mimes/$fichier.png\" alt=\"",
 			htmlspecialchars($mimetype), "\" />\n\t<strong>",
-			htmlspecialchars($nom), "</strong>\n\t<em>",
+			htmlspecialchars($chemin), "</strong>\n\t<em>",
 			number_format($taille[0], (fmod($taille[0], 1) == 0.0) ? 0 : 2), ' ', $taille[1], "</em>\n</div></a>\n";
 	}
 

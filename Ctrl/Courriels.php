@@ -214,10 +214,21 @@ function partie()
 	else
 	{
 		$mimetype = CModCourriel::getMimeType($structure);
-		$nom = trim(str_replace(array("\n", "\r"), ' ', CModCourriel::getNomAttachment($structure)));
+
+		$nom = CModCourriel::getNomAttachment($structure, 'untitled');
+
+		$chemin = $nom['basename'];
+
+		if (isset($nom['extention']))
+		{
+			$chemin .= '.'.$nom['extention'];
+		}
+
+		$chemin = addcslashes(trim(
+			str_replace(array("\n", "\r"), ' ', $chemin)),'"');
 
 		header('Content-type: '.$mimetype);
-		header('Content-Disposition: inline; filename="'.addcslashes($nom, '"').'"');
+		header('Content-Disposition: inline; filename="'.$chemin.'"');
 		header("Content-Transfer-Encoding: binary");
 		
 		echo $mod->recupererPartie($nouvelle_section, $structure);
@@ -225,8 +236,6 @@ function partie()
 	
 	global $BODY_ONLY;
 	$BODY_ONLY = true;
-	
-//    header('Content-type:   text/html; charset=UTF-8');
 }
 
 function archive()
