@@ -326,35 +326,34 @@ EOT;
 				}
 				$traiter_sous_parties = false;
 			}
+			elseif ($subtype === 'MIXED')
+			{
+				if ($num_section === '1')
+				{
+					$num_section = null;
+				}
+			}
 		}
 
 		if ($traiter_sous_parties)
 		{
-			// Si il n'y a qu'une partie à afficher
-			if (count($structure->parts) === 1)
+			// Compteur pour les sections
+			$c = 1;
+			//groaw("multipart");
+			foreach ($structure->parts as $partie)
 			{
-				$this->affichageRecursif($numero, $structure->parts[0], $num_section);
-			}
-			else
-			{
-				// Compteur pour les sections
-				$c = 1;
-				//groaw("multipart");
-				foreach ($structure->parts as $partie)
+				// Gestion du numéro de section
+				if ($num_section === null)
 				{
-					// Gestion du numéro de section
-					if ($num_section === null)
-					{
-						$section = $c++;
-					}
-					else
-					{
-						$section = $num_section.'.'.$c++;
-					}
-					
-					// Oh mon DIEU de la récursivité !
-					$this->affichageRecursif($numero, $partie, $section);
+					$section = $c++;
 				}
+				else
+				{
+					$section = $num_section.'.'.$c++;
+				}
+				
+				// Oh mon DIEU de la récursivité !
+				$this->affichageRecursif($numero, $partie, $section);
 			}
 		}
 	}
@@ -383,7 +382,7 @@ EOT;
 
 			$texte = preg_replace('/(\s)(https?|ftp)\:\/\/(.+?)(\s)/', '$1<a href="$2://$3">$2://$3</a>$4',' '.$texte.' ');
 
-			echo nl2br($texte);
+			echo nl2br($texte), "\n<br/>\n";
 		}
 	}
 
