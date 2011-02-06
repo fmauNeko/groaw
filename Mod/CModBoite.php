@@ -89,7 +89,7 @@ class CModBoite extends AModele
 
 	public function listeBoitesNbNonLus()
 	{
-		if (true||!$this->chargerCacheBoites('liste_boites_nb_non_lus'))
+		if (!$this->chargerCacheBoites('liste_boites_nb_non_lus'))
 		{
 			$this->recupererBoites();
 			$this->recupererNbNonVusBoites();

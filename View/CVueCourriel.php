@@ -290,7 +290,7 @@ EOT;
 					$c = 1;
 					foreach ($structure->parts as $partie)
 					{
-						if ($subtype === $mime)
+						if (strtoupper($partie->subtype) === $mime)
 						{
 							// Gestion du numéro de section
 							if ($num_section === null)
