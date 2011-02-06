@@ -311,39 +311,76 @@ class CModBoite extends AModele
 		{
 			if ($a->nb_non_vus === $b->nb_non_vus)
 			{
+				if ($a->nb_non_vus ===  0)
+				{
+					if ($a->nom === 'INBOX')
+						return -1;
+				
+					elseif ($b->nom === 'INBOX')
+						return 1;
+				
+					elseif ($a->nom === 'INBOX.Interesting')
+						return -1;
+				
+					elseif ($b->nom === 'INBOX.Interesting')
+						return 1;
+				
+					elseif ($a->nom === 'INBOX.Normal')
+						return -1;
+				
+					elseif ($b->nom === 'INBOX.Normal')
+						return 1;
+				
+					elseif ($a->nom === 'INBOX.Unexciting')
+						return -1;
+				
+					elseif ($b->nom === 'INBOX.Unexciting')
+						return 1;
+					
+					elseif ($a->nom === 'INBOX.Trash')
+						return -1;
+
+					elseif ($b->nom === 'INBOX.Trash')
+						return 1;
+
+					elseif (strpos($a->nom, 'INBOX.RSS') === 0)
+					{
+						if (strpos($b->nom, 'INBOX.RSS') !== 0)
+							return -1;
+					}
+						
+					elseif (strpos($b->nom, 'INBOX.RSS') === 0)
+					{
+						if (strpos($a->nom, 'INBOX.RSS') !== 0)
+							return 1;
+					}
+
+					// Les archives vont à la fin :-)	
+					elseif (strpos($a->nom, 'INBOX.Archive') === 0)
+					{
+						if (strpos($b->nom, 'INBOX.Archive') !== 0)
+							return 1;
+					}
+						
+					elseif (strpos($b->nom, 'INBOX.Archive') === 0)
+					{
+						if (strpos($a->nom, 'INBOX.Archive') !== 0)
+							return -1;
+					}
+				}
+				
 				return strcmp($a->name, $b->name);
 			}
 
 			return ($a->nb_non_vus > $b->nb_non_vus) ? -1 : 1;
 		});
-		
-		$nb_boites = count($boites);
 
-		// Recherche du premier élément à 0 vues
-		$i_nul = 0;
-		for ($i_nul; $i_nul < $nb_boites; ++$i_nul)
+
+		/*foreach ($boites as $b)
 		{
-			if ($boites[$i_nul]->nb_non_vus === 0)
-			{
-				break;
-			}
+			groaw($b->nom . " -- " . $b->nb_non_vus);
 		}	
-
-		for ($i = 0; $i < $nb_boites; ++$i)
-		{
-			// Le premier rss que l'on recontre
-			if (strpos($boites[$i]->nom, 'INBOX.RSS') === 0)
-			{
-				if ($i > $i_nul)
-				{
-					array_splice($boites, $i_nul, 0, array($boites[$i]));
-					array_splice($boites, $i+1, 1);
-				}
-				break;		
-			}
-		}
-
-		//groaw($this->boites);
+		die("canard");*/
 	}
 
 
