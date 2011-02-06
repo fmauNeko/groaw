@@ -11,9 +11,6 @@ try
 	CMessage::afficherCMessages();
 
 	$FONCTION_CTRL();
-   
-	echo "\n<br/>\n";
-	groaw(imap_errors());
 }
 catch (CException $e)
 {
@@ -29,6 +26,9 @@ if ($BODY_ONLY)
 }
 else
 {
+	echo "\n<br/>\n";
+	groaw(imap_errors());
+
 	$CONTENU_PAGE = ob_get_contents();
 	ob_end_clean();
 

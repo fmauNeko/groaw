@@ -49,5 +49,6 @@ class CImap
 			throw new CException("Fonction imap n'existant pas.");
 		}
 	}
+	
 }
 ?>

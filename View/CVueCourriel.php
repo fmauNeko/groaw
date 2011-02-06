@@ -13,7 +13,7 @@ class CVueCourriel extends AVueModele
 			$nom_periode = null;
 			foreach ($this->modele->courriels as $message)
 			{
-				$sujet = $this->mime_to_utf8($message->subject);
+				$sujet = COutils::mimeToUtf8($message->subject);
 				$sujet = ($sujet === '') ? 'Pas de sujet' : $sujet;
 
 				$date = $this->repererDate($message->date);
@@ -35,7 +35,7 @@ class CVueCourriel extends AVueModele
 					", de ",
 					$this->formaterDate($date),
 					" par <strong>",
-					htmlspecialchars(str_replace('@MISSING_DOMAIN','',preg_replace('/\s<.+>$/','',$this->mime_to_utf8($message->from)))),
+					htmlspecialchars(str_replace('@MISSING_DOMAIN','',preg_replace('/\s<.+>$/','',COutils::mimeToUtf8($message->from)))),
 					"</strong>.</p>\n\t\t</a>\n\t</li>\n";
 			}
 
@@ -216,7 +216,7 @@ EOT;
 		print_r($courriel);
 		echo "-->\n";
 
-		$sujet = $this->mime_to_utf8($courriel->subject);
+		$sujet = COutils::mimeToUtf8($courriel->subject);
 		$sujet = ($sujet === '') ? 'Pas de sujet' : $sujet;
 	
         echo "<div class=\"courriel\">\n\t<div class=\"headers\">\n\t\t<h2>",
@@ -226,13 +226,13 @@ EOT;
 		if (isset($courriel->from))
 		{
 			$this->afficherListePersonnes("Émetteurs", "emetteurs",
-					$this->mime_to_utf8($courriel->from));
+					COutils::mimeToUtf8($courriel->from));
 		}
 			
 		if (isset($courriel->to))
 		{
 			$this->afficherListePersonnes("Destinataires", "destinataires",
-					$this->mime_to_utf8($courriel->to));
+					COutils::mimeToUtf8($courriel->to));
 		}
 
 		if (isset($courriel->date))
@@ -405,7 +405,7 @@ EOT;
 
 		$extention = $extentions[$extention];
 
-		$nom = $this->getNomAttachment($structure);
+		$nom = CModCourriel::getNomAttachment($structure);
 
 		$chemin = '../Cache/attachment-'.md5($GLOBALS['boite'].$numero.$num_section.$structure->bytes.$nom);
 		$chemin_ext = "$chemin.$extention";
@@ -439,31 +439,24 @@ EOT;
 	
 	private function affichageRecursifFichier($numero, $structure, $num_section=null)
 	{
-		$types = array('text', 'multipart', 'message', 'application', 'audio', 'image', 'video', 'model', 'other');
+		$mimetype = CModCourriel::getMimeType($structure);
 
-		$mimetype = $types[$structure->type];
-
-		if ($structure->ifsubtype)
-		{
-			$mimetype .= '/'.strtolower($structure->subtype);
-		}
-
-		groaw($mimetype);
-
-		$nom = $this->getNomAttachment($structure);
+		$nom = CModCourriel::getNomAttachment($structure);
 		$taille = intval($structure->bytes);
 
-		self::afficherVignetteFichier($mimetype, $nom, $taille);
+		$lien = 'Courriels.php?EX=partie&amp;boite='.rawurlencode($GLOBALS['boite'])."&amp;numero=$numero&amp;section=$num_section"; 
+
+		self::afficherVignetteFichier($mimetype, $nom, $taille, $lien);
 
 		//groaw($structure);
 	}
 
-	public static function afficherVignetteFichier($mimetype, $nom, $taille)
+	public static function afficherVignetteFichier($mimetype, $nom, $taille, $lien = '#')
 	{
 		$fichier = self::getMimeIcone($mimetype);
-		$taille = self::nbBytesToKibis($taille);
+		$taille = COutils::nbBytesToKibis($taille);
 
-		echo "<a href=\"#\"><div class=\"piece_jointe\">\n\t<img src=\"../Img/mimes/$fichier.png\" alt=\"",
+		echo "<a href=\"$lien\"><div class=\"piece_jointe\">\n\t<img src=\"../Img/mimes/$fichier.png\" alt=\"",
 			htmlspecialchars($mimetype), "\" />\n\t<strong>",
 			htmlspecialchars($nom), "</strong>\n\t<em>",
 			number_format($taille[0], (fmod($taille[0], 1) == 0.0) ? 0 : 2), ' ', $taille[1], "</em>\n</div></a>\n";
@@ -490,59 +483,8 @@ EOT;
         }
         return 'unknown';
 	}
-	
-	/* Fonction qui converti en unit?s standarts la taille d'un fichier */
-	private static function nbBytesToKibis($nb_bytes)
-	{
-		static $unites = array (
-			'octet',
-			'kibi',
-			'mébi',
-			'gibi',
-			'tébi',
-			'pébi',
-			'exbi',
-			'zébi',
-			'yobi'
-		); // On a le temps de voir venir comme ?a
 
-		// On regarde quelle unit? correspond
-		$u = (int)log((double)$nb_bytes, 1024);
-
-		// Si l'unit? est inconnue, tout en bits
-		if (isset($unites[$u]) === false)
-			$u = 0;
-
-		// Conversion en valeur ? virgule
-		$nb_kibis = $nb_bytes/pow(1024, $u);
-
-		$tu = $unites[$u];
-
-		if ($nb_kibis != 1)
-		{
-			$tu .= 's';
-		}
-
-		return array($nb_kibis, $tu, $u);
-	}
-
-	private function getNomAttachment($structure)
-	{
-
-		foreach (	array_merge($structure->ifdparameters ? $structure->dparameters : array(),
-					$structure->ifparameters ? $structure->parameters : array())
-					as $parametre)
-		{
-			if ($parametre->attribute === 'filename' || $parametre->attribute === 'name')
-			{
-				return $this->mime_to_utf8($parametre->value);
-			}
-		}
-
-		return 'Sans nom';
-	}
-
-    private function affichageRecursif($numero, $structure, $num_section=null)
+    public function affichageRecursif($numero, $structure, $num_section=null)
     {
 		/*define('TYPETEXT', 0);
 		define('TYPEMULTIPART', 1);

@@ -202,19 +202,31 @@ function partie()
         }
 		else
 		{
+			throw new CException("La partie demandée n'existe pas…");
 		}
-    }
+	}
 
-	$texte = $mod->recupererPartieTexte($nouvelle_section, $structure);
+	if ($structure->type === 0)
+	{
+		$vue = new CVueCourriel($mod);
+		$vue->affichageRecursif($mod->num_courriel, $structure, $nouvelle_section);
+	}
+	else
+	{
+		$mimetype = CModCourriel::getMimeType($structure);
+		$nom = trim(str_replace(array("\n", "\r"), ' ', CModCourriel::getNomAttachment($structure)));
 
-	$nettoyeur = new CNettoyeurHtml($texte, CONTENU_DISTANT);
-   
+		header('Content-type: '.$mimetype);
+		header('Content-Disposition: inline; filename="'.addcslashes($nom, '"').'"');
+		header("Content-Transfer-Encoding: binary");
+		
+		echo $mod->recupererPartie($nouvelle_section, $structure);
+	}
+	
 	global $BODY_ONLY;
-    $BODY_ONLY = true;
-    header('Content-type:   text/html; charset=UTF-8');
+	$BODY_ONLY = true;
 	
-	$nettoyeur->nettoyerEtAfficher();
-	
+//    header('Content-type:   text/html; charset=UTF-8');
 }
 
 function archive()
