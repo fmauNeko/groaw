@@ -448,6 +448,8 @@ EOT;
 			$mimetype .= '/'.strtolower($structure->subtype);
 		}
 
+		groaw($mimetype);
+
 		$nom = $this->getNomAttachment($structure);
 		$taille = intval($structure->bytes);
 
@@ -477,7 +479,7 @@ EOT;
                 return $fichier;
         }
 
-        $generics = array('image', 'audio', 'text', 'video', 'package');
+        $generics = array('image', 'audio', 'text', 'video', 'package', 'message');
 
         foreach($generics as $id => $generic)
 		{
@@ -493,15 +495,15 @@ EOT;
 	private static function nbBytesToKibis($nb_bytes)
 	{
 		static $unites = array (
-			'o',
-			'Kio',
-			'Mio',
-			'Gio',
-			'Tio',
-			'Pio',
-			'Eio',
-			'Zio',
-			'Yio'
+			'octet',
+			'kibi',
+			'mébi',
+			'gibi',
+			'tébi',
+			'pébi',
+			'exbi',
+			'zébi',
+			'yobi'
 		); // On a le temps de voir venir comme ?a
 
 		// On regarde quelle unit? correspond
@@ -514,7 +516,14 @@ EOT;
 		// Conversion en valeur ? virgule
 		$nb_kibis = $nb_bytes/pow(1024, $u);
 
-		return array($nb_kibis, $unites[$u], $u);
+		$tu = $unites[$u];
+
+		if ($nb_kibis != 1)
+		{
+			$tu .= 's';
+		}
+
+		return array($nb_kibis, $tu, $u);
 	}
 
 	private function getNomAttachment($structure)
@@ -530,7 +539,7 @@ EOT;
 			}
 		}
 
-		return '';
+		return 'Sans nom';
 	}
 
     private function affichageRecursif($numero, $structure, $num_section=null)
@@ -556,9 +565,9 @@ EOT;
 				$this->affichageRecursifMultipart($numero, $structure, $num_section);
 				break;
 			case TYPEMESSAGE:
-				groaw("ATTENTION : Affichage non supporté…");
+				groaw("ATTENTION : Mode non définitif");
 				$this->affichageRecursifFichier($numero, $structure, $num_section);
-				groaw($structure);
+				//groaw($structure);
 				break;
 			case TYPEIMAGE:
 				$this->affichageRecursifImage($numero, $structure, $num_section);
