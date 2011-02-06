@@ -209,8 +209,8 @@ class CModCourriel extends AModele
 
 		if ($structure->type === 2)
 		{
-			$infos['extention'] = 'eml';
-			$infos['basename'] .= 'eml';
+			$infos['extension'] = 'eml';
+			$infos['basename'] .= '.eml';
 		}
 
 		return $infos;
