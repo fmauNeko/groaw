@@ -89,7 +89,7 @@ class CModBoite extends AModele
 
 	public function listeBoitesNbNonLus()
 	{
-		if (!$this->chargerCacheBoites('liste_boites_nb_non_lus'))
+		if (true||!$this->chargerCacheBoites('liste_boites_nb_non_lus'))
 		{
 			$this->recupererBoites();
 			$this->recupererNbNonVusBoites();
@@ -311,39 +311,23 @@ class CModBoite extends AModele
 		{
 			if ($a->nb_non_vus === $b->nb_non_vus)
 			{
+				// Le trie par nombre de messages est prioritaire
 				if ($a->nb_non_vus ===  0)
 				{
-					if ($a->nom === 'INBOX')
-						return -1;
-				
-					elseif ($b->nom === 'INBOX')
-						return 1;
-				
-					elseif ($a->nom === 'INBOX.Interesting')
-						return -1;
-				
-					elseif ($b->nom === 'INBOX.Interesting')
-						return 1;
-				
-					elseif ($a->nom === 'INBOX.Normal')
-						return -1;
-				
-					elseif ($b->nom === 'INBOX.Normal')
-						return 1;
-				
-					elseif ($a->nom === 'INBOX.Unexciting')
-						return -1;
-				
-					elseif ($b->nom === 'INBOX.Unexciting')
-						return 1;
-					
-					elseif ($a->nom === 'INBOX.Trash')
-						return -1;
 
-					elseif ($b->nom === 'INBOX.Trash')
-						return 1;
+					foreach ($GLOBALS['ORDRE_BOITES'] as $boite)
+					{
+						if ($a->nom === $boite)
+						{
+							return -1;
+						}
+						elseif ($b->nom === $boite)
+						{
+							return 1;
+						}
+					}
 
-					elseif (strpos($a->nom, 'INBOX.RSS') === 0)
+					if (strpos($a->nom, 'INBOX.RSS') === 0)
 					{
 						if (strpos($b->nom, 'INBOX.RSS') !== 0)
 							return -1;

@@ -38,5 +38,14 @@ $PREFERENCES_MIME = array(
     'PNG'       // Puis le png
 );
 
+// Ordre des boites mails dans la vue des archives
+$ORDRE_BOITES = array(
+	'INBOX',
+	'INBOX.Interesting',
+	'INBOX.Normal',
+	'INBOX.Unexciting',
+	'INBOX.Trash'
+);
+
 define('DEBUG',true);
 ?>

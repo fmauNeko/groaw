@@ -99,27 +99,33 @@ class CVueBoite extends AVueModele
 		// Création de la hiérarchie
 		foreach($this->modele->boites as $boite)
 		{
-			$l = $boite->tableau_boite;
+			$t = $boite->tableau_boite;
+
+			// Au départ, on se branche sur le tableau de base
 			$branche = &$arbre;
 
-			$l_l = count($l)-1;
-			for ($i = 0; $i < $l_l; ++$i)
+			// Pour chaque élément du tableau (sauf le dernier)
+			$nb_t = count($t)-1;
+			for ($i = 0; $i < $nb_t; ++$i)
 			{
-				$e = $l[$i];
+				$e = $t[$i];
 
+				// Si il n'y a pas encore de branche à se nom
 				if (!isset($branche[$e]))
 				{
 					$branche[$e] = array();
 				}
 
+				// On se branche sur la branche suivante
 				$branche = &$branche[$e];
 			}
 
+			// Ajout de l'élément sur la dernière branche
 			$branche[] = $boite;
 		}
 
 		echo "<ul class=\"boites_deplacement\">\n";
-		
+		//groaw($arbre);
 		foreach ($arbre['INBOX'] as $sous_clef => $sous_branche)
 		{
 			CVueBoite::afficherArbreBoitesRec($sous_clef, $sous_branche);
