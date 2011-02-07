@@ -60,7 +60,7 @@ class CVueBoite extends AVueModele
 	{
 
 		echo "<select name=\"supprimer_boites[]\" multiple>\n";
-		foreach(array_reverse($this->traiterNomsBoites()) as $boite)
+		foreach(array_reverse($this->modele->boites) as $boite)
 		{
 			$t = array('Trash','Interesting','Normal','Unexciting');
 			if (!isset($boite->tableau_boite[1]) || in_array($boite->tableau_boite[1], $t))
