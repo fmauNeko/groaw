@@ -11,7 +11,8 @@ $ACTIONS = array(
 	'enterrer'	=> array('Entérrer', 'Déplace la liste de courriels dans les archives'),
 	'detruire_courriels'	=> array('Détruire courriels', 'Détruit définitivement tout les courriers de la boite'),
 	'archive'	=> array('Archive', 'Espace des archives'),
-	'marquer_tout_lu'	=> array('Lus', 'Marquer tout les messages comme lus')
+	'marquer_tout_lu'	=> array('Lus', 'Marquer tout les messages comme lus'),
+	'nouveau' => array('Nouveau', 'Nouvel espace')
 );
 
 $DEFAULT_ACTION = 'liste';
@@ -26,6 +27,11 @@ CNavigation::gestionNomBoite();
 function trier()
 {
 	afficher();
+}
+
+function nouveau()
+{
+	new CVueHTML("interface");
 }
 
 function afficher()

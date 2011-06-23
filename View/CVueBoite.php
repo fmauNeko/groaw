@@ -124,7 +124,7 @@ class CVueBoite extends AVueModele
 			$branche[] = $boite;
 		}
 
-		echo "<ul class=\"boites_deplacement\">\n";
+		echo "<ul class=\"boites\">\n";
 		foreach ($arbre['INBOX'] as $sous_clef => $sous_branche)
 		{
 			CVueBoite::afficherArbreBoitesRec($sous_clef, $sous_branche);

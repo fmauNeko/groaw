@@ -17,13 +17,14 @@ foreach (CHead::$js as $js)
 
 if (isset($_SESSION['connecte']))
 {
+	echo "<header>\n\t";
 	if (isset($NOM_BOITE))
 	{
-		echo '<h2 id="titre" class="',$NOM_BOITE,'"><a href="#">',
-			 CNavigation::titre(), "</a></h2>\n";
+		echo '<h2 id="titre" class="',$NOM_BOITE,'">',
+			 CNavigation::titre(), "</h2>\n";
 	}
 
-	echo "<ul id=\"navigation\">\n";
+	echo "\t<nav><ul id=\"navigation\">\n";
 	if ($NOM_CTRL === 'Courriels' && $FONCTION_CTRL === 'afficher')
 	{
 		$boite = rawurlencode($GLOBALS['boite']);
@@ -34,12 +35,14 @@ if (isset($_SESSION['connecte']))
 		echo "\t<li><a href=\"Boites.php\">Tableau de bord</a></li>\n";
 	}
 	echo "\t<li><a href=\"Connexion.php?EX=deconnexion\">Sortir de là</a></li>\n";
-	echo "</ul>\n";
+	echo "\t</ul></nav>\n";
+	echo "</header>\n";
 }
-
+?>
+<div id="body">
+<?php
 echo $CONTENU_PAGE;
 ?>
-
-
+</div>
 </body>
 </html>

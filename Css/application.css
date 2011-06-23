@@ -1,42 +1,53 @@
 body{
     font-family:"Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", "Lucida Sans", Verdana, sans-serif;
-    padding-top:6em;
-	/*white-space:pre;*/
-background:#32353A url(../Img/groaw.png) no-repeat 1em 1em;
+	background: url(../Img/fond.jpeg) repeat;
 color:white;
+margin:0;
+padding:0;
 }
 
-/*nav
-{
-    position:absolute;
-    top:5em;
-    left:1em;
-    width:8em;
+#body {
+position:absolute;
+top:2em;
+left:0;
+bottom:0;
+right:0;
 }
-nav h4
-{
-    margin:0.5em 0 1em 0;
+
+header {
+min-height:2em;
+background-color:rgb(28,66,255);
+background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0, rgb(0,71,133)),
+    color-stop(0.3, rgb(28,66,255)),
+    color-stop(0.84, rgb(0,145,255))
+);
+background-image: -moz-linear-gradient(
+    center bottom,
+    rgb(0,71,133) 0%,
+    rgb(28,66,255) 30%,
+    rgb(0,145,255) 84%
+);
 }
-nav ul
-{
-    font-size:0.9em;
-    padding:0;
-    list-style:none;
+
+#titre, #navigation {
+font-weight:bold;
+font-size:1.3em;
+margin:0.2em 1em 0.2em 0.4em;
+text-shadow: 0px 0px 3px #333;
 }
-nav ul ul
-{
-    padding-left:2em;
-}*/
+
+#titre {
+float:left;
+}
 
 #navigation
 {
-position:absolute;
-right:1em;
-top:1em;
-font-weight:bold;
-font-size:1.3em;
+float:right;
 list-style:none;
-margin:0;
 }
 #navigation li
 {
@@ -83,61 +94,6 @@ margin:0;
 border-bottom:1px solid black;
 }
 
-#titre
-{
-margin:0;
-position:absolute;
-left:1em;
-background-size:100% auto;
-background:orange;
-background-image:url(../Img/livraison.jpeg);
-border-radius:1em;
--moz-border-radius:1em;
-height:11.25em;
-width:20em;
-font-size:0.8em;
-}
-
-#titre a
-{
-position:absolute;
-bottom:1em;
-left:0;
-right:0;
-padding:0.3em;
-background:rgba(255,255,255,0.7);
-text-align:center;
-color:black;
-font-family: Georgia, "DejaVu Serif", Norasi, serif;
-font-weight:normal;
-text-decoration:none;
-}
-
-ul.boites li.livraison a, #titre.livraison
-{
-background-image:url(../Img/livraison.jpeg) !important;
-}
-ul.boites li.interessant a, #titre.interessant
-{
-background-image:url(../Img/interessant.jpeg) !important;
-}
-ul.boites li.normal a, #titre.normal
-{
-background-image:url(../Img/normal.jpeg) !important;
-}
-ul.boites li.ininteressant a, #titre.ininteressant
-{
-background-image:url(../Img/ininteressant.jpeg) !important;
-}
-ul.boites li.poubelle a, #titre.poubelle
-{
-background-image:url(../Img/poubelle.jpeg) !important;
-}
-ul.boites li.archives a, #titre.archives
-{
-background-image:url(../Img/archives.jpeg) !important;
-}
-
 label
 {
 	font-weight:bold;
@@ -166,11 +122,11 @@ form textarea
 width:100%;
 height:20em;
 }
-/*input[required]
+input[required]
 {
 background-color:lightgreen;
 }
 input:invalid 
 {
 background-color: white;
-}*/
+}
