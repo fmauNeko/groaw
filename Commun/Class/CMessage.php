@@ -16,12 +16,12 @@ class CMessage
 		$_SESSION['CMessage_list'][] = $this;
 	}
 
-	public function afficher()
+	public function show()
 	{
 		echo "\t<li>$this->message</li>\n";
 	}
 
-	public static function afficherCMessages()
+	public static function showMessages()
 	{
 		if (isset($_SESSION['CMessage_list']))
 		{
@@ -33,7 +33,7 @@ class CMessage
 				
 				do
 				{
-					array_pop($t)->afficher();
+					array_pop($t)->show();
 				} while (count($t) > 0);
 
 				echo "</ul>\n";

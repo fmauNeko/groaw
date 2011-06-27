@@ -4,33 +4,26 @@ if (!isset($_REQUEST['PRELOAD_MODE']))
 	header ('Content-Type: text/html; charset=utf-8');
 }
 
-// Fuseau horaire
-date_default_timezone_set(FUSEAU_HORAIRE);
+date_default_timezone_set(TIME_ZONE);
 
-// Démarrage de la session
 session_start();
 
-// Si l'on est pas en train de gérer la connexion
-if ($NOM_CTRL !== 'Connexion')
+// If the user is not at the login page
+if (!($CTRL_NAME === 'Session' && $CTRL_FUNCTION === 'login'))
 {
-    // Si les informations sont présentes pour se connecter
-    if (isset($_SESSION['connecte']))
+    // If the user is logged
+    if (isset($_SESSION['logged']))
     {
-		global $boite;
+		global $box;
 
-		// Si aucune boite n'est passée dans l'url, c'est INBOX
-		$boite = isset($_REQUEST['boite']) ? $_REQUEST['boite'] : 'INBOX';
+		// The selected box is in the url, and INBOX is the default
+		$box = isset($_REQUEST['box']) ? $_REQUEST['box'] : 'INBOX';
 
-        // Déclaration de l'identité
-        CImap::declarerIdentite($_SESSION['email'], $_SESSION['mdp_secret'], $boite);
+        CImap::declareIdentity($_SESSION['email'], $_SESSION['secret_password'], $box);
     }
     else
     {
-        // Si l'on est pas en train de se connecter
-        if (!($NOM_CTRL === 'Connexion' && $FONCTION_CTRL === 'connexion'))
-        {
-            new CRedirection("Connexion.php");
-        }
+		new CRedirection("Session.php");
     }
 }
 ?>

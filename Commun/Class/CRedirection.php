@@ -11,17 +11,17 @@ class CRedirection
 		}
 		else
 		{
-			// Pas la peine de garder ce que l'on avait affiché
+			// Ignore the already printed content
 			ob_end_clean();
 			
-			// Redirection au niveau du header
+			// HTTP redirection
 			header("Location:\t".$url);
 			
-			// Lien de redirection, comme le veut la norme
-			echo 'Redirection vers: <a href="',htmlspecialchars($url),'"> une autre page</a>.';
+			// With a link for be nice
+			echo 'Move to: <a href="',htmlspecialchars($url),'">,', htmlspecialchars($url),'</a>.';
 		}
 
-		// Continuer l'éxécution peut amener des erreurs en fonction du code qui suit
+		// A redirection is terminal
 		exit();
 	}
 }

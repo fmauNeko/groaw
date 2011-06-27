@@ -1,19 +1,12 @@
 <?php
-$NOM_CTRL = 'Connexion';
 
-$ACTIONS = array(
-	'connexion'=> array('Connexion','Connexion de l\'utilisateur'),
-	'deconnexion'=> array('Déconnexion','Déconnexion de l\'utilisateur')
-);
+class Session {
 
-$DEFAULT_ACTION = 'connexion';
+	public function default() {
+		login();
+	}
 
-require ('../Inc/haut.php');
-
-// Début de la liste des fonctions
-
-function connexion()
-{
+	public function login() {
 	if (CFormulaire::soumis())
 	{
 		try
@@ -36,16 +29,35 @@ function connexion()
 
 	CHead::ajouterJs('sha1');
 	new CVueHTML("connexion");
+	}
+}
+$NOM_CTRL = 'Session';
+
+$ACTIONS = array(
+	'login'=> array(_('Login'),'Connexion de l\'utilisateur'),
+	'logout'=> array('Déconnexion','Déconnexion de l\'utilisateur')
+);
+
+$DEFAULT_ACTION = 'login';
+
+require ('../Inc/top.php');
+
+// Beginning of function list
+
+function login()
+{
 }
 
-function deconnexion()
+function logout()
 {
 	session_destroy();
 
-	new CRedirection('Connexion.php');
+	new CMessage(_('Successful logout'));
+
+	new CRedirection('Session.php');
 }
 
 // Fin de la liste des fonctions
-require ('../Inc/bas.php');
+require ('../Inc/bottom.php');
 
 ?>

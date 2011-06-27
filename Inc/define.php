@@ -1,59 +1,16 @@
 <?php
 
-define('NOM_APPLICATION', 'Groaw');
+define('APPLICATION_NAME', 'Groaw');
 
-$LISTE_CTRLS = array(
+$CTRL_LIST = array(
 	'Connexion' => 'Connexion',
 	'Boites'	=> 'Boites aux lettres',
-	'Courriels'		=> 'Gestion des courriels'
+	'Courriels'		=> 'Gestion des courriels',
+	'Dashboard'	=> _('Dashboard')
 );
 
-define('FORMAT_DATE_JOUR',		'à <strong>%Hh%M</strong>');
-define('FORMAT_DATE_SEMAINE',	'le <strong>%A à %Hh%M</strong>');
-define('FORMAT_DATE_NORMAL',	'le <strong>%A %d %B %Y à %Hh%M</strong>');
+define('DAY_DATE_FORMAT',		_('à <strong>%Hh%M</strong>'));
+define('WEEK_DATE_FORMAT',		_('le <strong>%A à %Hh%M</strong>'));
+define('DEFAULT_DATE_FORMAT',	_('le <strong>%A %d %B %Y à %Hh%M</strong>'));
 
-define('FUSEAU_HORAIRE', 'Europe/Paris');
-setlocale (LC_ALL, 'fr_FR.utf8','fr_FR', 'fr'); 
-
-define('SERVEUR_IMAP','{88.191.117.94:993/imap/ssl/novalidate-cert}');
-
-define('COURRIELS_PAR_PAGE', 40);
-define('CONTENU_DISTANT', true);
-
-define('TAILLE_VIGNETTES', 200);
-
-// cache de 5 minutes
-define('DUREE_CACHE_LISTE',300);
-
-// Forcer le https si il est disponible ?
-define('FORCE_HTTPS', false);
-
-// Les mails peuvent définir un contenu alternatif
-// Voici les types que l'on préfère par ordre de préférence
-
-$PREFERENCES_MIME = array(
-    'HTML',     // D'abord le HTML
-    'PLAIN',    // Puis on préfère le texte
-    'JPEG',     // Puis le jpeg
-    'PNG'       // Puis le png
-);
-
-// Ordre des boites mails dans la vue des archives
-$ORDRE_BOITES = array(
-	'INBOX',
-	'INBOX.Interesting',
-	'INBOX.Normal',
-	'INBOX.Unexciting',
-	'INBOX.Trash'
-);
-
-// Extention dangereuses (message d'avertissement pour les boulets)
-$EXTENSIONS_DANGEREUSES = array(
-	'exe',
-	'jar',
-	'sh',
-	'bat'
-);
-
-define('DEBUG',true);
 ?>

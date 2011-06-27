@@ -1,0 +1,57 @@
+ul.messages {
+position:absolute;
+background:yellowgreen;
+bottom:0px;
+left:17em;
+top:0px;
+margin:0;
+overflow:auto;
+list-style:none;
+padding:0;
+}
+ul.messages li
+{
+padding-bottom:1.5em;
+}
+
+ul.messages li.section
+{
+text-align:center;
+border-bottom:1px solid black;
+padding-bottom:0.5em;
+margin-bottom:1em;
+}
+
+ul.messages strong
+{
+color:red;
+}
+
+ul.messages p
+{
+margin:0.2em 0 0 2em;
+}
+
+ul.messages a, .pagination a
+{
+color:white;
+text-decoration:none;
+}
+
+ul.messages h4
+{
+margin:0;
+font-size:1.1em;
+}
+ul.messages a:hover, .pagination a:hover
+{
+text-decoration:underline;
+}
+ul.messages li.message_lu a
+{
+color:grey;
+}
+ul.messages li.message_lu strong
+{
+color:#A20000;
+}

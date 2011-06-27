@@ -1,17 +1,17 @@
 <?php
-$NOM_CTRL = _('Dashboard');
+$CTRL_NAME = 'Dashboard';
 
 $ACTIONS = array(
 	'boites'		=> array(_('Boites aux lettres'), _('Liste des boites aux lettres')),
 	'messages'		=> array(_('Liste des messages'), _('Liste des messages de la boite courante')),
-	'message'		=> array(_('Affichage d\'un message'), _(
+	'message'		=> array(_('Affichage d\'un message'), _('Mail view'))
 );
 
 $DEFAULT_ACTION = 'liste';
 
-require ('../Inc/haut.php');
+require ('../Inc/top.php');
 
-// Début de la liste des fonctions
+// Beginning of function list
 
 function liste()
 {
@@ -36,8 +36,8 @@ function liste()
 }
 
 
-// Fin de la liste des fonctions
+// End of function list
 
-require ('../Inc/bas.php');
+require ('../Inc/bottom.php');
 
 ?>

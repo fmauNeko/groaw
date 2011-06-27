@@ -1,15 +1,14 @@
 <?php
-// Transformation des messages d'erreurs en exceptions
-$exception_error_handler_semaphore = true;
+// PHP errors are transformed to exceptions
+$exception_error_handler_mutex = true;
 function exception_error_handler($errno, $errstr, $errfile, $errline)
 {
-	// L'utilité de ce truc est de contourner un bug de merde de php
-	// Quand une fonction créé deux erreurs,
-	// la deuxième exception est attaquée avant que la première soit relachée
-	global $exception_error_handler_semaphore;
-	if ($exception_error_handler_semaphore && $errfile !== 'Unknown' && $errline !== 0)
+	// The mutex is used when php create to errors at the same time
+	// Exceptions doesn't like that.
+	global $exception_error_handler_mutex;
+	if ($exception_error_handler_mutex && $errfile !== 'Unknown' && $errline !== 0)
 	{
-		$exception_error_handler_semaphore = false;
+		$exception_error_handler_mutex = false;
 		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 	}
 	else
@@ -22,10 +21,10 @@ function exception_error_handler($errno, $errstr, $errfile, $errline)
 }
 set_error_handler("exception_error_handler");
 
-// Définition du gestionnaire d'exceptions de base
+// Exception handler that just show the message and exit
 function exception_handler($exception)
 {
-	echo "\"<div class =\"exception\" style=\"width:80%;color:red;border:2px solid orange;white-space:pre;\">\n", htmlspecialchars($exception), "\n<br/><a href=\"javascript:history.back()\">Revenir en arrière</a></div>\"";
+	echo "\"<div class =\"exception\" style=\"width:80%;color:red;border:2px solid orange;white-space:pre;\">\n", htmlspecialchars($exception), "\n<br/><a href=\"javascript:history.back()\">",_('Return back'),"</a></div>\"";
 	exit();
 }
 set_exception_handler("exception_handler");

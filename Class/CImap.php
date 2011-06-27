@@ -1,30 +1,30 @@
 <?php
 class CImap
 {
-	protected static $jeton_imap = null;
+	protected static $token = null;
 
 	protected static $mail;
-	protected static $mdp;
-	protected static $boite;
+	protected static $password;
+	protected static $box;
 
-	public static function declarerIdentite($mail, $mdp, $boite)
+	public static function declareIdentity($mail, $password, $box)
 	{
 		self::$mail = $mail;
-		self::$mdp = $mdp;
-		self::$boite = $boite;
+		self::$password = $password;
+		self::$box = $box;
 	}
 
 	public static function authentification()
 	{
-		self::$jeton_imap = imap_open(SERVEUR_IMAP.self::$boite, self::$mail, self::$mdp);
+		self::$token = imap_open(IMAP_SERVER.self::$box, self::$mail, self::$password);
 	}
 
-	public static function deconnexion()
+	public static function logout()
 	{
-		if (self::$jeton_imap !== null)
+		if (self::$token !== null)
 		{
-			imap_close(self::$jeton_imap);
-			self::$jeton_imap = null;
+			imap_close(self::$token);
+			self::$token = null;
 		}
 	}
 
@@ -34,19 +34,19 @@ class CImap
 
 		if (function_exists($fonction))
 		{
-			if (self::$jeton_imap === null)
+			if (self::$token === null)
 			{
 				self::authentification();
 			}
 
 			return call_user_func_array($fonction,
 					array_merge(
-						(array) self::$jeton_imap,
+						(array) self::$token,
 						$arguments));
 		}
 		else
 		{
-			throw new CException("Fonction imap n'existant pas.");
+			throw new CException(sprintf(_("The imap function %s does'nt exist."), $nom));
 		}
 	}
 	

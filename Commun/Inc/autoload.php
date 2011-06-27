@@ -1,20 +1,15 @@
 <?php
-// Chargement automatique des class (PHP5)
+// Autoloading of class (PHP5)
 function __autoload($class)
 {
-	$chemins_possibles = array(
+	$possible_paths = array(
+		'../Ctrl/'.$class.'.php',
 		'../Mod/'.$class.'.php',
-		'../Commun/Mod/'.$class.'.php',
 		'../View/'.$class.'.php',
-		'../Commun/View/'.$class.'.php',
-		'../Class/'.$class.'.php',
-		'../Commun/Class/'.$class.'.php'
+		'../Tools/'.$class.'.php'
 	);
 	
-	// Il est important de noter que les dossiers communs sont regardés en deuxième,
-	// Ceci permettant de redéfinir une classe facilement sans la changer pour tout les sites
-	
-	foreach($chemins_possibles as $chemin)
+	foreach($possible_paths as $chemin)
 	{
 		if (file_exists($chemin))
 		{
