@@ -21,26 +21,36 @@ class CNavigation
 
 	public static function urlRewriting() {
 
-		if (isset($_REQUEST['SCHEMA'])) {
-			$infos = explode('/', $_REQUEST['SCHEMA']);
+		global $ROOT_PATH;
 
-			$c_infos = count($infos);
+		$schema = substr($_SERVER['REQUEST_URI'], strlen($ROOT_PATH)+strlen(URL_REWRITING)+2);
 
-			if ($c_infos > 0) {
-				if (!isset($_REQUEST['CTRL'])) {
-					$_REQUEST['CTRL'] = $infos[0];
+		
+		$p_get = strpos($schema, '?');
+
+		if ($p_get !== false) {
+			$schema = substr($schema, 0, $p_get);
+		}
+
+		$infos = explode('/', $schema);
+
+		$c_infos = count($infos);
+		
+		if ($c_infos > 0) {
+			if (!isset($_REQUEST['CTRL'])) {
+				$_REQUEST['CTRL'] = rawurldecode($infos[0]);
+			}
+
+			if ($c_infos > 1) {
+				if (!isset($_REQUEST['EX'])) {
+					$_REQUEST['EX'] = rawurldecode($infos[1]);
 				}
+			}
 
-				if ($c_infos > 1) {
-					if (!isset($_REQUEST['EX'])) {
-						$_REQUEST['EX'] = $infos[1];
-					}
-				}
-
-				for ($i = 2; $i < $c_infos-1; $i += 2) {
-					$_GET[$infos[$i]] = $infos[$i+1];	
-					$_REQUEST[$infos[$i]] = $infos[$i+1];	
-				}
+			for ($i = 2; $i < $c_infos-1; $i += 2) {
+				$info = rawurldecode($infos[$i+1]);
+				$_GET[$infos[$i]] = $info;
+				$_REQUEST[$infos[$i]] = $info;
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title><?php echo CNavigation::getTitle();?> - WebCourriel</title>
+	<title><?php echo $html_title ?> - WebCourriel</title>
 <?php foreach (CHead::$css as $css)
 {
 	echo "\t<link href=\"$ROOT_PATH/Css/$css.css\" media=\"screen\" rel=\"Stylesheet\" type=\"text/css\" />\n";
@@ -19,7 +19,7 @@ if (isset($_SESSION['logged']))
 {
 	echo "<header>\n\t",'<h2 id="title" ',
 		 (isset($BOX_NAME) ? 'class="'.htmlspecialchars($BOX_NAME).'"' : ''),'>',
-			 CNavigation::getTitle(), "</h2>\n";
+			 $html_title, "</h2>\n";
 
 	$url_logout = CNavigation::generateUrlToApp('Session','logout',null);
 	$text_logout = _('Logout');
@@ -30,6 +30,20 @@ if (isset($_SESSION['logged']))
 </header>
 
 END;
+}
+
+if (DEBUG && isset($groaw_array)) {
+
+        echo "\n<pre class=\"groaw\">";
+
+		$c_groaw_array = count($groaw_array);
+
+		for($i = 0; $i < $c_groaw_array; ++$i) {
+			$groaw = $groaw_array[$i];
+			$groaw ? print_r($groaw) : var_dump($groaw);
+			echo (($i < $c_groaw_array - 1) ? "<hr/>" : '' );
+		}
+        echo "</pre>\n";
 }
 ?>
 <div id="body">

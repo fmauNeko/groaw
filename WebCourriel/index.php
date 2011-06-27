@@ -21,6 +21,8 @@ if (FORCE_HTTPS)
 	CHead::addJS('forcerHttps');
 }
 
+$ROOT_PATH = dirname($_SERVER['SCRIPT_NAME']);
+
 if (URL_REWRITING) {
 	CNavigation::urlRewriting();
 }
@@ -36,8 +38,6 @@ if (!isset($_REQUEST['PRELOAD_MODE']))
 date_default_timezone_set(TIME_ZONE);
 
 session_start();
-
-$ROOT_PATH = dirname($_SERVER['SCRIPT_NAME']);
 
 $CTRL_NAME = isset($_REQUEST['CTRL']) ? $_REQUEST['CTRL'] : 'Session';
 $ACTION_NAME = isset($_REQUEST['EX']) ? $_REQUEST['EX'] : 'index';
@@ -94,7 +94,12 @@ else
 	CMessage::showMessages();
 
 	echo "\n<br/>\n";
-	groaw(imap_errors());
+	$errors = imap_errors();
+	if ($errors !== false) {
+		groaw($errors);
+	}
+
+	$html_title = htmlspecialchars(CNavigation::getTitle());
 
 	$PAGE_CONTENT = ob_get_contents();
 	ob_end_clean();

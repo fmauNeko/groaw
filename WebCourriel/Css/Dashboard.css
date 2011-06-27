@@ -1,13 +1,15 @@
 ul.messages {
+background:yellowgreen;
 font-size:0.62em;
 position:absolute;
-bottom:0px;
+bottom:0;
 left:17em;
-top:0px;
+top:0;
 margin:0;
 overflow:auto;
 list-style:none;
 padding:0;
+width:40em;
 }
 ul.messages li
 {
@@ -66,4 +68,35 @@ color:grey;
 ul.messages li.message_lu strong
 {
 color:#A20000;
+}
+
+ul.boxes, ul.boxes ul {
+padding-left:1em;
+margin:0.5em 0 0.5em 0;
+list-style:none;
+}
+
+ul.boxes {
+font-size:0.62em;
+background:pink;
+width:16.35em;
+padding-left:0.65em;
+margin:0;
+position:absolute;
+bottom:0;
+left:0;
+top:0;
+overflow:auto;
+}
+
+ul.boxes h4 {
+margin:0.5em 0 0 0;
+}
+
+ul.boxes a {
+text-decoration:none;
+}
+
+ul.boxes a:hover {
+text-decoration:underline;
 }

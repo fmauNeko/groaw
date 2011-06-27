@@ -68,7 +68,7 @@ class CImap
 			self::authentification();
 		}
 
-		groaw("CALL: $name");
+		//groaw("CALL: $name");
 		$function_value = call_user_func_array($function,
 				array_merge(
 					(array) self::$token,
@@ -78,7 +78,7 @@ class CImap
 			$data = serialize($function_value);
 
 			if (!file_put_contents($cache_file, $data)) {
-				groaw(_('Unable to write cache data'));
+				groaw(_('Unable to write cache data. WebCourriel may be slow.'));
 			}
 		}
 

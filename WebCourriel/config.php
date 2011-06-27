@@ -12,7 +12,7 @@ define('VIGNETTE_SIZE', 200);
 
 // 5 minutes for cache length
 // if you don't want cache, set 0
-define('CACHE_LENGTH',300);
+define('CACHE_LENGTH',1300);
 
 // Force HTTPS if it's possible ?
 define('FORCE_HTTPS', false);

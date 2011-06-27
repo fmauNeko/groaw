@@ -9,18 +9,18 @@ class BoxMod
         $this->box = $box;
 	}
 
-	public function recupererBoites()
+	public function getBoxes()
 	{
-		$boxes = CImap::getmailboxes(SERVEUR_IMAP, '*');
+		$boxes = CImap::getmailboxes(IMAP_SERVER, '*');
 
 		$this->boxes = $boxes;
 	}
 
-	public function recupererNbNonVusBoites()
+	public function getNbUnread()
 	{
 		foreach ($this->boxes as &$box)
 		{
-			$box->nb_non_vus = CImap::status($box->name, SA_UNSEEN)->unseen;
+			$box->nb_unread = CImap::status($box->name, SA_UNSEEN)->unseen;
 		}
 	}
 
@@ -32,70 +32,69 @@ class BoxMod
 		}
 	}
 
-	public function chargerCacheBoites($fichier, $duree_cache = DUREE_CACHE_LISTE)
+	public function loadCache($file)
 	{
-		$fichier = $this->calculerNomfichier($fichier);
+		$file = $this->getCacheFilename($file);
 
-		if (!file_exists($fichier))
+		if (!file_exists($file))
 		{
 			return false;
 		}
 
 		// Si le cache a plus de 5 minutes
-		if (time() - filemtime($fichier) > $duree_cache)
+		if (time() - filemtime($file) > CACHE_LENGTH)
 		{
-			groaw("cache");
 			return false;
 		}
 
-		$donnees = file_get_contents($fichier);
+		$data = file_get_contents($file);
 
-		if ($donnees === false)
+		if ($data === false)
 		{
-			groaw("Impossible de se servir du fichier de cache.");
+			groaw(_('Unable to load cache'));
 			return false;
 		}
 		
-		$this->boxes = unserialize($donnees);
+		$this->boxes = unserialize($data);
 		
 		return true;
 	}
 
-	public function enregistrerCacheBoites($fichier)
+	public function saveCache($file)
 	{
-		$donnees = serialize($this->boxes);
-		$fichier = $this->calculerNomfichier($fichier);
+		$data = serialize($this->boxes);
+		$file = $this->getCacheFilename($file);
 
-		if (!file_put_contents($fichier, $donnees))
+		if (!file_put_contents($file, $data))
 		{
-			groaw("Impossible de mettre en cache les boites. L'application peut être lente.");	
+			groaw(_('Unable to cache boxes list'));
 		}
 	}
 
-	private function calculerNomfichier($fichier)
+	private function getCacheFilename($file)
 	{
-		return '../Cache/'.md5($_SESSION['email']).'_'.$fichier;
+		return '../Cache/'.md5($_SESSION['email']).'_'.$file;
 	}
 
 	public function effacerCaches()
 	{
-		$fichiers = glob($this->calculerNomfichier('*'));
+		$file = glob($this->calculerNomfile('*'));
 
-		foreach ($fichiers as $fichier)
+		foreach ($files as $file)
 		{
-			unlink($fichier);
+			unlink($file);
 		}
 	}
 
-	public function listeBoitesNbNonLus()
-	{
-		if (!$this->chargerCacheBoites('liste_boites_nb_non_lus'))
+	public function listBoxesNbUnread() {
+
+		if (!$this->loadCache('list_boxes_nb_unread'))
 		{
-			$this->recupererBoites();
-			$this->recupererNbNonVusBoites();
-			$this->traiterNomsBoites();
-			$this->trierBoitesNbNonVus();
-			$this->enregistrerCacheBoites('liste_boites_nb_non_lus');
+			$this->getBoxes();
+			$this->getNbUnread();
+			$this->treatBoxesNames();
+			$this->sortBoxesNbUnread();
+			$this->saveCache('list_boxes_nb_unread');
 		}
 	}
 
@@ -114,11 +113,11 @@ class BoxMod
 	public function recupererInfosAcceuil()
 	{
 		$this->boxes = Array(
-			'livraison'		=> CModBoite::recupererInfoBoite('INBOX', SA_MESSAGES),
-			'interessant'	=> CModBoite::recupererInfoBoite('INBOX.Interesting', SA_MESSAGES),
-			'normal'		=> CModBoite::recupererInfoBoite('INBOX.Normal', SA_MESSAGES),
-			'ininteressant'	=> CModBoite::recupererInfoBoite('INBOX.Unexciting', SA_MESSAGES),
-			'poubelle' 		=> CModBoite::recupererInfoBoite('INBOX.Trash', SA_MESSAGES)
+			'livraison'		=> BoxMod::recupererInfoBoite('INBOX', SA_MESSAGES),
+			'interessant'	=> BoxMod::recupererInfoBoite('INBOX.Interesting', SA_MESSAGES),
+			'normal'		=> BoxMod::recupererInfoBoite('INBOX.Normal', SA_MESSAGES),
+			'ininteressant'	=> BoxMod::recupererInfoBoite('INBOX.Unexciting', SA_MESSAGES),
+			'poubelle' 		=> BoxMod::recupererInfoBoite('INBOX.Trash', SA_MESSAGES)
 		);
 
 		$this->boxes['livraison']->titre		= "Livraison";
@@ -134,7 +133,7 @@ class BoxMod
 
 		if ($info===false)
 		{
-			$box = new CModBoite($nom);
+			$box = new BoxMod($nom);
 			$box->creer();
 			$info = CImap::status(SERVEUR_IMAP.$nom, $type);
 		}
@@ -212,34 +211,18 @@ class BoxMod
 		$this->enregistrerCacheBoites('liste_boites_nb_non_lus');
 	}
 	
-	public static function nommerBoite($nom, $complement)
-	{
-		if ($complement && $complement !== '')
-		{
-			$complement = ' : '.$complement;
+	public static function getBeautifulName($box) {
+
+		if ($box === 'INBOX') {
+			return _('Inbox');
 		}
 
-		switch ($nom)
-		{
-			case 'INBOX':
-				CNavigation::nommer("Espace de livraison$complement");
-				break;
-			case 'INBOX.Interesting':
-				CNavigation::nommer("Courriers intéressant$complement");
-				break;
-			case 'INBOX.Normal':
-				CNavigation::nommer("Courriers normaux$complement");
-				break;
-			case 'INBOX.Unexciting':
-				CNavigation::nommer("Courriers inintéressant$complement");
-				break;
-			case 'INBOX.Trash':
-				CNavigation::nommer("Poubelle$complement");
-				break;
-			default:
-				$nom = new CUtf7($nom);
-				CNavigation::nommer(htmlspecialchars($nom->toUtf8()).$complement);
-		}
+		$box = new CUtf7($box);
+		$box = $box->toUtf8();
+
+		$box = preg_replace('/^INBOX\./', '', $box);
+
+		return str_replace('.', ' : ', $box);
 	}
 
 	public static function simplifierNomBoite($nom)
@@ -247,15 +230,15 @@ class BoxMod
 		return preg_replace('/^\{.+?\}/','',$nom);
 	}
 
-	public static function explodeNomBoite($box, $nom)
+	public static function explodeBoxName($box, $name)
 	{
-		$nom = new CUtf7($nom);
-		return explode($box->delimiter, $nom->toUtf8());
+		$name = new CUtf7($name);
+		return explode($box->delimiter, $name->toUtf8());
 	}
 
-	public static function creerDescription($tableau_box)
+	public static function createDescrsiption($box_array)
 	{
-		$description = htmlspecialchars(implode(' : ',array_slice($tableau_box,1)));
+		$description = htmlspecialchars(implode(' : ',array_slice($box_array,1)));
 		
 		if ($description === '')
 		{
@@ -265,41 +248,38 @@ class BoxMod
 		return $description;
 	}
 
-	public function traiterNomsBoites()
+	public function treatBoxesNames()
 	{
 		$boxes = &$this->boxes;
 
-		foreach($boxes as $clef => $box)
+		foreach($boxes as $key => $box)
 		{
-			$nom = CModBoite::simplifierNomBoite($box->name);
+			$name = BoxMod::simplifierNomBoite($box->name);
 
-			$l = CModBoite::explodeNomBoite($box, $nom);
-			$description = CModBoite::creerDescription($l); 
+			$l = BoxMod::explodeBoxName($box, $name);
+			$description = BoxMod::createDescrsiption($l); 
 			
-			$lien = rawurlencode($nom);
-
-			$box->lien = $lien;
-			$box->tableau_box = $l;
-			$box->nom = $nom;
+			$box->box_array = $l;
+			$box->name = $name;
 			$box->description = $description;
 
-			$boxes[$clef] = $box;
+			$boxes[$key] = $box;
 		}
 
 		return $boxes;
 
 	}
 	
-	public function trierBoitesNbVus()
+	public function sortBoxesNbUnread()
 	{
 		usort($this->boxes, function($a,$b)
 		{
-			if ($a->nb_messages === $b->nb_messages)
+			if ($a->nb_unread === $b->nb_unread)
 			{
 				return 0;
 			}
 
-			return ($a->nb_messages > $b->nb_messages) ? -1 : 1;
+			return ($a->nb_unread > $b->nb_unread) ? -1 : 1;
 		});
 	}
 	

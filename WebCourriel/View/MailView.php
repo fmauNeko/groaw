@@ -2,12 +2,12 @@
 class MailView extends AbstractView {
 	
 	public function showMails($page_num, $nb_by_page) {
+		echo "<ul class=\"messages\">\n";	
+		
 		if (count($this->model->mails) === 0) {
-			echo '<h3>', _('The box is empty'), '</h3>';
+			echo "\t<h3>", _('The box is empty'), "</h3>\n</ul>";
 			return;
 		}
-		
-		echo "<ul class=\"messages\">\n";	
 
 		$period_name = null;
 
@@ -45,17 +45,19 @@ class MailView extends AbstractView {
 
 		echo "</ul>";
 
-		$pagination = CNavigation::pagination(
-				$this->model->nb_mails, $page_num, $nb_by_page);
+		$pagination = false;// CNavigation::pagination(
+		//		$this->model->nb_mails, $page_num, $nb_by_page);
 
 		if ($pagination)
 		{
+			global $box;
+
 			function afficherPage($boite, $num_page, $texte)
 			{
 				if ($num_page !== false)
 				{
 			$url = CNavigation::generateUrlToApp('Dashboard', 'show', array(
-						'box' => $GLOBALS['box'],
+						'box' => $box,
 						'msgno' => $mail->msgno));
 					echo "<a href=\"?EX=liste&amp;boite=$boite&amp;page=$num_page\">$texte</a> ";
 				}
@@ -63,7 +65,7 @@ class MailView extends AbstractView {
 			
 			echo "<p class=\"pagination\">Pages:<br/>\n";
 
-			afficherPage($box, $pagination['directions']['precedent'], 'Précedent');
+			afficherPage($box, $pagination['directions']['previous'], _('Previous'));
 
 			$difference = -1;
 			foreach ($pagination['pages'] as $pagin)
@@ -87,7 +89,7 @@ class MailView extends AbstractView {
 				$difference = $pagin;
 			}
 
-			afficherPage($box, $pagination['directions']['suivant'], 'Suivant');
+			afficherPage($box, $pagination['directions']['next'], _('Next'));
 			
 			echo "\n</p>\n";
 		}

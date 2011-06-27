@@ -13,21 +13,12 @@ class Dashboard {
 		$view->showMails($page_num, NB_MAILS_BY_PAGE);
 
 		$box_mod = new BoxMod();
-		$box_mod->listeBoitesNbNonLus();
+		$box_mod->listBoxesNbUnread();
 
-/*
-		$vue = new CVueCourriel($mod);
-		$vue->afficherOutilsListe($numero_page);
+		$box_view = new BoxView($box_mod);
+		$box_view->showBoxesTree();
 
-		$mod_boite = new CModBoite();
-		$mod_boite->listeBoitesNbNonLus();
-
-		$vue_boite = new CVueBoite($mod_boite);
-		$vue_boite->afficherArbreBoites();
-		
-		$vue->afficherCourriels($numero_page, COURRIELS_PAR_PAGE);
-
-		CModBoite::nommerBoite($GLOBALS['boite'], false);*/
+		CNavigation::setTitle(BoxMod::getBeautifulName($GLOBALS['box']));
 	}
 }
 
