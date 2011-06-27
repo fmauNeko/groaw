@@ -1,0 +1,136 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-25 21:23+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: Mod/CImap.php:58
+msgid "Cache data is corrupted"
+msgstr ""
+
+#: Ctrl/Dashboard.php:6
+msgid "Dashboard"
+msgstr ""
+
+#: View/SessionView.php:4
+msgid "Email"
+msgstr ""
+
+#: View/SessionView.php:6
+msgid "Login"
+msgstr ""
+
+#: View/template.php:25
+msgid "Logout"
+msgstr ""
+
+#: View/MailView.php:16
+msgid "No subject"
+msgstr ""
+
+#: View/SessionView.php:5
+msgid "Password"
+msgstr ""
+
+#: Tools/exceptions.php:27
+msgid "Return back"
+msgstr ""
+
+#: Ctrl/Session.php:34
+msgid "Sign In"
+msgstr ""
+
+#: Ctrl/Session.php:44
+msgid "Successful logout"
+msgstr ""
+
+#: View/MailView.php:6
+msgid "The box is empty"
+msgstr ""
+
+#: Mod/CImap.php:44
+#, php-format
+msgid "The imap function %s does'nt exist."
+msgstr ""
+
+#: Ctrl/Session.php:27
+#, php-format
+msgid "Unable to connect : %s"
+msgstr ""
+
+#: Mod/CImap.php:81
+msgid "Unable to write cache data"
+msgstr ""
+
+#: Tools/CNavigation.php:8
+msgid "Unknown title"
+msgstr ""
+
+#: View/AbstractView.php:26
+msgid "around midday"
+msgstr ""
+
+#: View/AbstractView.php:30
+msgid "early this morning"
+msgstr ""
+
+#: View/AbstractView.php:22
+msgid "in late afternoon"
+msgstr ""
+
+#: View/AbstractView.php:18
+msgid "in the future"
+msgstr ""
+
+#: View/AbstractView.php:32
+msgid "in the night"
+msgstr ""
+
+#: View/AbstractView.php:53
+msgid "le <strong>%A %d %B %Y à %Hh%M</strong>"
+msgstr ""
+
+#: View/AbstractView.php:57
+msgid "le <strong>%A à %Hh%M</strong>"
+msgstr ""
+
+#: View/AbstractView.php:38
+msgid "more than a week"
+msgstr ""
+
+#: View/AbstractView.php:24
+msgid "this afternoon"
+msgstr ""
+
+#: View/AbstractView.php:28
+msgid "this morning"
+msgstr ""
+
+#: View/AbstractView.php:36
+msgid "this week"
+msgstr ""
+
+#: View/AbstractView.php:20
+msgid "tonight"
+msgstr ""
+
+#: View/AbstractView.php:34
+msgid "yesterday"
+msgstr ""
+
+#: View/AbstractView.php:61
+msgid "à <strong>%Hh%M</strong>"
+msgstr ""

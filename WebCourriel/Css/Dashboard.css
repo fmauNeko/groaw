@@ -1,0 +1,69 @@
+ul.messages {
+font-size:0.62em;
+position:absolute;
+bottom:0px;
+left:17em;
+top:0px;
+margin:0;
+overflow:auto;
+list-style:none;
+padding:0;
+}
+ul.messages li
+{
+padding-bottom:1.5em;
+}
+
+ul.messages li.section
+{
+	font-weight:bold;
+background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.11, rgba(245,118,8,0.4)),
+    color-stop(0.5, rgba(255,183,0,0.3))
+);
+background-image: -moz-linear-gradient(
+    center bottom,
+    rgba(245,118,8,0.2) 11%,
+    rgba(255,183,0,0.2) 50%
+);
+text-align:center;
+padding:0.25em 1em 0.25em 1em;
+margin-bottom:1em;
+}
+
+ul.messages strong
+{
+color:black;
+}
+
+ul.messages p
+{
+margin:0.2em 0 0 2em;
+}
+
+ul.messages a, .pagination a
+{
+color:black;
+text-decoration:none;
+}
+
+ul.messages h4
+{
+margin:0;
+font-size:1.1em;
+}
+ul.messages a:hover, .pagination a:hover
+{
+text-decoration:underline;
+}
+ul.messages li.message_lu a
+{
+color:grey;
+}
+ul.messages li.message_lu strong
+{
+color:#A20000;
+}
