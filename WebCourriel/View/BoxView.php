@@ -1,61 +1,6 @@
 <?php
 class BoxView extends AbstractView {
 
-	/*public function showBoxes()
-	{
-		echo "<ul class=\"boites\">\n";
-		foreach($this->traiterNomsBoites() as $boite)
-		{
-			echo "\t<li class=\"boite_pleine\">\n\t<h3>$boite->description</h3>\n\t<a href=\"Courriels.php?EX=liste&amp;boite=$boite->lien\"><p>",
-				'Vous avez <strong>', $boite->nb_non_vus,'</strong> messages à lire :D',
-				"</p></a>\n</li>\n";
-		}
-		echo "</ul>";
-	}*/
-	
-	/*public function afficherBoitesAcceuil()
-	{
-		echo "<ul class=\"boites\">\n";
-		foreach($this->modele->boites as $boite => $infos)
-		{
-			$nb_messages = $infos->messages;
-
-			if ($nb_messages > 0)
-			{
-				if ($boite === 'livraison')
-				{
-					$action = 'trier';
-					$verbe = 'trier';
-					$phrase_max = 'Ça <strong>déborde</strong> du TGV…';
-				}
-	/*			else
-				{
-					$action = 'liste&boite='.rawurlencode($infos->nom);
-
-					if ($boite === 'poubelle')
-					{
-						$verbe = 'supprimer';
-						$phrase_max = '<strong>Il est temps</strong> de sortir les poubelles.';
-					}
-					else
-					{
-						$verbe = 'gérer';
-						$phrase_max = '<strong>Prenez votre journée</strong> pour gérer tout ça.';
-					}
-				}
-				
-				echo "\t<li class=\"boite_pleine $boite\">\n\t\t<h3>$infos->titre</h3>\n\t\t<a href=\"Courriels.php?EX=$action\"><p>",
-					 CPifometrie::nbMailsBoites($infos->messages, $verbe, $phrase_max),
-					"</p></a>\n\t</li>\n";
-			}
-			else
-			{
-				echo "\t<li class=\"boite_vide $boite\"><h3>$infos->titre</h3><div></div></li>\n";
-			}
-		}
-		echo "\t<li class=\"boite_pleine archives\">\n\t\t<h3>Archives</h3>\n\t\t<a href=\"Courriels.php?EX=archive\"><p>Accédez aux courriels classifiés</p></a>\n\t</li>\n</ul>";
-	}*/
-
 	public function afficherBoitesSuppression()
 	{
 
@@ -125,6 +70,7 @@ class BoxView extends AbstractView {
 		}
 
 		echo "<ul class=\"boxes\" id=\"boxes_list\">\n";
+		BoxView::showBoxesTreeRec(null, $tree[0]);
 		foreach ($tree['INBOX'] as $sous_clef => $sous_branche)
 		{
 			BoxView::showBoxesTreeRec($sous_clef, $sous_branche);

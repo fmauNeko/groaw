@@ -4,7 +4,10 @@ class Dashboard {
 
 	public function index() {
 
-		$this->show();
+		$box_mod = new BoxMod();
+		$box_mod->listBoxesNbUnread();
+		
+		$this->show($box_mod);
 		//CNavigation::setTitle(_('Dashboard'));
 		$page_num = CNavigation::getPage();
 
@@ -14,9 +17,6 @@ class Dashboard {
 		$view = new MailView($mod);
 		$view->showMails($page_num, NB_MAILS_BY_PAGE);
 
-		$box_mod = new BoxMod();
-		$box_mod->listBoxesNbUnread();
-
 		$box_view = new BoxView($box_mod);
 		$box_view->showBoxesTree();
 
@@ -24,7 +24,7 @@ class Dashboard {
 
 	}
 
-	public function show() {
+	public function show($box_mod = null) {
 		global $id;
 
 		$id = MailMod::getId();
@@ -39,6 +39,7 @@ class Dashboard {
 
 		$mod = new MailMod($id);
 		$mod->analyse();
+		$mod->setSeen($box_mod);
 
 		//$mod->marquerLu($mod_boite);
 		//$mod_boite->listeBoitesNbMessages();

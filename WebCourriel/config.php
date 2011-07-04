@@ -31,4 +31,8 @@ $MIME_ORDER = array(
     'PNG'
 );
 
+// Order of boxes when they have 0 unread mails
+$BOXES_ORDER = array(
+	'INBOX.RSS'
+);
 ?>

@@ -37,17 +37,18 @@ class MailMod
 		$this->mail = $headers;	
 	}
 
-	public function marquerLu($mod_boite)
+	public function setSeen($box_mod = null)
 	{
-		$mail = CImap::fetch_overview($this->id, FT_UID);
+		$mail = CImap::NC_fetch_overview($this->id, FT_UID);
 
 		if ($mail[0]->seen === 0)
 		{
 			// Parfois, fetchstructure de analyser ne suffit pas…
 			CImap::setflag_full($this->id, '\Seen', ST_UID);
 			
-			// Gestion du cache
-			$mod_boite->changerNbNonVus($GLOBALS['boite'], -1, true);
+			if ($box_mod) {
+				$box_mod->updateNbUnread($GLOBALS['box'], -1, true);
+			}
 		}
 	}
 

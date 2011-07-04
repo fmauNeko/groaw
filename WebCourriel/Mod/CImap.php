@@ -38,13 +38,19 @@ class CImap
 
 	public static function __callStatic ($name, $args)
 	{
+		if (strncmp('NC_', $name, 3) === 0) {
+			$name = substr($name, 3);
+			$cached_function = false;
+		} else {
+			$cached_function = in_array($name, self::$cached_functions);
+		}
+
 		$function = 'imap_'.$name;
 
 		if (!function_exists($function)) {
-			throw new CException(sprintf(_("The imap function %s does'nt exist."), $name));
+			throw new exception(sprintf(_("The imap function %s does'nt exist."), $function));
 		}
 
-		$cached_function = in_array($name, self::$cached_functions);
 
 		if ($cached_function) {
 

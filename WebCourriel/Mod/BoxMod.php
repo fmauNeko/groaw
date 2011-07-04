@@ -185,30 +185,27 @@ class BoxMod
 
 	}
 
-	public function changerNbNonVus($box, $nb, $relatif)
-	{
-		$this->listeBoitesNbNonLus();
+	public function updateNbUnread($key, $nb, $relatif) {
+		if (!$this->boxes) {
+			$this->listBoxesNbUnread();
+		}
 
-		$clef = SERVEUR_IMAP.$box;
 		$boxes = $this->boxes;
 
-		foreach ($this->boxes as $box)
-		{
-			if ($box->name === $clef)
-			{
-				if ($relatif)
-				{
-					$nb = $box->nb_non_vus+$nb;
+		foreach ($this->boxes as $box) {
+			if ($box->name === $key) {
+				if ($relatif) {
+					$nb = $box->nb_unread+$nb;
 				}
 
-				$box->nb_non_vus = $nb;
+				$box->nb_unread = $nb;
 
 				break;
 			}
 		}
 
-		$this->trierBoitesNbNonVus();
-		$this->enregistrerCacheBoites('liste_boites_nb_non_lus');
+		$this->sortBoxesNbUnread();
+		$this->saveCache('list_boxes_nb_unread');
 	}
 	
 	public static function getBeautifulName($box) {
@@ -270,83 +267,29 @@ class BoxMod
 
 	}
 	
-	public function sortBoxesNbUnread()
-	{
-		usort($this->boxes, function($a,$b)
-		{
-			if ($a->nb_unread === $b->nb_unread)
-			{
-				return 0;
-			}
+	public function sortBoxesNbUnread() {
+		usort($this->boxes, function($a,$b) {
+			if ($a->nb_unread === $b->nb_unread) {
 
-			return ($a->nb_unread > $b->nb_unread) ? -1 : 1;
-		});
-	}
-	
-	public function trierBoitesNbNonVus()
-	{
-		$boxes = &$this->boxes;
+				// Unread mails in boxes are placed in first
+				if ($a->nb_unread ===  0 && isset($GLOBALS['BOXES_ORDER'])) {
 
-		usort($boxes, function($a,$b)
-		{
-			if ($a->nb_non_vus === $b->nb_non_vus)
-			{
-				// Le trie par nombre de messages est prioritaire
-				if ($a->nb_non_vus ===  0)
-				{
-
-					foreach ($GLOBALS['ORDRE_BOITES'] as $box)
-					{
-						if ($a->nom === $box)
-						{
+					foreach ($GLOBALS['BOXES_ORDER'] as $box) {
+						if ($a->name === $box) {
 							return -1;
 						}
-						elseif ($b->nom === $box)
-						{
+						elseif ($b->name === $box) {
 							return 1;
 						}
-					}
-
-					if (strpos($a->nom, 'INBOX.RSS') === 0)
-					{
-						if (strpos($b->nom, 'INBOX.RSS') !== 0)
-							return -1;
-					}
-						
-					elseif (strpos($b->nom, 'INBOX.RSS') === 0)
-					{
-						if (strpos($a->nom, 'INBOX.RSS') !== 0)
-							return 1;
-					}
-
-					// Les archives vont à la fin :-)	
-					elseif (strpos($a->nom, 'INBOX.Archive') === 0)
-					{
-						if (strpos($b->nom, 'INBOX.Archive') !== 0)
-							return 1;
-					}
-						
-					elseif (strpos($b->nom, 'INBOX.Archive') === 0)
-					{
-						if (strpos($a->nom, 'INBOX.Archive') !== 0)
-							return -1;
 					}
 				}
 				
 				return strcmp($a->name, $b->name);
 			}
 
-			return ($a->nb_non_vus > $b->nb_non_vus) ? -1 : 1;
+			return ($a->nb_unread > $b->nb_unread) ? -1 : 1;
 		});
-
-
-		/*foreach ($boites as $b)
-		{
-			groaw($b->nom . " -- " . $b->nb_non_vus);
-		}	
-		die("canard");*/
 	}
-
 
 }
 
