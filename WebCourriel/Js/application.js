@@ -74,6 +74,25 @@ var arrayShuffle = function(tableau)
 	return tableau;
 };
 
+var addEventFunction = function(e, o, f) {
+	if (o.addEventListener) {
+		o.addEventListener(e, f, false);
+	} else if (o.attachEvent) {
+		o.attachEvent('on'+e, f);
+	} else {
+		e.o = f;
+	}
+};
+
+var removeEventFunction = function(e, o, f) {
+	if (o.removeEventListener) {
+		o.removeEventListener(e, f, false);
+	} else if (o.DetachEvent) {
+		o.DetachEvent('on'+e, f);
+	} else {
+		e.o = null;
+	}
+};
 
 if (!window.console)
 {

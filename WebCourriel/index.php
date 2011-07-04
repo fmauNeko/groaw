@@ -56,11 +56,15 @@ if (!method_exists($CTRL, $ACTION_NAME)) {
 }
 
 // If the user is not at the login page
-if ($CTRL_NAME !== 'Session')
-{
+if ($CTRL_NAME !== 'Session') {
     // If the user is logged
-    if (isset($_SESSION['logged']))
-    {
+    if (isset($_SESSION['logged'])) {
+		if (isset($_SESSION['redirection_url'])) {
+			$t = $_SESSION['redirection_url'];
+			unset($_SESSION['redirection_url']);
+			CNavigation::redirectToURL($t);
+		}
+
 		global $box;
 
 		// The selected box is in the url, and INBOX is the default
@@ -68,8 +72,8 @@ if ($CTRL_NAME !== 'Session')
 
         CImap::declareIdentity($_SESSION['email'], $_SESSION['secret_password'], $box);
     }
-    else
-    {
+    else {
+		$_SESSION['redirection_url'] = $_SERVER['REQUEST_URI'];
 		CNavigation::redirectToApp(null,null,null);
     }
 }

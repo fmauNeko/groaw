@@ -1,3 +1,7 @@
+body {
+background: url(../Img/fond.jpeg) repeat;
+}
+
 .lapin {
 	height:128px;
 	width:111px;

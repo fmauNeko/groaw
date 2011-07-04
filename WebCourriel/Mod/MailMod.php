@@ -1,7 +1,7 @@
 <?php
 class MailMod
 {
-	public $courriel;
+	public $mail;
     public $id;
     public $structure;
 
@@ -13,11 +13,11 @@ class MailMod
         $this->id = $id;
 	}
 
-	public function analyser()
+	public function analyse()
 	{
-		$this->structure = CImap::fetchstructure($this->num_courriel);
+		$this->structure = CImap::fetchstructure($this->id, FT_UID);
 
-		$headers = CImap::fetchheader($this->num_courriel);
+		$headers = CImap::fetchheader($this->id, FT_UID);
 
 		// Déplissage des headers
 		$headers = preg_replace('/\r\n([\t ])/', '$1', $headers);
@@ -30,28 +30,28 @@ class MailMod
 
 		for ($i = 0; $i < $l_matches; ++$i)
 		{
-			$clef = strtolower($matches[1][$i]);
-			$headers->$clef = rtrim($matches[2][$i]);
+			$key = strtolower($matches[1][$i]);
+			$headers->$key = rtrim($matches[2][$i]);
 		}
 
-		$this->courriel = $headers;	
+		$this->mail = $headers;	
 	}
 
 	public function marquerLu($mod_boite)
 	{
-		$mail = CImap::fetch_overview($this->num_courriel);
+		$mail = CImap::fetch_overview($this->id, FT_UID);
 
 		if ($mail[0]->seen === 0)
 		{
 			// Parfois, fetchstructure de analyser ne suffit pas…
-			CImap::setflag_full($this->num_courriel, '\Seen');
+			CImap::setflag_full($this->id, '\Seen', ST_UID);
 			
 			// Gestion du cache
 			$mod_boite->changerNbNonVus($GLOBALS['boite'], -1, true);
 		}
 	}
 
-    public function recupererPartie($num_section, $structure)
+    public function loadSection($section_id, $structure)
     {
 		/*define('ENC7BIT', 0);
 		define('ENC8BIT', 1);
@@ -61,7 +61,7 @@ class MailMod
 		define('ENCOTHER', 5);*/
 
 		//groaw($structure);
-		$partie = CImap::fetchbody($this->num_courriel,$num_section);
+		$part = CImap::fetchbody($this->id, $section_id, FT_UID);
 
         switch ($structure->encoding)
         {
@@ -75,56 +75,56 @@ class MailMod
 
             // binaire
 			case ENCBINARY:
-				$partie = imap_binary($partie);
+				$part = imap_binary($part);
                 // Pas de break;
 
             // base64
             case ENCBASE64:
-                $partie = imap_base64($partie);
+                $part = imap_base64($part);
                 break;
 
             // quoted-printable moche
             case ENCQUOTEDPRINTABLE:
-                $partie = imap_qprint($partie);
+                $part = imap_qprint($part);
                 break;
 
             // autre (pas de chance mec)
             case ENCOTHER:
-                throw new Exception("Une partie du mail est illisible");
+                throw new Exception(_('A part of the mail is unreadable'));
 		}
 
-		return $partie;
+		return $part;
 	}
 
-	public function recupererPartieTexte($num_section, $structure)
+	public function loadTextSection($section_id, $structure)
 	{
-		$texte = $this->recupererPartie($num_section, $structure);
+		$text = $this->loadSection($section_id, $structure);
 
         // Recherche de l'encodage, pour effectuer une conversion
         if ($structure->ifparameters)
         {
             $charset = null;
-            foreach ($structure->parameters as $parametre)
+            foreach ($structure->parameters as $parameter)
             {
-                if ($parametre->attribute === 'charset')
+                if ($parameter->attribute === 'charset')
                 {
-                    $charset = strtoupper($parametre->value);
+                    $charset = strtoupper($parameter->value);
                 }
             }
 
 
             if ($charset !== null && $charset !== 'UTF-8')
             {
-                $texte = str_replace('charset=iso-8859-1', '', COutils::toUtf8($charset, $texte));
+                $text = str_replace('charset=iso-8859-1', '', CTools::toUtf8($charset, $text));
             }
         }
 
-        return $texte;
+        return $text;
     }
 
 	public function loadSortedList($page = 0, $nb_by_page = 12)
 	{
-		$sorted_list = CImap::sort(SORTDATE, 1, SE_NOPREFETCH);
+		$sorted_list = CImap::sort(SORTDATE, 1, SE_NOPREFETCH | SE_UID);
 		$nb_mails = count($sorted_list);
 
 		$i_start = min($nb_mails, $page * $nb_by_page);
@@ -138,13 +138,13 @@ class MailMod
 	{
 		$sorted_list = $this->loadSortedList($page, $nb_by_page);
 
-		$header_list = CImap::fetch_overview(implode(',',$sorted_list));
+		$header_list = CImap::fetch_overview(implode(',',$sorted_list), FT_UID);
 
 		$final_list = $sorted_list;
 
 		foreach ($header_list as $header)
 		{
-			$key = array_search($header->msgno, $sorted_list);
+			$key = array_search($header->uid, $sorted_list);
 			$final_list[$key] = $header;
 		}
 
@@ -154,7 +154,7 @@ class MailMod
 
 	public function deplacer($destination)
 	{
-		$this->deplacerListe($this->num_courriel, $destination);
+		$this->deplacerListe($this->id, $destination);
 	}
 
 	public function deplacerListe($liste, $destination)
@@ -171,7 +171,7 @@ class MailMod
 			$liste = array($liste);
 		}
 
-		if (CImap::mail_move(implode(',',$liste), $destination))
+		if (CImap::mail_move(implode(',',$liste), $destination, CP_UID))
 		{
 			// Applique la suppression du message dans la boite de départ
 			CImap::expunge();
@@ -179,34 +179,26 @@ class MailMod
 	}
 
 	// Utilitaire permettant de récupérer le numéro d'un message
-	public static function numero()
-	{
-		if (isset($_REQUEST['numero']))
-		{
-			return intval($_REQUEST['numero']);
-		}
-		else
-		{
-			// Si on ne connait pas le numéro, on prends le premier
-			return min(1, CImap::num_msg());
-
-		}
+	public static function getId() {
+		return isset($_REQUEST['id']) ? intval($_REQUEST['id']) : false;
+		// Si on ne connait pas le numéro, on prends le premier
+		//		return min(1, CImap::num_msg());
 	}
 
 	// Récupère le nom du fichier donné dans la structure
-	public static function getNomAttachment($structure, $nom_base = 'Sans nom')
+	public static function getAttachmentName($structure, $default_name = 'Unknown')
 	{
 		foreach (	array_merge($structure->ifdparameters ? $structure->dparameters : array(),
 					$structure->ifparameters ? $structure->parameters : array())
-					as $parametre)
+					as $parameter)
 		{
-			if (strpos($parametre->attribute,'filename') === 0 || strpos($parametre->attribute,'name') === 0)
+			if (strpos($parameter->attribute,'filename') === 0 || strpos($parameter->attribute,'name') === 0)
 			{
-				return pathinfo(COutils::mimeToUtf8($parametre->value));
+				return pathinfo(CTools::mimeToUtf8($parameter->value));
 			}
 		}
 
-		$infos = array('basename' => $nom_base, 'filename' => $nom_base);
+		$infos = array('basename' => $default_name, 'filename' => $default_name);
 
 		if ($structure->type === 2)
 		{

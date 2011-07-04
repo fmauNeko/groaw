@@ -124,13 +124,13 @@ class BoxView extends AbstractView {
 			$branch[] = $box;
 		}
 
-		echo "<ul class=\"boxes\">\n";
+		echo "<ul class=\"boxes\" id=\"boxes_list\">\n";
 		foreach ($tree['INBOX'] as $sous_clef => $sous_branche)
 		{
 			BoxView::showBoxesTreeRec($sous_clef, $sous_branche);
 		}
 
-		echo "</ul></div>";
+		echo "</ul>";
 	}
 	
 	private static function showBoxesTreeRec($key, $branch)
@@ -153,7 +153,9 @@ class BoxView extends AbstractView {
 						'box' => $branch->name
 						));
 
-			echo "\t<li><a href=\"$url\">", wordwrap($description, 20, "<br/>", true),
+			$class = ($branch->name === $GLOBALS['box']) ? 'box selected_box' : 'box';
+
+			echo "\t<li class=\"$class\"><a href=\"$url\">", wordwrap($description, 20, "<br/>", true),
 
 				($nb_unread > 0) ? "</a> <strong>($nb_unread)</strong>" : '</a>', "</li>\n";
 		}

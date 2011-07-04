@@ -2,7 +2,12 @@
 class MailView extends AbstractView {
 	
 	public function showMails($page_num, $nb_by_page) {
-		echo "<ul class=\"messages\">\n";	
+		
+		global $id, $box;
+
+		$id_ul = md5($box).$page_num;
+
+		echo "<ul class=\"messages\" id=\"message_list_$id_ul\">\n";	
 		
 		if (count($this->model->mails) === 0) {
 			echo "\t<h3>", _('The box is empty'), "</h3>\n</ul>";
@@ -12,11 +17,14 @@ class MailView extends AbstractView {
 		$period_name = null;
 
 		foreach ($this->model->mails as $mail) {
+
+			//groaw($mail);
+
 			$subject = isset($mail->subject) ? CTools::mimeToUtf8($mail->subject) : false;
 			$subject = !$subject ? _('No subject') : $subject;
 
 
-			$date = $this->locateDate($mail->date);
+			$date = isset($mail->date) ? $this->locateDate($mail->date) : null;
 
 			// ucfirst is just for to uppercase the first letter
 			$new_period_name = ucfirst($this->translateTimePeriod($date[0], $date[2]));
@@ -27,11 +35,16 @@ class MailView extends AbstractView {
 				echo "\t<li class=\"section\">$period_name</li>\n";
 			}
 
-			$url = CNavigation::generateMergedUrl('Dashboard', 'show', array(
-						'msgno' => $mail->msgno));
+			$url = CNavigation::generateMergedUrl('Dashboard', 'index', array(
+						'id' => $mail->uid));
 
-			echo "\t<li class=\"", $mail->seen ? "mail_read" : "mail_unread",
-				"\" >\n\t\t<a href=\"$url\">\n\t\t\t<h4>",
+			$class = $mail->seen ? 'mail_read' : 'mail_unread';
+
+			if ($mail->uid == $id) {
+				$class .= ' selected_mail';
+			}
+
+			echo "\t<li class=\"$class\" >\n\t\t<a href=\"$url\">\n\t\t\t<h4>",
 				htmlspecialchars($subject),
 				"</h4>\n\t\t\t<p>",
 				$mail->seen ? _('Read') : _('Unread'), ', ',
@@ -58,7 +71,7 @@ class MailView extends AbstractView {
 				{
 			$url = CNavigation::generateUrlToApp('Dashboard', 'show', array(
 						'box' => $box,
-						'msgno' => $mail->msgno));
+						'id' => $mail->uid));
 					echo "<a href=\"?EX=liste&amp;boite=$boite&amp;page=$num_page\">$texte</a> ";
 				}
 			}
@@ -96,10 +109,10 @@ class MailView extends AbstractView {
 
 	}
 
-	public function afficherOutilsMessage()
+	/*public function afficherOutilsMessage()
 	{
 		$boite = rawurlencode($GLOBALS['boite']);
-		$numero = $this->model->num_courriel;
+		$id = $this->model->num_courriel;
 		echo <<<EOT
 <div class="outils_courriel">
 <ul class="outils_base">
@@ -114,9 +127,9 @@ class MailView extends AbstractView {
 </ul>
 
 EOT;
-	}
+	}*/
 	
-	public function afficherOutilsListe($page_num)
+	/*public function afficherOutilsListe($page_num)
 	{
 		$boite = rawurlencode($GLOBALS['boite']);
 		$numero = $this->model->num_courriel;
@@ -138,59 +151,45 @@ EOT;
 <h3>Changer de boite :</h3>
 
 EOT;
+	}*/
+
+	public function showContact($contact)
+	{
+		$contact = preg_replace_callback('/<?(.+)@(.+)>?/', function($t) {
+			$r = filter_var($t[1].'@'.$t[2], FILTER_VALIDATE_EMAIL);
+
+			if ($r === false) {
+				return $t[0];
+			}	
+
+			return '<em>&lt;'.$t[1].'@'.$t[2].'&gt;</em>';
+
+		}, htmlspecialchars($contact));
+
+
+		echo $contact;
 	}
 
-	public function afficherPersonne($objet)
+	public function showContactsList($name, $class, $text)
 	{
-		if (isset($objet->host) && $objet->host === 'SYNTAX-ERROR')
+		echo "<tr>\n\t\t\t\t<th>$name</th>",
+					"\n\t\t\t\t<td>\n\t\t\t\t\t<ul class=\"$class\">\n";
+
+		//groaw($text);
+		//$address = imap_rfc822_parse_adrlist($text, '');
+		$address = explode(',', $text);
+
+		foreach ($address as $address)
 		{
-			echo "Adresse invalide";
-		}
-		else
-		{
-			if (isset($objet->personal))
-			{
-				echo htmlspecialchars($objet->personal), ' <em>&lt;';
-			}
-
-			if (isset($objet->mailbox))
-			{
-				echo htmlspecialchars($objet->mailbox);
-			}
-			
-			if (isset($objet->host) && $objet->host !== '')
-			{
-				echo '@', htmlspecialchars($objet->host);
-			}
-			
-			if (isset($objet->personal))
-			{
-				echo '&gt;</em>';
-			}
-		}
-	}
-
-	public function afficherListePersonnes($nom, $classe, $texte)
-	{
-		echo "<tr>\n\t\t\t\t<th>$nom</th>",
-					"\n\t\t\t\t<td>\n\t\t\t\t\t<ul class=\"$classe\">\n";
-
-		$adresses = imap_rfc822_parse_adrlist($texte, '');
-
-		if (is_array($adresses))
-		{
-			foreach ($adresses as $adresse)
-			{
-				echo "\t\t\t\t\t\t<li>";
-				$this->afficherPersonne($adresse);
-				echo "</li>\n";
-			}
+			echo "\t\t\t\t\t\t<li>";
+			$this->showContact($address);
+			echo "</li>\n";
 		}
 
 		echo "\t\t\t\t\t</ul>\n\t\t\t\t</td>\n\t\t\t</tr>";
 	}
 
-	public function afficherBoutonsPrecedentSuivant()
+	/*public function afficherBoutonsPrecedentSuivant()
 	{
 		echo "<ul class=\"boutons_navigation\">\n";
 
@@ -208,106 +207,97 @@ EOT;
 		}
 
 		echo "</ul>\n";
-	}
+	}*/
 
-    public function afficherCourriel()
-    {
+    public function showMail() {
         $structure = $this->model->structure;
-        $numero = $this->model->num_courriel;
+        $id = $this->model->id;
 
-		$courriel = $this->model->courriel;
+		$mail = $this->model->mail;
 
-		echo "\n<!--\n";
-		print_r($courriel);
-		echo "-->\n";
+		/*echo "\n<!--\n";
+		print_r($mail);
+		echo "-->\n";*/
 
-		$subject = CTools::mimeToUtf8($courriel->subject);
-		$subject = ($subject === '') ? 'Pas de subject' : $subject;
+		$subject = CTools::mimeToUtf8($mail->subject);
+		$subject = ($subject === '') ? _('No subject') : $subject;
 	
-        echo "<div class=\"courriel\">\n\t<div class=\"headers\">\n\t\t<h2>",
+        echo "<div class=\"mail\" id=\"mail_$id\">\n\t<div class=\"headers\">\n\t\t<h2>",
 					htmlspecialchars($subject),
 					"</h2>\n\t\t<table>\n\t\t\t";
-		
-		if (isset($courriel->from))
-		{
-			$this->afficherListePersonnes("Émetteurs", "emetteurs",
-					CTools::mimeToUtf8($courriel->from));
+
+		echo <<<END
+
+			<a href="javascript:byId('mail_$id').className += ' maximized';">Op</a>
+
+END;
+
+		if (isset($mail->from)) {
+			$this->showContactsList(_('From'), 'from',
+					CTools::mimeToUtf8($mail->from));
 		}
 			
-		if (isset($courriel->to))
-		{
-			$this->afficherListePersonnes("Destinataires", "destinataires",
-					CTools::mimeToUtf8($courriel->to));
+		if (isset($mail->to)) {
+			$this->showContactsList(_('To'), 'to',
+					CTools::mimeToUtf8($mail->to));
 		}
 
-		if (isset($courriel->date))
-		{
-			$date = $this->formaterDate($courriel->date);
+		if (isset($mail->date)) {
+			$date = $this->formateDate($mail->date);
 		}
-		else
-		{
-			$date = 'Inconnue';
+		else {
+			$date = _('Inconnue');
 		}
 
-		echo "<tr>\n\t\t\t\t<th>Date d'envoi</th>",
-				"\n\t\t\t\t<td>$date</td>\n\t\t\t</tr>";
+		echo "<tr>\n\t\t\t\t<th>", _('Send date'),
+				"</th>\n\t\t\t\t<td>$date</td>\n\t\t\t</tr>";
 
-		// C'est pour mes flux rss :-)
-		if (isset($courriel->{'x-rss-item-link'}))
-		{
-			$lien = htmlspecialchars($courriel->{'x-rss-item-link'});
-			echo "<tr>\n\t\t\t\t<th>Url de l'article</th>",
-				"\n\t\t\t\t<td><a href=\"$lien\">$lien</a></td>\n\t\t\t</tr>";
+		// For RSS in mails (dev love it)
+		if (isset($mail->{'x-rss-item-link'})) {
+			$url = htmlspecialchars($mail->{'x-rss-item-link'});
+			echo "<tr>\n\t\t\t\t<th>", _('Article url'),
+				"</th>\n\t\t\t\t<td><a href=\"$url\">$url</a></td>\n\t\t\t</tr>";
 		}
 
-		echo "\n\t\t</table>\n\t</div>\n\t<div class=\"corp\">\n";
+		echo "\n\t\t</table>\n\t</div>\n\t<div class=\"mail_body\">\n";
 
         // Si c'est un beau mail de plusieurs parties
-		if ($structure->type === TYPEMULTIPART && count($structure->parts) > 1)
-		{
-			$this->affichageRecursif($numero, $structure);
+		if ($structure->type === TYPEMULTIPART && count($structure->parts) > 1) {
+			$this->recursiveDisplay($id, $structure);
 		}
-		else
-		{
-			$this->affichageRecursif($numero,$structure,'1');
+		else {
+			$this->recursiveDisplay($id,$structure,'1');
 		}
 
-        echo "\n\t</div>\n</div>\n<!-- Structure du courriel\n";
-        print_r($structure);
-        echo "-->\n";
+        echo "\n\t</div>\n</div>\n";//<!-- Structure du courriel\n";
+       /* print_r($structure);
+        echo "-->\n";*/
 	}
 
-	private function affichageRecursifMultipart($numero, $structure, $num_section=null)
-	{
-		$traiter_sous_parties = true;
+	private function recursiveDisplayMultipart($id, $structure, $section_id=null) {
+		$treat_subpart = true;
 
-		if ($structure->ifsubtype)
-		{
+		if ($structure->ifsubtype) {
 			$subtype = strtoupper($structure->subtype);
-			if ($subtype === 'ALTERNATIVE')
-			{
+
+			if ($subtype === 'ALTERNATIVE') {
 				//groaw("alternative");
 			   
 				// Recherche de chaque type que l'on préfère
-				global $PREFERENCES_MIME;
-				foreach ($PREFERENCES_MIME as $mime)
-				{
+				global $MIME_ORDER;
+				foreach ($MIME_ORDER as $mime) {
 					$c = 1;
-					foreach ($structure->parts as $partie)
-					{
-						if (strtoupper($partie->subtype) === $mime)
-						{
+					foreach ($structure->parts as $part) {
+						if (strtoupper($part->subtype) === $mime) {
 							// Gestion du numéro de section
-							if ($num_section === null)
-							{
+							if ($section_id === null) {
 								$section = $c;
 							}
-							else
-							{
-								$section = $num_section.'.'.$c;
+							else {
+								$section = $section_id.'.'.$c;
 							}
 							//groaw($partie->subtype);
-							$this->affichageRecursif($numero, $partie, $section);
+							$this->recursiveDisplay($id, $part, $section);
 							return;
 						}
 						++$c;
@@ -316,168 +306,159 @@ EOT;
 
 				// Si on est là, c'est que l'on ne préfère rien du tout,
 				// on prends donc le premier de la liste
-				if (count($structure->parts) > 0)
-				{
+				if (count($structure->parts) > 0) {
 					// Gestion du numéro de section
-					if ($num_section === null)
-					{
+					if ($section_id === null) {
 						$section = '1';
 					}
-					else
-					{
-						$section = $num_section.'.1';
+					else {
+						$section = $section_id.'.1';
 					}
-					$this->affichageRecursif($numero, $structure->parts[0], $section);
+					$this->recursiveDisplay($id, $structure->parts[0], $section);
 				}
-				$traiter_sous_parties = false;
+				$treat_subpart = false;
 			}
-			elseif ($subtype === 'MIXED')
-			{
-				if ($num_section === '1')
-				{
-					$num_section = null;
+			elseif ($subtype === 'MIXED') {
+				if ($section_id === '1') {
+					$section_id = null;
 				}
 			}
 		}
 
-		if ($traiter_sous_parties)
-		{
+		if ($treat_subpart) {
 			// Compteur pour les sections
 			$c = 1;
 			//groaw("multipart");
-			foreach ($structure->parts as $partie)
-			{
+			foreach ($structure->parts as $part) {
 				// Gestion du numéro de section
-				if ($num_section === null)
-				{
+				if ($section_id === null) {
 					$section = $c++;
 				}
-				else
-				{
-					$section = $num_section.'.'.$c++;
+				else {
+					$section = $section_id.'.'.$c++;
 				}
 				
 				// Oh mon DIEU de la récursivité !
-				$this->affichageRecursif($numero, $partie, $section);
+				// Oh my god, recursivity !
+				$this->recursiveDisplay($id, $part, $section);
 			}
 		}
 	}
 
-	private function affichageRecursifText($numero, $structure, $num_section=null)
+	private function recursiveDisplayText($id, $structure, $section_id=null)
 	{
 		//groaw("ok c'est du texte");
-		$texte = $this->model->recupererPartieTexte($num_section, $structure);
+		$text = $this->model->loadTextSection($section_id, $structure);
 
 		if ($structure->ifsubtype && $structure->subtype === 'HTML')
 		{
 
-			$nettoyeur = new CNettoyeurHtml($texte, CONTENU_DISTANT);
-			$texte = $nettoyeur->recupererHtmlNettoye();
+			$nettoyeur = new CNettoyeurHtml($text, DISTANT_CONTENT);
+			$text = $nettoyeur->recupererHtmlNettoye();
 
-			$chemin = '../Cache/mail-'.md5($texte).'.html';
-			file_put_contents($chemin, $texte);
-			
-			echo '<iframe id="apercu_html" src="',$chemin, '"></iframe>';
-			CHead::ajouterJs('ajusterFrame');
+			$html_filename = 'Cache/mail-'.md5($text).'.html';
+			file_put_contents($html_filename, $text);
+		
+			global $ROOT_PATH;
+
+			echo '<iframe id="html_view" src="',$ROOT_PATH, '/', $html_filename, '"></iframe>';
+			// TODO op op op
+			CHead::addJS('adjustFrame');
 
 		}
 		else
 		{
-			$texte = htmlspecialchars($texte);
+			$text = htmlspecialchars($text);
 
-			$texte = preg_replace('/(\s)(https?|ftp)\:\/\/(.+?)(\s)/', '$1<a href="$2://$3">$2://$3</a>$4',' '.$texte.' ');
+			// Make url as links
+			$text = preg_replace('/(\s)(https?|ftp)\:\/\/(.+?)(\s)/', '$1<a href="$2://$3">$2://$3</a>$4',' '.$text.' ');
 
-			echo nl2br($texte), "\n<br/>\n";
+			echo nl2br($text), "\n<br/>\n";
 		}
 	}
 
-	private function affichageRecursifImage($numero, $structure, $num_section=null)
+	private function recursiveDisplayImage($id, $structure, $section_id=null)
 	{
 
-		if (!$structure->ifsubtype)
-		{
-			throw new exception("canard");
+		if (!$structure->ifsubtype) {
+			throw new exception(_('A mail part doesn\'t have know type'));
 		}
 
 		$extentions = array('jpeg','png','gif');
 		$extention = array_search(strtolower($structure->subtype), $extentions);
 
-		if ($extention === false)
-		{
-			throw new exception("type non supporté");
+		if ($extention === false) {
+			$this->recursiveDisplayFile($id, $structure, $section_id);
+			return;
 		}
 
 		$extention = $extentions[$extention];
 
-		$nom = CModCourriel::getNomAttachment($structure);
+		$name = MailMod::getAttachmentName($structure);
 
-		$chemin = '../Cache/attachment-'.md5($GLOBALS['boite'].$numero.$num_section.$structure->bytes.$nom);
-		$chemin_ext = "$chemin.$extention";
+		$path = 'Cache/attachment-'.md5($GLOBALS['box'].$id.$section_id.$structure->bytes.$name);
+		$path_ext = "$path.$extention";
 
-		if (file_exists($chemin_ext))
-		{
-			groaw("cache");
-			$image = file_get_contents($chemin_ext);
+		if (file_exists($path)) {
+			$image = file_get_contents($path_ext);
 		}
-		else
-		{
-			$image = $this->model->recupererPartie($num_section, $structure);
-			file_put_contents($chemin_ext, $image);
+		else {
+			$image = $this->model->loadSection($section_id, $structure);
+			file_put_contents($path_ext, $image);
 		}
 
-		$vignette = CVignette::cheminVignette($chemin,$extention,TAILLE_VIGNETTES,TAILLE_VIGNETTES);
+		$vignette = CVignette::cheminVignette($path,$extention,VIGNETTE_SIZE,VIGNETTE_SIZE);
 
-		if ($vignette)
-		{
-			echo "<a href=\"$chemin_ext\"><img src=\"$vignette\" alt=\"\" /></a>\n";
+		if ($vignette) {
+			global $ROOT_PATH;
+			echo "<a href=\"$path_ext\"><img src=\"$ROOT_PATH/$vignette\" alt=\"\" /></a>\n";
 		}
 
-		$this->affichageRecursifFichier($numero, $structure, $num_section);
+		$this->recursiveDisplayFile($id, $structure, $section_id);
 
 		/*$image = base64_encode($image);
 
 		echo "<img src=\"data:image/jpeg;base64,$image\" alt=\"\"/>";*/
-
-		//groaw($image);
 	}
 	
-	private function affichageRecursifFichier($numero, $structure, $num_section=null)
+	private function recursiveDisplayFile($id, $structure, $section_id=null)
 	{
-		$mimetype = CModCourriel::getMimeType($structure);
+		$mimetype = MailMod::getMimeType($structure);
 
-		$nom = CModCourriel::getNomAttachment($structure);
-		$taille = intval($structure->bytes);
+		$name = MailMod::getAttachmentName($structure);
+		$size = intval($structure->bytes);
 
-		$lien = 'Courriels.php?EX=partie&amp;boite='.rawurlencode($GLOBALS['boite'])."&amp;numero=$numero&amp;section=$num_section"; 
+		//$lien = 'Courriels.php?EX=partie&amp;boite='.rawurlencode($GLOBALS['boite'])."&amp;numero=$numero&amp;section=$section_id"; 
+		// TODO
+		$url = '?';
 
-		self::afficherVignetteFichier($mimetype, $nom, $taille, $lien);
-
-		//groaw($structure);
+		self::showFileIcon($mimetype, $name, $size, $url);
 	}
 
-	public static function afficherVignetteFichier($mimetype, $nom, $taille, $lien = '#')
+	public static function showFileIcon($mimetype, $name, $size, $url = '#')
 	{
-		$fichier = self::getMimeIcone($mimetype);
-		$taille = CTools::nbBytesToKibis($taille);
+		$file = self::getMimeIcone($mimetype);
+		$size = CTools::nbBytesToKibis($size);
 
-		$chemin = $nom['filename'];
-		$message_danger = '<br/>';
+		$path = $name['filename'];
+		//$message_danger = '<br/>';
 
-		if (isset($nom['extension']))
+		if (isset($name['extension']))
 		{
-			$chemin .= '.'.$nom['extension'];
+			$path .= '.'.$name['extension'];
 
-			if (in_array($nom['extension'], $GLOBALS['EXTENSIONS_DANGEREUSES']))
+		/*	if (in_array($name['extension'], $GLOBALS['EXTENSIONS_DANGEREUSES']))
 			{
-				$message_danger = "<p class=\"danger\">Ce fichier d'extension exécutable (.".htmlspecialchars($nom['extension']).") est probablement un programme malveillant.</p>";
-			}
+				$message_danger = "<p class=\"danger\">Ce file d'extension exécutable (.".htmlspecialchars($name['extension']).") est probablement un programme malveillant.</p>";
+			}*/
 		}
 
-		echo "<div class=\"piece_jointe\"><a href=\"$lien\">\n\t<img src=\"../Img/mimes/$fichier.png\" alt=\"",
+		global $ROOT_PATH;
+		echo "<div class=\"piece_jointe\"><a href=\"$url\">\n\t<img src=\"$ROOT_PATH/Img/mimes/$file.png\" alt=\"",
 			htmlspecialchars($mimetype), "\" />\n\t",
-			$message_danger,"\n\t<strong>",
-			htmlspecialchars($chemin), "</strong>\n\t<em class=\"taille\">",
-			number_format($taille[0], (fmod($taille[0], 1) == 0.0) ? 0 : 2), ' ', $taille[1], "</em>\n</a></div>\n";
+			"\n\t<strong>",
+			htmlspecialchars($path), "</strong>\n\t<em class=\"size\">",
+			number_format($size[0], (fmod($size[0], 1) == 0.0) ? 0 : 2), ' ', $size[1], "</em>\n</a></div>\n";
 	}
 
 	private static function getMimeIcone($mimetype)
@@ -485,7 +466,7 @@ EOT;
 
 		$fichier = str_replace('/', '-', $mimetype);
 
-        if (file_exists("../Img/mimes/$fichier.png"))
+        if (file_exists("Img/mimes/$fichier.png"))
         {
                 return $fichier;
         }
@@ -502,7 +483,7 @@ EOT;
         return 'unknown';
 	}
 
-    public function affichageRecursif($numero, $structure, $num_section=null)
+    public function recursiveDisplay($id, $structure, $section_id=null)
     {
 		/*define('TYPETEXT', 0);
 		define('TYPEMULTIPART', 1);
@@ -515,32 +496,32 @@ EOT;
 		define('TYPEOTHER', 8);*/
 
 
-		//groaw($num_section);
+		//groaw($section_id);
 		switch($structure->type)
 		{
 			case TYPETEXT:
-				$this->affichageRecursifText($numero, $structure, $num_section);
+				$this->recursiveDisplayText($id, $structure, $section_id);
 				break;
 			case TYPEMULTIPART:
-				$this->affichageRecursifMultipart($numero, $structure, $num_section);
+				$this->recursiveDisplayMultipart($id, $structure, $section_id);
 				break;
 			case TYPEMESSAGE:
 				groaw("ATTENTION : Mode non définitif");
-				$this->affichageRecursifFichier($numero, $structure, $num_section);
+				$this->recursiveDisplayFile($id, $structure, $section_id);
 				//groaw($structure);
 				break;
 			case TYPEIMAGE:
-				$this->affichageRecursifImage($numero, $structure, $num_section);
+				$this->recursiveDisplayImage($id, $structure, $section_id);
 				break;
 			case TYPEAPPLICATION:
 			case TYPEAUDIO:
 			case TYPEVIDEO:
 			case TYPEMODEL:
 			case TYPEOTHER:
-				$this->affichageRecursifFichier($numero, $structure, $num_section);
+				$this->recursiveDisplayFile($id, $structure, $section_id);
 				break;
 			default:
-                throw new Exception("Une partie du mail est d'un type inconnu : ".$structure->type);
+                throw new Exception(_('A part of the mail is unknown'));
 		}
 	}
 
