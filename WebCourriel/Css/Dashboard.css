@@ -172,3 +172,31 @@ left:53em;
 left:16em;
 background:url(../Img/fond_2.jpeg) repeat;
 }
+
+.buttonMore, .buttonLess {
+font-size:80%;
+position:absolute;
+z-index:10;
+font-family:mono;
+color:white;
+width:1.4em;
+padding:0.2em;
+text-align:center;
+background:rgba(0,0,0,0.7);
+box-shadow: -2px 0px 5px #888;
+border:2px solid white;
+border-right:none;
+cursor:pointer;
+}
+
+.buttonMore:hover, .buttonLess:hover {
+background:rgba(0,0,0,0.8);
+}
+
+.buttonMore {
+border-bottom:none;
+}
+
+.buttonLess {
+border-top:none;
+}
