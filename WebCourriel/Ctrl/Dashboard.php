@@ -20,7 +20,9 @@ class Dashboard {
 		$box_view = new BoxView($box_mod);
 		$box_view->showBoxesTree();
 
-		CNavigation::setTitle(CNavigation::getTitle() . ' ' . BoxMod::getBeautifulName($GLOBALS['box']));
+		$title = BoxMod::getBeautifulName($GLOBALS['box']);
+		CNavigation::setTitle(CNavigation::getTitle() . ' ' . $title);
+		CNavigation::setBodyTitle($title);
 
 	}
 
@@ -55,9 +57,13 @@ class Dashboard {
 		$vue_boite->afficherBoitesDeplacement($numero);
 
 		$vue->afficherBoutonsPrecedentSuivant();	*/
-		$vue->showMail();
+		if (DISTANT_CONTENT && isset($mod->mail->{'x-rss-item-link'}) && $mod->mail->{'x-rss-item-link'}) {
+			$vue->showXRssMail();
+		} else {
+			$vue->showMail();
+		}
 
-		CNavigation::setTitle(CTools::cutText(CTools::mimeToUtf8($mod->mail->subject), 72));
+		CNavigation::setTitle(CTools::mimeToUtf8($mod->mail->subject));
 	}
 
 }

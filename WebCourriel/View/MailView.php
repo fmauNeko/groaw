@@ -209,6 +209,12 @@ EOT;
 		echo "</ul>\n";
 	}*/
 
+	public function showXRssMail() {
+		$url = htmlspecialchars($this->model->mail->{'x-rss-item-link'});
+
+		echo  "<div class=\"mail xrss_frame\"><iframe src=\"$url\"></iframe></div>";
+	}
+
     public function showMail() {
         $structure = $this->model->structure;
         $id = $this->model->id;

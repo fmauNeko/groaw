@@ -1,17 +1,24 @@
 <?php
 class CNavigation
 {
-	public static function getTitle()
-	{
+	public static function getTitle() {
 		global $PAGE_TITLE;
-	
 		return isset($PAGE_TITLE) ? $PAGE_TITLE : _('Unknown title');
 	}
 	
-	public static function setTitle($title)
-	{
+	public static function setTitle($title) {
 		global $PAGE_TITLE;
 		$PAGE_TITLE = $title;
+	}
+
+	public static function getBodyTitle() {
+		global $BODY_PAGE_TITLE;
+		return isset($BODY_PAGE_TITLE) ? $BODY_PAGE_TITLE : self::getTitle();
+	}
+
+	public static function setBodyTitle($title) {
+		global $BODY_PAGE_TITLE;
+		$BODY_PAGE_TITLE = $title;
 	}
 
 	public static function getPage()

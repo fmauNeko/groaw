@@ -46,25 +46,6 @@ class CTools
 		return $output;
 	}
 
-
-	public static function cutText($text, $maxSize, $end = '…') {
-		preg_match('!.{0,'.$maxSize.'}\s!si', $text, $match);
-
-		$r = $match[0];
-		$l_r = strlen($r);
-
-		if (strlen($text) > $l_r) {
-
-			if ($r[--$l_r] === ' ') {
-				$r = substr($r, 0, $l_r);
-			}
-		
-			$r .= $end;
-		}
-
-		return $r;
-	}
-
 	/* Fonction qui converti en unit?s standarts la taille d'un fichier */
 	public static function nbBytesToKibis($nb_bytes)
 	{

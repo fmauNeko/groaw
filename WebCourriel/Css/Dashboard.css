@@ -85,7 +85,7 @@ color:#333;
 
 ul.messages li.selected_mail {
 background:white;
-box-shadow:0px 0px 10px #b1b1b1;
+box-shadow:0px 0px 15px #555;
 margin-bottom:2em;
 }
 
@@ -131,13 +131,7 @@ left:0;
 width:100%;
 }
 
-iframe {
-width:100%;
-border:0;
-height:20em;
-}
-
-div.mail {
+.mail {
 background:white;
 position:absolute;
 bottom:0;
@@ -147,10 +141,25 @@ top:0;
 right:0;
 overflow:auto;
 z-index:10;
+}
+
+.mail {
 padding-left:1em;
 }
 
-div.mail.maximized {
+.mail.xrss_frame {
+padding-left:0;
+}
+
+.mail.xrss_frame iframe {
+width:100%;
+height:100%;
+position:absolute;
+bottom:0;
+top:0;
+}
+
+.mail.maximized {
 left:0;
 }
 
@@ -238,4 +247,13 @@ background-color:#CCC;
 .mail .headers th
 {
 min-width:8em;
+}
+
+.mail_body {
+border-top:1px solid grey;
+}
+
+.mail_body iframe {
+height:20em;
+width:100%;
 }

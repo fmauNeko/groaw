@@ -103,8 +103,6 @@ else
 		groaw($errors);
 	}
 
-	$html_title = htmlspecialchars(CNavigation::getTitle());
-
 	$PAGE_CONTENT = ob_get_contents();
 	ob_end_clean();
 

@@ -193,11 +193,18 @@ ScrollBar.prototype.clickButtonLess = function(e) {
 	obj.scroll();
 }
 
-addEventFunction('load', window, function() {
-
+var createScrollBar = function() {
 	new ScrollBar(document.getElementsByClassName('messages')[0],
 			'scrollbar_messages');
 
 	new ScrollBar(document.getElementsByClassName('boxes')[0],
 			'scrollbar_boxes');
-});
+
+	// Desactivate this function if it called two times
+	// the function can be called two time for callback with browsers
+	// that don't support html5 DomContentLoaded
+	createScrollBar = noNo;
+};
+
+addEventFunction('DOMContentLoaded', window, createScrollBar);
+addEventFunction('load', window, function() { createScrollBar() });

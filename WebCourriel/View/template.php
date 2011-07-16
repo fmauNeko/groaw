@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title><?php echo $html_title ?> - WebCourriel</title>
+	<title><?php echo htmlspecialchars(CNavigation::getTitle()); ?> - WebCourriel</title>
 <?php foreach (CHead::$css as $css)
 {
 	echo "\t<link href=\"$ROOT_PATH/Css/$css.css\" media=\"screen\" rel=\"Stylesheet\" type=\"text/css\" />\n";
@@ -19,7 +19,7 @@ if (isset($_SESSION['logged']))
 {
 	echo "<header>\n\t",'<h2 id="title" ',
 		 (isset($BOX_NAME) ? 'class="'.htmlspecialchars($BOX_NAME).'"' : ''),'>',
-			 $html_title, "</h2>\n";
+			 htmlspecialchars(CNavigation::getBodyTitle()), "</h2>\n";
 
 	$url_logout = CNavigation::generateUrlToApp('Session','logout',null);
 	$text_logout = _('Logout');
