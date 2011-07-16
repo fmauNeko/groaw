@@ -85,7 +85,7 @@ color:#333;
 
 ul.messages li.selected_mail {
 background:white;
-box-shadow:0px 0px 2em black;
+box-shadow:0px 0px 10px #b1b1b1;
 margin-bottom:2em;
 }
 
@@ -146,7 +146,7 @@ font-size:0.8em;
 top:0;
 right:0;
 overflow:auto;
-z-index:3;
+z-index:10;
 padding-left:1em;
 }
 
@@ -176,7 +176,7 @@ background:url(../Img/fond_2.jpeg) repeat;
 .buttonMore, .buttonLess {
 font-size:80%;
 position:absolute;
-z-index:10;
+z-index:4;
 font-family:mono;
 color:white;
 width:1.4em;
@@ -199,4 +199,43 @@ border-bottom:none;
 
 .buttonLess {
 border-top:none;
+}
+
+.mail .headers {
+margin-bottom:1em;
+text-align:left;
+overflow:hidden;
+}
+
+.mail .headers table {
+border-collapse:separate;
+border-spacing: 1em 1em;
+}
+
+.mail .headers ul
+{
+padding:0;
+max-height:10em;
+overflow:auto;
+margin:0;
+}
+
+.mail .headers ul li
+{
+display:inline-block;
+background-color:#DDD;
+border-radius:1em;
+-moz-border-radius:1em;
+margin:0.2em 0.4em 0.2em 0;
+padding:0 0.5em 0 0.5em;
+}
+
+.mail .headers ul li:hover
+{
+background-color:#CCC;
+}
+
+.mail .headers th
+{
+min-width:8em;
 }

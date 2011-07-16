@@ -20,10 +20,14 @@ class Dashboard {
 		$box_view = new BoxView($box_mod);
 		$box_view->showBoxesTree();
 
-		CNavigation::setTitle(BoxMod::getBeautifulName($GLOBALS['box']));
+		CNavigation::setTitle(CNavigation::getTitle() . ' ' . BoxMod::getBeautifulName($GLOBALS['box']));
 
 	}
 
+	// Public canard koinkoin
+
+
+	// Show a mail
 	public function show($box_mod = null) {
 		global $id;
 
@@ -53,7 +57,7 @@ class Dashboard {
 		$vue->afficherBoutonsPrecedentSuivant();	*/
 		$vue->showMail();
 
-		//CModBoite::nommerBoite($GLOBALS['boite'], CNavigation::titre());
+		CNavigation::setTitle(CTools::cutText(CTools::mimeToUtf8($mod->mail->subject), 72));
 	}
 
 }
