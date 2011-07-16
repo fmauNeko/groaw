@@ -206,5 +206,5 @@ var createScrollBar = function() {
 	createScrollBar = noNo;
 };
 
-addEventFunction('DOMContentLoaded', window, createScrollBar);
+addEventFunction('DOMContentLoaded', window, function() { createScrollBar() });
 addEventFunction('load', window, function() { createScrollBar() });
