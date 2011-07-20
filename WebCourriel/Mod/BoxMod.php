@@ -220,7 +220,7 @@ class BoxMod
 
 		$box = preg_replace('/^INBOX\./', '', $box);
 
-		return str_replace('.', ' : ', $box);
+		return preg_replace('@[\.\/\\\]@', ' : ', $box);
 	}
 
 	public static function simplifierNomBoite($nom)
@@ -270,6 +270,16 @@ class BoxMod
 	
 	public function sortBoxesNbUnread() {
 		usort($this->boxes, function($a,$b) {
+
+			foreach (array('INBOX') as $box) {
+				if ($a->name === $box) {
+					return -1;
+				}
+				elseif ($b->name === $box) {
+					return 1;
+				}
+			}
+
 			if ($a->nb_unread === $b->nb_unread) {
 
 				// Unread mails in boxes are placed in first

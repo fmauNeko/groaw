@@ -169,7 +169,7 @@ width:0.5em;
 position:absolute;
 font-size:0.62em;
 margin-left:-0.5em;
-z-index:6;
+z-index:5;
 -moz-user-select: none;
 }
 
@@ -185,7 +185,7 @@ background:url(../Img/fond_2.jpeg) repeat;
 .buttonMore, .buttonLess {
 font-size:80%;
 position:absolute;
-z-index:4;
+z-index:6;
 font-family:mono;
 color:white;
 width:1.4em;

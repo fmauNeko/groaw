@@ -300,6 +300,7 @@ END;
 								$section = $c;
 							}
 							else {
+								groaw('magie ?');
 								$section = $section_id.'.'.$c;
 							}
 							//groaw($partie->subtype);
@@ -318,6 +319,7 @@ END;
 						$section = '1';
 					}
 					else {
+						groaw('magie ?');
 						$section = $section_id.'.1';
 					}
 					$this->recursiveDisplay($id, $structure->parts[0], $section);
@@ -341,6 +343,7 @@ END;
 					$section = $c++;
 				}
 				else {
+					groaw('magie ?');
 					$section = $section_id.'.'.$c++;
 				}
 				

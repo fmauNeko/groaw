@@ -30,9 +30,10 @@ class CNavigation
 
 		global $ROOT_PATH;
 
+		// Get the information part of url
 		$schema = substr($_SERVER['REQUEST_URI'], strlen($ROOT_PATH)+strlen(URL_REWRITING)+2);
 
-		
+		// URL part before ?
 		$p_get = strpos($schema, '?');
 
 		if ($p_get !== false) {
@@ -55,7 +56,10 @@ class CNavigation
 			}
 
 			for ($i = 2; $i < $c_infos-1; $i += 2) {
-				$info = rawurldecode($infos[$i+1]);
+
+				// %1D is group separator, used in replacment for %2F (slash) who
+				// is not allowed in this url part
+				$info = rawurldecode(str_replace('%1D', '/', $infos[$i+1]));
 				$_GET[$infos[$i]] = $info;
 				$_REQUEST[$infos[$i]] = $info;
 			}
@@ -174,6 +178,10 @@ class CNavigation
 				foreach ($params as $key => $value) {
 					$url .= '/'.rawurlencode($key).'/'.rawurlencode($value);
 				}
+
+				// Hack for the slash caractères, who is not allowed in the
+				// path url part. Group Separator is used in replacement.
+				$url = str_replace('%2F', '%1D', $url);
 			}
 		}
 		else {

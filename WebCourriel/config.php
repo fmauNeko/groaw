@@ -1,6 +1,7 @@
 <?php
 
-define('IMAP_SERVER','{88.191.117.94:993/imap/ssl/novalidate-cert}');
+//define('IMAP_SERVER','{88.191.117.94:993/imap/ssl/novalidate-cert}');
+define('IMAP_SERVER','{74.125.113.16:993/imap/ssl/novalidate-cert}');
 
 define('TIME_ZONE', 'Europe/Paris');
 setlocale (LC_ALL, 'fr_FR.utf8','fr_FR', 'fr'); 
@@ -33,6 +34,7 @@ $MIME_ORDER = array(
 
 // Order of boxes when they have 0 unread mails
 $BOXES_ORDER = array(
+	'INBOX',
 	'INBOX.RSS'
 );
 ?>

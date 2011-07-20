@@ -70,8 +70,9 @@ class BoxView extends AbstractView {
 		}
 
 		echo "<ul class=\"boxes\" id=\"boxes_list\">\n";
-		BoxView::showBoxesTreeRec(null, $tree[0]);
-		foreach ($tree['INBOX'] as $sous_clef => $sous_branche)
+		//BoxView::showBoxesTreeRec(null, $tree[0]);
+		//groaw($tree);
+		foreach ($tree as $sous_clef => $sous_branche)
 		{
 			BoxView::showBoxesTreeRec($sous_clef, $sous_branche);
 		}

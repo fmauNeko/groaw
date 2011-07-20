@@ -107,15 +107,14 @@ class MailMod
             $charset = null;
             foreach ($structure->parameters as $parameter)
             {
-                if ($parameter->attribute === 'charset')
+                if (strtolower($parameter->attribute) === 'charset')
                 {
                     $charset = strtoupper($parameter->value);
                 }
             }
 
-
-            if ($charset !== null && $charset !== 'UTF-8')
-            {
+            if ($charset !== null && $charset !== 'UTF-8') {
+				// TODO changer ça
                 $text = str_replace('charset=iso-8859-1', '', CTools::toUtf8($charset, $text));
             }
         }
@@ -193,7 +192,7 @@ class MailMod
 					$structure->ifparameters ? $structure->parameters : array())
 					as $parameter)
 		{
-			if (strpos($parameter->attribute,'filename') === 0 || strpos($parameter->attribute,'name') === 0)
+			if (strpos(strtolower($parameter->attribute),'filename') === 0 || strpos(strtolower($parameter->attribute),'name') === 0)
 			{
 				return pathinfo(CTools::mimeToUtf8($parameter->value));
 			}
