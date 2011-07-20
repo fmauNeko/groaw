@@ -9,6 +9,8 @@ class CImap
 
 	protected static $cache_id;
 
+	protected static $imap_server;
+
 	protected static $cached_functions = array('body', 'bodystruct', 'status','num_msg','getmailboxes', 'fetchstructure', 'fetchheader', 'fetch_overview', 'fetchbody', 'sort'); 
 
 	public static function declareIdentity($mail, $password, $box)
@@ -17,6 +19,8 @@ class CImap
 		self::$password = $password;
 		self::$box = $box;
 
+		self::$imap_server = IMAP_SERVER;
+
 		// The idea is just to don't show the mail in the arborescence
 		// md5 is fast for that
 		self::$cache_id = md5($mail.$box);
@@ -24,7 +28,7 @@ class CImap
 
 	public static function authentification()
 	{
-		self::$token = imap_open(IMAP_SERVER.self::$box, self::$mail, self::$password);
+		self::$token = imap_open(self::$imap_server.self::$box, self::$mail, self::$password);
 	}
 
 	public static function logout()
@@ -90,6 +94,13 @@ class CImap
 
 		return $function_value;
 	}
-	
+
+	public static function getAllBoxes() {
+		return CImap::getmailboxes(self::$imap_server, '*');
+	}
+
+	public static function getServer() {
+		return self::$imap_server;
+	}
 }
 ?>

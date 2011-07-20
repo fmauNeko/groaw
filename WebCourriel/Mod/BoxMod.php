@@ -11,7 +11,7 @@ class BoxMod
 
 	public function getBoxes()
 	{
-		$boxes = CImap::getmailboxes(IMAP_SERVER, '*');
+		$boxes = CImap::getAllBoxes();
 
 		$this->boxes = $boxes;
 	}
@@ -20,7 +20,8 @@ class BoxMod
 	{
 		foreach ($this->boxes as &$box)
 		{
-			$box->nb_unread = CImap::status($box->name, SA_UNSEEN)->unseen;
+			$status = CImap::status($box->name, SA_UNSEEN);
+			$box->nb_unread = $status ? $status->unseen : 0;
 		}
 	}
 
@@ -73,7 +74,7 @@ class BoxMod
 
 	private function getCacheFilename($file)
 	{
-		return '../Cache/'.md5($_SESSION['email']).'_'.$file;
+		return 'Cache/'.md5($_SESSION['email']).'_'.$file;
 	}
 
 	public function effacerCaches()
@@ -129,13 +130,13 @@ class BoxMod
 
 	public static function recupererInfoBoite($nom,$type)
 	{
-		$info = CImap::status(SERVEUR_IMAP.$nom, $type);
+		$info = CImap::status(CImap::getServer().$nom, $type);
 
 		if ($info===false)
 		{
 			$box = new BoxMod($nom);
 			$box->creer();
-			$info = CImap::status(SERVEUR_IMAP.$nom, $type);
+			$info = CImap::status(CImap::getServer().$nom, $type);
 		}
 
 		$info->nom = $nom;
@@ -145,7 +146,7 @@ class BoxMod
 	public function existe()
 	{
 		$nom = new CUtf7($this->box);
-		$status = CImap::status(SERVEUR_IMAP.$nom->fromUtf8(), 0);
+		$status = CImap::status(CImap::getServer().$nom->fromUtf8(), 0);
 
 		return $status !== false;
 	}
@@ -153,7 +154,7 @@ class BoxMod
 	public function creer()
 	{
 		$nom = new CUtf7($this->box);
-		if (CImap::createmailbox(SERVEUR_IMAP.$nom->fromUtf8())===false)
+		if (CImap::createmailbox(CImap::getServer().$nom->fromUtf8())===false)
 		{
 			throw new Exception('Impossible de créer la boite:«'.$this->box.'»');
 		}
@@ -161,7 +162,7 @@ class BoxMod
 	
 	public function supprimer()
 	{
-		if (CImap::deletemailbox(SERVEUR_IMAP.$this->box)===false)
+		if (CImap::deletemailbox(CImap::getServer().$this->box)===false)
 		{
 			throw new Exception('Impossible de supprimer la boite:«'.$this->box.'»');
 		}

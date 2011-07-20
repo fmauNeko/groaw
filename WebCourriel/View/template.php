@@ -21,10 +21,13 @@ if (isset($_SESSION['logged']))
 		 (isset($BOX_NAME) ? 'class="'.htmlspecialchars($BOX_NAME).'"' : ''),'>',
 			 htmlspecialchars(CNavigation::getBodyTitle()), "</h2>\n";
 
+	$url_redaction = CNavigation::generateUrlToApp('Redaction',null,null);
 	$url_logout = CNavigation::generateUrlToApp('Session','logout',null);
 	$text_logout = _('Logout');
+	$text_redaction = _('New mail');
 	echo <<<END
 	<nav><ul id="navigation">
+		<li><a href="$url_redaction">$text_redaction</a></li>
 		<li><a href="$url_logout">$text_logout</a></li>
 	</ul></nav>
 </header>

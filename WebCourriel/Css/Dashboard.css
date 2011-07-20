@@ -123,7 +123,7 @@ text-decoration:underline;
 
 ul.boxes li.selected_box {
 background:url(../Img/fond_2.jpeg) repeat;
-box-shadow:0px 0px 2em black;
+box-shadow:0px 0px 10px #555;
 display:block;
 margin:1em 0 1em -10em;
 padding-left:10em;

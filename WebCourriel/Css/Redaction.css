@@ -1,0 +1,77 @@
+#redaction_form {
+padding:1em;
+padding-top:0;
+position:absolute;
+top:0;
+bottom:0;
+left:0;
+right:0;
+}
+
+#redaction_form label {
+display:inline-block;
+max-width:12em;
+}
+
+#redaction_form input {
+position:absolute;
+left:12em;
+right:1em;
+width:auto;
+border:none;
+height:1.8em;
+padding-left:0.5em;
+box-shadow:inset 1px 1px 7px #999;
+}
+
+#redaction_form textarea {
+border:none;
+font-family:"Lucida Grande", "DejaVu Sans", "Bitstream Vera Sans", "Lucida Sans", Verdana, sans-serif;
+position:absolute;
+left:0;
+right:0;
+bottom:0;
+top:0;
+width:auto;
+height:auto;
+box-shadow:inset 1px 1px 7px #999;
+padding:1em;
+}
+
+#redaction_form #canard {
+bottom:1em;
+left:1em;
+height:2.6em;
+box-shadow:inset 1px 1px 7px #555;
+background:yellowgreen;
+}
+
+#redaction_form #canard:hover {
+background:green;
+}
+
+#textarea_mail_body {
+position:absolute;
+left:1em;
+right:1em;
+bottom:4.6em;
+top:6em;
+}
+
+#redaction_form textarea {
+resize:none;
+}
+
+#mail_body.markItUpEditor {
+position:absolute;
+left:0;
+right:0;
+bottom:0;
+top:36px;
+width:auto;
+height:auto;
+}
+
+.markItUpHeader ul {
+padding-left:1em;
+}

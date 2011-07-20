@@ -83,7 +83,7 @@ $CTRL->{$ACTION_NAME}();
 CImap::logout();
 
 // If just the body is requested, the page is printed
-if (isset($_REQUEST['AJAX_MODE']))
+if (isset($_REQUEST['AJAX_MODE']) || isset($AJAX_MODE))
 {
 	ob_end_flush();
 }
