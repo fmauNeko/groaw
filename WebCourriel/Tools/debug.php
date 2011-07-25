@@ -12,4 +12,21 @@ function groaw($info)
 		$GLOBALS['groaw_array'][] = $info;
     }
 }
+
+function showGroaw() {
+	global $groaw_array;
+	
+	if (isset($groaw_array)) {
+		echo "\n<pre class=\"groaw\">";
+
+		$c_groaw_array = count($groaw_array);
+
+		for($i = 0; $i < $c_groaw_array; ++$i) {
+			$groaw = $groaw_array[$i];
+			$groaw ? print_r($groaw) : var_dump($groaw);
+			echo (($i < $c_groaw_array - 1) ? "<hr/>" : '' );
+		}
+		echo "</pre>\n";
+	}
+}
 ?>

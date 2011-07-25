@@ -3,6 +3,9 @@
 //define('IMAP_SERVER','{88.191.117.94:993/imap/ssl/novalidate-cert}');
 define('IMAP_SERVER','{74.125.113.16:993/imap/ssl/novalidate-cert}');
 
+// Validate SSL CERT of imap servers
+define('VALIDATE_CERT', false);
+
 define('TIME_ZONE', 'Europe/Paris');
 setlocale (LC_ALL, 'fr_FR.utf8','fr_FR', 'fr'); 
 

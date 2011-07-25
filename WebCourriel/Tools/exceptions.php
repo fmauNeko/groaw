@@ -25,6 +25,7 @@ set_error_handler("exception_error_handler");
 function exception_handler($exception)
 {
 	echo "\"<div class =\"exception\" style=\"width:80%;color:red;border:2px solid orange;white-space:pre;\">\n", htmlspecialchars($exception), "\n<br/><a href=\"javascript:history.back()\">",_('Return back'),"</a></div>\"";
+	showGroaw();
 	exit();
 }
 set_exception_handler("exception_handler");

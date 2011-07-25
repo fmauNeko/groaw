@@ -4,22 +4,46 @@ class CImap
 	protected static $token = null;
 
 	protected static $mail;
+	protected static $login;
 	protected static $password;
 	protected static $box;
 
 	protected static $cache_id;
 
-	protected static $imap_server;
-
 	protected static $cached_functions = array('body', 'bodystruct', 'status','num_msg','getmailboxes', 'fetchstructure', 'fetchheader', 'fetch_overview', 'fetchbody', 'sort'); 
 
-	public static function declareIdentity($mail, $password, $box)
+	public static function setServer($infos) {
+		$hostname = strtr($infos->hostname, '{}:', '---');
+		groaw($hostname);
+		$port = intVal($infos->port);
+
+		$s = '{'.$hostname.':'.$port.'/imap';
+
+		switch (strtoupper($infos->socketType)) {
+			case 'SSL':
+				$s .= '/ssl';
+
+				if (!VALIDATE_CERT) {
+					$s.= '/novalidate-cert';
+				}
+
+				break;
+			case 'STARTTLS':
+				$s .= '/tls';
+				break;
+		}
+		$s .= '}';
+
+		$_SESSION['imap_server'] = $s;
+
+	}
+
+	public static function declareIdentity($mail, $login, $password, $box)
 	{
 		self::$mail = $mail;
+		self::$login = $login;
 		self::$password = $password;
 		self::$box = $box;
-
-		self::$imap_server = IMAP_SERVER;
 
 		// The idea is just to don't show the mail in the arborescence
 		// md5 is fast for that
@@ -28,7 +52,7 @@ class CImap
 
 	public static function authentification()
 	{
-		self::$token = imap_open(self::$imap_server.self::$box, self::$mail, self::$password);
+		self::$token = imap_open($_SESSION['imap_server'].self::$box, self::$login, self::$password);
 	}
 
 	public static function logout()
@@ -96,11 +120,12 @@ class CImap
 	}
 
 	public static function getAllBoxes() {
-		return CImap::getmailboxes(self::$imap_server, '*');
+		return CImap::getmailboxes($_SESSION['imap_server'], '*');
 	}
 
 	public static function getServer() {
-		return self::$imap_server;
+		return $_SESSION['imap_server'];
 	}
+
 }
 ?>

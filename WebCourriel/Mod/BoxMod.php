@@ -231,7 +231,13 @@ class BoxMod
 	public static function explodeBoxName($box, $name)
 	{
 		$name = new CUtf7($name);
-		return explode($box->delimiter, $name->toUtf8());
+		$name = $name->toUtf8();
+
+		if ($box->delimiter) {
+			return explode($box->delimiter, $name);
+		} else {
+			return array($name);
+		}
 	}
 
 	public static function createDescrsiption($box_array)

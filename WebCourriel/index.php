@@ -70,7 +70,7 @@ if ($CTRL_NAME !== 'Session') {
 		// The selected box is in the url, and INBOX is the default
 		$box = isset($_REQUEST['box']) ? $_REQUEST['box'] : 'INBOX';
 
-        CImap::declareIdentity($_SESSION['email'], $_SESSION['secret_password'], $box);
+        CImap::declareIdentity($_SESSION['email'], $_SESSION['login'], $_SESSION['password'], $box);
     }
     else {
 		$_SESSION['redirection_url'] = $_SERVER['REQUEST_URI'];
