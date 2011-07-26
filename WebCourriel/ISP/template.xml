@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<clientConfig version="1.1">
+    <emailProvider id="@DOMAIN@">
+      <domain>@DOMAIN@</domain>
+
+      <incomingServer type="imap">
+         <hostname>@IMAP_HOSTNAME@</hostname>
+         <port>@IMAP_PORT@</port>
+         <socketType>@IMAP_SOCKETTYPE@</socketType>
+         <username>@IMAP_USERNAME@</username>
+         <authentication>password-cleartext</authentication>
+      </incomingServer>
+
+      <outgoingServer type="smtp">
+         <hostname>@SMTP_HOSTNAME@</hostname>
+         <port>@SMTP_PORT@</port>
+         <socketType>@SMTP_SOCKETTYPE@</socketType>
+         <username>@SMTP_USERNAME@</username>
+         <authentication>password-cleartext</authentication>
+      </outgoingServer>
+
+    </emailProvider>
+</clientConfig>

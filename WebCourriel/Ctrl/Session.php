@@ -41,8 +41,9 @@ class Session {
 
 			if (!$isp->loadFile()) {
 				new CMessage(sprintf(_('No ISP file for the domain %s.'), $domain));
-				CNavigation::redirectToApp('IspFactory');
-				return;
+				CNavigation::redirectToApp('IspFactory', 'index', array(
+						'domain' => $domain	
+							));
 			}
 
 			$isp->parseFile();

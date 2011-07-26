@@ -1,0 +1,53 @@
+fieldset {
+background:white;
+box-shadow:1px 1px 7px #999;
+border:none;
+margin-bottom:1.6em;
+}
+
+input[type=radio] {
+width:auto;
+}
+
+form {
+margin:1em;
+}
+
+legend {
+background:grey url(../Img/fond_sombre_2.jpeg) repeat-x;
+padding:0.2em 1em 0.2em 11em;
+box-shadow:1px 1px 7px #999;
+color:white;
+font-weight:bold;
+text-shadow: 0px 0px 3px #333;
+width:100%;
+margin-left:-10em;
+}
+
+input[type=text], input[type=number] {
+position:absolute;
+left:12em;
+right:3em;
+width:auto;
+border:none;
+height:1.8em;
+padding-left:0.5em;
+box-shadow:inset 1px 1px 7px #999;
+background: url(../Img/fond_2.jpeg) repeat;
+}
+
+input[type=submit] {
+position:static;
+width:100%;
+background:yellowgreen;
+border:none;
+color:white;
+height:27px;
+background:grey url(../Img/fond_sombre_2.jpeg) repeat;
+box-shadow:1px 1px 7px #999;
+}
+
+input[type=submit]:hover {
+position:static;
+background:black;
+}
