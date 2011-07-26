@@ -48,5 +48,20 @@ class ISP
 
 		return false;
 	}
+
+	public static function createFile($data) {
+		$xml = file_get_contents('ISP/template.xml');
+
+		return preg_replace_callback('/@(.+?)@/', function($m) use($data) {
+
+				$v = strtolower($m[1]);
+
+				if (array_key_exists($v, $data)) {
+					return htmlspecialchars($data[$v]);
+				} else {
+					return 'CANARD';
+				}
+			}, $xml);
+	}
 }
 ?>

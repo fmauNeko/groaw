@@ -23,7 +23,11 @@ function showGroaw() {
 
 		for($i = 0; $i < $c_groaw_array; ++$i) {
 			$groaw = $groaw_array[$i];
-			$groaw ? print_r($groaw) : var_dump($groaw);
+			if ($groaw) {
+				echo htmlspecialchars(print_r($groaw, true));
+			} else {
+				var_dump($groaw);
+			}
 			echo (($i < $c_groaw_array - 1) ? "<hr/>" : '' );
 		}
 		echo "</pre>\n";

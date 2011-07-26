@@ -10,20 +10,23 @@ class IspFactory {
 	}
 
 	public function submit() {
-		$xml = file_get_contents('ISP/template.xml');
 
-		$new_xml = preg_replace_callback('/@(.+?)@/', function($m) {
+		if (!isset($_POST['domain'])) {
+			$_POST['domain'] = DEFAULT_DOMAIN;
+		}
 
-				$v = strtolower($m[1]);
+		$domain = strtr($_POST['domain'], '/:{}', '----');
+		$filename = "ISP/$domain.xml";
 
-				if (array_key_exists($v, $_POST)) {
-					return htmlspecialchars($_POST[$v]);
-				} else {
-					return 'CANARD';
-				}
-			}, $xml);
+		$xml = ISP::createFile($_POST);
 
-		groaw($new_xml);
+		if (file_put_contents($filename, $xml) === false) {
+			new CMessage(_('ISP directory is not writable. Unable to save your configuration.'));
+		}
+
+		new CMessage(_('Successfull creation of ISP configuration file'));
+
+		CNavigation::redirectToApp(null);
 	}
 }
 
