@@ -1,7 +1,9 @@
 <?php
 
-//define('IMAP_SERVER','{88.191.117.94:993/imap/ssl/novalidate-cert}');
-define('IMAP_SERVER','{74.125.113.16:993/imap/ssl/novalidate-cert}');
+define('DEFAULT_DOMAIN', 'blogjaune.fr');
+
+//$ACCEPT_ONLY_DOMAINS = array('gmail.com', 'blogjaune.fr');
+$ACCEPT_ONLY_DOMAINS = null;
 
 // Validate SSL CERT of imap servers
 define('VALIDATE_CERT', false);
@@ -22,6 +24,7 @@ define('CACHE_LENGTH',1300);
 define('FORCE_HTTPS', false);
 
 // Use of url rewriting
+//define('URL_REWRITING', false);
 define('URL_REWRITING', 'app');
 
 define('DEBUG',true);
@@ -40,4 +43,5 @@ $BOXES_ORDER = array(
 	'INBOX',
 	'INBOX.RSS'
 );
+
 ?>

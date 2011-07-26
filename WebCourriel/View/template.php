@@ -15,24 +15,25 @@ foreach (CHead::$js as $js)
 <body>
 <?php
 
-if (isset($_SESSION['logged']))
-{
+if (!defined('NO_HEADER_BAR')) {
+
 	echo "<header>\n\t",'<h2 id="title" ',
 		 (isset($BOX_NAME) ? 'class="'.htmlspecialchars($BOX_NAME).'"' : ''),'>',
 			 htmlspecialchars(CNavigation::getBodyTitle()), "</h2>\n";
 
-	$url_redaction = CNavigation::generateUrlToApp('Redaction',null,null);
-	$url_logout = CNavigation::generateUrlToApp('Session','logout',null);
-	$text_logout = _('Logout');
-	$text_redaction = _('New mail');
-	echo <<<END
+	if (isset($_SESSION['logged'])) {
+		$url_redaction = CNavigation::generateUrlToApp('Redaction',null,null);
+		$url_logout = CNavigation::generateUrlToApp('Session','logout',null);
+		$text_logout = _('Logout');
+		$text_redaction = _('New mail');
+		echo <<<END
 	<nav><ul id="navigation">
 		<li><a href="$url_redaction">$text_redaction</a></li>
 		<li><a href="$url_logout">$text_logout</a></li>
 	</ul></nav>
-</header>
-
 END;
+	}
+	echo "</header>\n";
 }
 
 if (DEBUG) {

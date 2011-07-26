@@ -56,7 +56,7 @@ if (!method_exists($CTRL, $ACTION_NAME)) {
 }
 
 // If the user is not at the login page
-if ($CTRL_NAME !== 'Session') {
+if (!defined('NO_LOGIN_REQUIRED')) {
     // If the user is logged
     if (isset($_SESSION['logged'])) {
 		if (isset($_SESSION['redirection_url'])) {
