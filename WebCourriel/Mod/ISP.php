@@ -19,8 +19,6 @@ class ISP
 		
 		$url = 'https://live.mozillamessaging.com/autoconfig/v1.1/'.$this->domain;
 
-		// TODO
-		return false;
 		try {
 			$this->xml = file_get_contents($url, false, NULL, 0, 32768);
 			
