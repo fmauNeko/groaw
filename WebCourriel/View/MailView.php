@@ -212,7 +212,7 @@ EOT;
 	public function showXRssMail() {
 		$url = htmlspecialchars($this->model->mail->{'x-rss-item-link'});
 
-		echo  "<div class=\"mail xrss_frame\"><iframe src=\"$url\"></iframe></div>";
+		echo  "<div class=\"mainview xrss_frame\"><iframe src=\"$url\"></iframe></div>";
 	}
 
     public function showMail() {
@@ -228,7 +228,7 @@ EOT;
 		$subject = CTools::mimeToUtf8($mail->subject);
 		$subject = ($subject === '') ? _('No subject') : $subject;
 	
-        echo "<div class=\"mail\" id=\"mail_$id\">\n\t<div class=\"headers\">\n\t\t<h2>",
+        echo "<div class=\"mainview mail\" id=\"mail_$id\">\n\t<div class=\"headers\">\n\t\t<h2>",
 					htmlspecialchars($subject),
 					"</h2>\n\t\t<table>\n\t\t\t";
 

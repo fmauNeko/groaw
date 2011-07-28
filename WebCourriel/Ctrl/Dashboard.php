@@ -7,8 +7,14 @@ class Dashboard {
 		$box_mod = new BoxMod();
 		$box_mod->listBoxesNbUnread();
 		
-		$this->show($box_mod);
-		//CNavigation::setTitle(_('Dashboard'));
+		$id = MailMod::getId();
+
+		if (!$id) {
+			DashboardView::showTools();
+		} else {
+			$this->show($box_mod, $id);
+		}
+
 		$page_num = CNavigation::getPage();
 
 		$mod = new MailMod();
@@ -26,21 +32,19 @@ class Dashboard {
 
 	}
 
-	// Public canard koinkoin
-
 
 	// Show a mail
-	public function show($box_mod = null) {
+	public function show($box_mod = null, $id = null) {
 		global $id;
 
-		$id = MailMod::getId();
-
 		// Si il n'y a aucun message
-		if (!$id) {
-			//groaw("oh nan");
-			//new CMessage("Il n'y avait plus aucun courriel dans la boite.");	
-			//new CRedirection("Boites.php");
-			return;
+		if ($id === null) {
+			$id = MailMod::getId();
+
+			if (!$id) {
+				new CMessage(_('The box was empty'));
+				CNavigation::redirectToApp('Dashboard');
+			}
 		}
 
 		$mod = new MailMod($id);
