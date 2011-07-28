@@ -211,7 +211,7 @@ class CNavigation
 		return $url;
 	}
 
-	public static function generateMergedUrl($ctrl, $action = null, $params = null)
+	public static function generateMergedUrl($ctrl, $action = null, $params = array())
 	{ 
 		$params = array_merge($_GET, $params);
 

@@ -174,14 +174,14 @@ class BoxMod
 		CImap::expunge();
 	}
 
-	public function marquerToutLus()
+	public function markAllAsRead()
 	{
 		$num_msg = CImap::num_msg();
 
 		if ($num_msg > 0)
 		{
 			CImap::setflag_full('1:'.$num_msg, '\Seen');
-			$this->changerNbNonVus($GLOBALS['box'], 0, false);
+			$this->updateNbUnread($GLOBALS['box'], 0, false);
 		}
 
 	}

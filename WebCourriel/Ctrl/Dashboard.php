@@ -70,6 +70,14 @@ class Dashboard {
 		CNavigation::setTitle(CTools::mimeToUtf8($mod->mail->subject));
 	}
 
+	public function allread() {
+
+		$mod = new BoxMod();
+		$mod->markAllAsRead();
+
+		$redirect = CNavigation::generateMergedUrl('Dashboard', 'index');
+		CNavigation::redirectToURL($redirect);
+	}
 }
 
 ?>
